@@ -12,9 +12,9 @@
 
 ## 🌟 Key Architectural Features
 
-### 🏛️ 1. Osmania University Style Leadership Desk
-* **Executive Showcase**: Inspired by top university executive portals (e.g., Osmania University Vice-Chancellor Desk).
-* **Dual Managing Director Cards**: Side-by-side executive cards featuring top-center passport framing (`director1.jpg` & `director2.jpg`), gold governance badges, and official logo watermark overlays (`logo.png`).
+### 🏛️ 1. Executive Board of Directors Leadership Desk
+* **Official Leadership Showcase**: Enterprise executive showcase presenting the Managing Director leadership messages.
+* **Dual Executive Cards**: Structured side-by-side executive cards featuring high-resolution passport portrait framing (`director1.jpg` & `director2.jpg`), verified leadership badges, and official CTRL A IT HUB logo watermark overlays (`logo.png`).
 
 ### 🔐 2. Multi-Tenant Role-Based Access Control (RBAC)
 * **Master Admin (Centralized)**: Full system configuration, database management, and permission delegation.
@@ -104,7 +104,7 @@ CTRL A IT HUB/
 └── templates/                # HTML5 Templates
     ├── base.html             # Main Site Master Layout
     ├── home.html             # Home Page with Vision Wheel & Gallery
-    ├── about.html            # Osmania Style Board of Directors Showcase
+    ├── about.html            # Official Executive Board of Directors Showcase
     └── portal/               # Student & Admin Dashboards
 ```
 
