@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-profile">
+            <div class="sidebar-avatar">{{ user.username|slice:":1"|upper }}</div>
+            <div class="sidebar-name">{{ user.get_full_name|default:user.username }}</div>
+            <div class="sidebar-role">{% block sidebar_role %}{% if user.is_staff %}Administrator{% else %}Dashboard User{% endif %}{% endblock %}</div>
+        </div>
+        <nav class="sidebar-menu">
+            {% block sidebar_menu %}{% endblock %}
+        </nav>
+    </aside>
+    <main class="dashboard-content">
+        {% block dashboard_content %}{% endblock %}
+    </main>
+</div>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

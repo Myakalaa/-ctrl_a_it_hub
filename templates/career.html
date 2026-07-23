@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Careers - CTRL A IT HUB{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div style="background:linear-gradient(135deg,#003d80,#0056b3);padding:4rem 2rem;text-align:center;">
+    <span class="tag" style="background:rgba(255,255,255,0.15);color:#fff;">Careers</span>
+    <h1 style="font-family:var(--font-main);font-size:2.5rem;font-weight:800;color:#fff;margin:1rem 0 0.75rem;">Join Our <span>Team</span></h1>
+    <p style="color:rgba(255,255,255,0.8);max-width:650px;margin:0 auto;font-size:1rem;">Become a part of Ctrl A IT Hub. Explore exciting career opportunities and build the future of technology with us.</p>
+</div>
+
+<!-- Current Openings at CTRL A IT HUB -->
+<section class="section" style="padding-top: 4rem; padding-bottom: 5rem;">
+    <div class="section-header">
+        <span class="tag">Join Our Team</span>
+        <h2 class="section-title">Current <span>Job Openings</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">We are looking for passionate individuals to join our growing team. Explore our active positions below.</p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:1.5rem; max-width:900px; margin:0 auto;">
+        {% for opening in openings %}
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1.5rem; padding:2rem; transition:transform 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+            <div style="flex:1; min-width:280px;">
+                {% if opening.department == 'technical' %}
+                    <span class="badge badge-primary" style="background:#e3efff; color:#0056b3; font-weight:700;">Technical Training</span>
+                {% elif opening.department == 'operations' %}
+                    <span class="badge badge-primary" style="background:#e8f5e9; color:#2e7d32; font-weight:700;">Operations &amp; Outreach</span>
+                {% elif opening.department == 'admin' %}
+                    <span class="badge badge-primary" style="background:#f3e5f5; color:#7b1fa2; font-weight:700;">Administration</span>
+                {% else %}
+                    <span class="badge badge-primary" style="background:#eaeaea; color:#555; font-weight:700;">Other</span>
+                {% endif %}
+                <h3 style="font-family:var(--font-main); font-size:1.25rem; color:var(--text-dark); margin:0.5rem 0 0.25rem;">{{ opening.title }}</h3>
+                <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.75rem;"><i class="fas fa-map-marker-alt" style="margin-right:4px;"></i> {{ opening.location }} | Experience: {{ opening.experience }}</p>
+                <p style="color:var(--text-body); font-size:0.9rem; line-height:1.6; white-space: pre-wrap;">{{ opening.description }}</p>
+            </div>
+            <div>
+                <button onclick="openApplyModal('{{ opening.title|escapejs }}')" class="btn btn-primary" style="font-size:0.82rem; padding:0.6rem 1.2rem; border-radius:50px; border:none; cursor:pointer;">Apply for Opening <i class="fas fa-paper-plane" style="margin-left:4px; font-size:0.75rem;"></i></button>
+            </div>
+        </div>
+        {% empty %}
+        <div class="card" style="text-align:center; padding:3rem;">
+            <p style="color:var(--text-muted); font-size:1rem;">No current job openings are active at the moment. Please check back later!</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Glassmorphism Popup Modal for Job Applications -->
+<div id="jobApplyModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.65); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:1.5rem;">
+    <div class="glass-card" style="background:rgba(255,255,255,0.92); border:1px solid rgba(255,255,255,0.4); border-radius:16px; padding:2rem; width:100%; max-width:500px; box-shadow:0 15px 35px rgba(0,0,0,0.2); position:relative;">
+        <button onclick="closeApplyModal()" style="position:absolute; right:1.25rem; top:1.25rem; background:none; border:none; font-size:1.4rem; color:var(--text-muted); cursor:pointer; transition:color 0.2s;" onmouseover="this.style.color='var(--text-dark)'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
+        
+        <h3 style="font-family:var(--font-main); color:var(--text-dark); margin-bottom:0.25rem; font-size:1.35rem;"><i class="fas fa-briefcase" style="color:var(--primary); margin-right:6px;"></i> Apply for Opening</h3>
+        <p id="modalJobTitleDisplay" style="color:var(--primary); font-weight:700; font-size:0.95rem; margin-bottom:1.5rem;"></p>
+        
+        <!-- AJAX Feedback Alert -->
+        <div id="modalAlertBox" style="display:none; padding:0.75rem 1rem; border-radius:8px; margin-bottom:1.25rem; font-size:0.88rem; font-weight:600;"></div>
+
+        <form id="jobApplicationForm" onsubmit="submitApplication(event)" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="job_title" id="modalJobTitleInput">
+            
+            <div class="form-group" style="margin-bottom:1rem;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Full Name *</label>
+                <input type="text" name="name" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                <div class="form-group">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Mobile *</label>
+                    <input type="tel" name="phone" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+                </div>
+                <div class="form-group">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Email Address *</label>
+                    <input type="email" name="email" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem;">
+                <div class="form-group">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Qualification *</label>
+                    <input type="text" name="qualification" placeholder="e.g. MBA, B.Tech, M.Com" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+                </div>
+                <div class="form-group">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Experience *</label>
+                    <input type="text" name="experience" placeholder="e.g. 2 Years, Fresher" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1.5rem;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Upload Resume (PDF/Word) *</label>
+                <input type="file" name="resume" accept=".pdf,.doc,.docx" required style="width:100%; font-size:0.85rem; color:var(--text-muted);">
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-glow" style="width:100%; border-radius:50px; font-weight:700; padding:0.75rem; border:none; cursor:pointer;">Submit Application <i class="fas fa-paper-plane" style="margin-left:6px;"></i></button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Form Switcher Script -->
+<script>
+function openApplyModal(jobTitle) {
+    document.getElementById('modalJobTitleDisplay').innerText = jobTitle;
+    document.getElementById('modalJobTitleInput').value = jobTitle;
+    
+    const modal = document.getElementById('jobApplyModal');
+    modal.style.display = 'flex';
+    
+    // Reset Alert box
+    const alertBox = document.getElementById('modalAlertBox');
+    alertBox.style.display = 'none';
+}
+
+function closeApplyModal() {
+    document.getElementById('jobApplyModal').style.display = 'none';
+    document.getElementById('jobApplicationForm').reset();
+}
+
+function submitApplication(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('jobApplicationForm');
+    const alertBox = document.getElementById('modalAlertBox');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Submitting... <i class="fas fa-spinner fa-spin"></i>';
+    
+    const formData = new FormData(form);
+    
+    fetch('{% url "submit_job_application" %}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Application <i class="fas fa-paper-plane"></i>';
+        
+        alertBox.style.display = 'block';
+        if (data.success) {
+            alertBox.style.backgroundColor = '#e8f5e9';
+            alertBox.style.color = '#2e7d32';
+            alertBox.textContent = data.message;
+            
+            // Clear form on success
+            form.reset();
+            setTimeout(closeApplyModal, 2500);
+        } else {
+            alertBox.style.backgroundColor = '#ffebee';
+            alertBox.style.color = '#c62828';
+            alertBox.textContent = data.message;
+        }
+    })
+    .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Application <i class="fas fa-paper-plane"></i>';
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = '#ffebee';
+        alertBox.style.color = '#c62828';
+        alertBox.textContent = 'Something went wrong. Please try again.';
+    });
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}MIS Executive Dashboard | CTRL A IT HUB{% endblock %}
+
+{% block sidebar_role %}MIS Executive{% endblock %}
+
+{% block sidebar_menu %}
+    <a href="{% url 'bpo_dashboard' %}" class="sidebar-menu-item active">
+        <i class="fas fa-headset"></i> Student Enquiries
+    </a>
+    <a href="{% url 'mis_export_csv' %}" class="sidebar-menu-item">
+        <i class="fas fa-file-excel"></i> Export to Excel
+    </a>
+    <a href="{% url 'logout' %}" class="sidebar-menu-item" style="color: #ff4d4d; margin-top: 2rem; border-left: 4px solid transparent; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+{% endblock %}
+
+{% block dashboard_content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; color: #16a34a; padding: 0.85rem 1.25rem; border-radius: 10px; margin-bottom: 1.5rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-check-circle"></i> {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- HEADER -->
+    <div class="dashboard-actions-header">
+        <div class="dashboard-title-container">
+            <h2><i class="fas fa-headset" style="color: var(--primary); margin-right: 10px;"></i>MIS Executive Dashboard</h2>
+            <p>Welcome back! Manage, track, and follow up on student enquiries.</p>
+        </div>
+        <div>
+            <a href="{% url 'mis_export_csv' %}" class="btn btn-glow" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 0.65rem 1.2rem; background: linear-gradient(135deg, #16a34a, #22c55e); color: white; border-radius: 8px; font-weight: 700; font-size: 0.88rem;">
+                <i class="fas fa-file-excel"></i> Export CSV
+            </a>
+        </div>
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="dashboard-stat-grid">
+        <div class="stat-card">
+            <div class="stat-card-details">
+                <h3>Total Enquiries</h3>
+                <p>{{ total }}</p>
+            </div>
+            <div class="stat-card-icon blue"><i class="fas fa-users"></i></div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-details">
+                <h3>Pending Enquiries</h3>
+                <p>{{ pending }}</p>
+            </div>
+            <div class="stat-card-icon purple"><i class="fas fa-clock"></i></div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-details">
+                <h3>Resolved Enquiries</h3>
+                <p>{{ resolved }}</p>
+            </div>
+            <div class="stat-card-icon green"><i class="fas fa-check-double"></i></div>
+        </div>
+    </div>
+
+    <!-- SEARCH & FILTER BAR -->
+    <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem;">
+        <form method="get" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+            <div style="position: relative; flex: 1; min-width: 220px;">
+                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem;"></i>
+                <input type="text" name="q" value="{{ q }}" placeholder="Search candidate or course..."
+                    style="width: 100%; padding: 0.55rem 0.85rem 0.55rem 2.3rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-light); color: var(--text-dark); font-size: 0.9rem; outline: none;">
+            </div>
+            <select name="type" style="padding: 0.55rem 0.85rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-light); color: var(--text-dark); font-size: 0.9rem; cursor: pointer;">
+                <option value="">All Types</option>
+                <option value="general" {% if type_filter == 'general' %}selected{% endif %}>General</option>
+                <option value="student" {% if type_filter == 'student' %}selected{% endif %}>Student</option>
+                <option value="corporate" {% if type_filter == 'corporate' %}selected{% endif %}>Corporate</option>
+            </select>
+            <select name="status" style="padding: 0.55rem 0.85rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-light); color: var(--text-dark); font-size: 0.9rem; cursor: pointer;">
+                <option value="">All Status</option>
+                <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="resolved" {% if status_filter == 'resolved' %}selected{% endif %}>Resolved</option>
+            </select>
+            <button type="submit" style="padding: 0.55rem 1.3rem; background: var(--primary, #0056b3); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+            <a href="{% url 'bpo_dashboard' %}" style="padding: 0.55rem 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Reset</a>
+        </form>
+    </div>
+
+    <!-- ENQUIRIES TABLE -->
+    <div class="table-responsive">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Student Name</th>
+                    <th>WhatsApp / Phone</th>
+                    <th>Course Interested</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for enquiry in enquiries %}
+                    <tr>
+                        <td style="white-space: nowrap; font-size: 0.85rem; color: var(--text-muted);">{{ enquiry.date_submitted|date:"d M Y" }}</td>
+                        <td>
+                            <div style="font-weight: 700; color: var(--text-dark);">{{ enquiry.name }}</div>
+                            <div style="font-size: 0.78rem; color: var(--text-muted);">{{ enquiry.email }}</div>
+                        </td>
+                        <td>
+                            <a href="https://wa.me/91{{ enquiry.phone }}?text=Hello%20{{ enquiry.name|urlencode }},%20thank%20you%20for%20enquiring%20at%20CTRL%20A%20IT%20HUB." target="_blank" style="display: inline-flex; align-items: center; gap: 6px; color: #16a34a; background: rgba(34, 197, 94, 0.12); padding: 4px 10px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem;">
+                                <i class="fab fa-whatsapp"></i> {{ enquiry.phone }}
+                            </a>
+                        </td>
+                        <td style="font-weight: 600;">{{ enquiry.course_interested|default:"—" }}</td>
+                        <td>
+                            <span style="padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; background: rgba(59, 130, 246, 0.12); color: #2563eb;">
+                                {{ enquiry.get_enquiry_type_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if enquiry.is_resolved %}
+                                <span style="padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; background: rgba(34, 197, 94, 0.15); color: #16a34a; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-check-circle"></i> Resolved
+                                </span>
+                            {% else %}
+                                <span style="padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; background: rgba(245, 158, 11, 0.15); color: #d97706; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-clock"></i> Pending
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'mis_resolve_enquiry' enquiry.pk %}" style="display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; text-decoration: none; {% if enquiry.is_resolved %}background: rgba(239, 68, 68, 0.12); color: #dc2626;{% else %}background: rgba(34, 197, 94, 0.15); color: #16a34a;{% endif %}">
+                                {% if enquiry.is_resolved %}
+                                    <i class="fas fa-undo"></i> Re-open
+                                {% else %}
+                                    <i class="fas fa-check"></i> Resolve
+                                {% endif %}
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            <i class="fas fa-inbox" style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block; opacity: 0.5;"></i>
+                            No enquiries found matching your criteria.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

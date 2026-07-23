@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - CTRL A IT HUB{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div style="background:linear-gradient(135deg,#003d80,#0056b3);padding:4rem 2rem;text-align:center;">
+    <div style="max-width:700px;margin:0 auto;">
+        <span class="tag" style="background:rgba(255,255,255,0.15);color:#fff;">Get In Touch</span>
+        <h1 style="font-family:var(--font-main);font-size:2.5rem;font-weight:800;color:#fff;margin:1rem 0 0.75rem;">Contact <span style="color:var(--accent);">CTRL A IT HUB</span></h1>
+        <p style="color:rgba(255,255,255,0.8);font-size:1rem;">Reach out to our academic advisors. We'll get back to you within 24 hours.</p>
+    </div>
+</div>
+
+<!-- Contact Info & Form -->
+<div style="background:var(--bg-light);padding:4rem 2rem;">
+<div style="max-width:1200px;margin:0 auto;">
+    <div class="grid-2" style="align-items:flex-start;gap:2.5rem;">
+
+        <!-- Left: Contact Details + Map -->
+        <div style="display:flex;flex-direction:column;gap:1.5rem;">
+
+            <!-- Address -->
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.2rem;color:var(--primary);margin-bottom:1rem;"><i class="fas fa-map-marker-alt" style="margin-right:.5rem;color:var(--accent);"></i>Our Location</h3>
+                <p style="color:var(--text-body);line-height:1.9;font-size:0.92rem;">
+                    <strong>Ctrl A IT Hub</strong><br>
+                    1-7-172/1, 1st Floor,<br>
+                    Muthoot Finance Building,<br>
+                    Opp. BSNL Office Line, South Kamala Nagar,<br>
+                    ECIL X Road, Hyderabad,<br>
+                    Telangana – 500062
+                    <br><a href="https://maps.app.goo.gl/rA3znj7oRecN9CbR9" target="_blank" style="color:var(--primary);font-size:0.85rem;font-weight:700;display:inline-flex;align-items:center;gap:0.3rem;margin-top:0.5rem;"><i class="fas fa-directions"></i> Open in Google Maps</a>
+                </p>
+                <p style="margin-top:0.75rem;color:var(--text-muted);font-size:0.88rem;"><i class="fas fa-clock" style="color:var(--primary);margin-right:.4rem;"></i>Mon – Sat: 9:00 AM – 7:00 PM</p>
+            </div>
+
+            <!-- Phone/Email -->
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.2rem;color:var(--primary);margin-bottom:1rem;"><i class="fas fa-phone-alt" style="margin-right:.5rem;color:var(--accent);"></i>Contact Details</h3>
+                <ul style="display:flex;flex-direction:column;gap:0.75rem;">
+                    <li style="display:flex;gap:.75rem;align-items:center;font-size:0.92rem;color:var(--text-body);"><i class="fas fa-phone" style="color:var(--primary);"></i>91333 91401 (Admissions)</li>
+                    <li style="display:flex;gap:.75rem;align-items:center;font-size:0.92rem;color:var(--text-body);"><i class="fas fa-phone" style="color:var(--primary);"></i>91333 91402 (Corporate)</li>
+                    <li style="display:flex;gap:.75rem;align-items:center;font-size:0.92rem;color:var(--text-body);"><i class="fab fa-whatsapp" style="color:#25D366;"></i>91333 91401 (WhatsApp)</li>
+                    <li style="display:flex;gap:.75rem;align-items:center;font-size:0.92rem;color:var(--text-body);"><i class="fas fa-envelope" style="color:var(--primary);"></i>info@ctrlaithub.com</li>
+                </ul>
+            </div>
+
+            <!-- Google Map - ECIL X Road Hyderabad -->
+            <div style="border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);height:280px;">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.302!2d78.5586!3d17.4649!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9c4e5a4d7f1d%3A0x1a1b2c3d4e5f6789!2sECIL%20X%20Roads%2C%20Hyderabad%2C%20Telangana%20500062!5e0!3m2!1sen!2sin!4v1700000000000"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <a href="https://maps.app.goo.gl/rA3znj7oRecN9CbR9" target="_blank" rel="noopener" class="btn btn-secondary" style="width:100%; border-radius:var(--radius); gap:0.5rem; font-size:0.9rem; padding:0.7rem;">
+                <i class="fas fa-map-marked-alt" style="color:var(--accent);"></i> Open in Google Maps Navigation
+            </a>
+        </div>
+
+        <!-- Right: Enquiry Form -->
+        <div class="card" style="padding:2rem;">
+            <h3 style="font-family:var(--font-main);font-size:1.5rem;color:var(--text-dark);margin-bottom:0.5rem;text-align:center;">Send Us a <span style="color:var(--primary);">Message</span></h3>
+            <p style="color:var(--text-muted);text-align:center;margin-bottom:1.75rem;font-size:0.9rem;">Fill in the form and a coordinator will contact you with batch timings and fees.</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form action="{% url 'contact' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address *</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mobile Number *</label>
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Type of Enquiry</label>
+                    {{ form.enquiry_type }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Course Interested (Optional)</label>
+                    {{ form.course_interested }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Your Message</label>
+                    {{ form.message }}
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;border-radius:var(--radius);padding:.85rem;">
+                    <i class="fas fa-paper-plane" style="margin-right:.5rem;"></i>Send Enquiry
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+</div>
+
+{% endblock %}

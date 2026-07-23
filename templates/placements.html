@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Placements - CTRL A IT HUB{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div style="background:linear-gradient(135deg,#003d80,#0056b3);padding:4rem 2rem;text-align:center;">
+    <span class="tag" style="background:rgba(255,255,255,0.15);color:#fff;">Placements</span>
+    <h1 style="font-family:var(--font-main);font-size:2.5rem;font-weight:800;color:#fff;margin:1rem 0 0.75rem;">Placement &amp; <span>Internships</span></h1>
+    <p style="color:rgba(255,255,255,0.8);max-width:650px;margin:0 auto;font-size:1rem;">Assured placement guidance, resume optimization, mock interviews, and industrial internship programs.</p>
+</div>
+
+<!-- Stats Metrics -->
+<section class="section" style="padding-bottom: 2rem;">
+    <div class="card" style="padding: 2.5rem 2rem;">
+        <div class="stats-container" style="margin: 0; gap: 2rem;">
+            <div class="stat-item">
+                <span class="stat-number" style="color:var(--primary);">92%</span>
+                <div class="stat-label" style="color:var(--text-dark);font-weight:600;">Placement Success</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" style="color:var(--primary);">120+</span>
+                <div class="stat-label" style="color:var(--text-dark);font-weight:600;">Referral Companies</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" style="color:var(--primary);">12 LPA</span>
+                <div class="stat-label" style="color:var(--text-dark);font-weight:600;">Highest Package</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" style="color:var(--primary);">4.5 LPA</span>
+                <div class="stat-label" style="color:var(--text-dark);font-weight:600;">Average Package</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Internship Programs -->
+<section class="section" style="padding-top: 2rem;">
+    <div class="section-header">
+        <span class="tag">Learn by Doing</span>
+        <h2 class="section-title">Industrial <span>Internship</span> Programs</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">Gain real work experience while learning. Our internships involve working on production server APIs and database schemas under architect guidance.</p>
+    </div>
+    
+    <div class="grid-3">
+        <div class="card">
+            <h3 style="font-family:var(--font-main);color:var(--primary);font-size:1.2rem;margin-bottom:0.75rem;"><i class="fab fa-java" style="margin-right:0.5rem;color:var(--accent);"></i> Java Full Stack Internship</h3>
+            <p style="color:var(--text-body);font-size:0.92rem;margin-bottom:1.25rem;line-height:1.7;">Build cloud APIs with Java, Spring Boot, JPA, React.js, and PostgreSQL. Deploy to cloud environments.</p>
+            <span class="badge badge-primary">Duration: 3-6 Months</span>
+        </div>
+        
+        <div class="card">
+            <h3 style="font-family:var(--font-main);color:var(--primary);font-size:1.2rem;margin-bottom:0.75rem;"><i class="fab fa-python" style="margin-right:0.5rem;color:var(--accent);"></i> Python & AI Internship</h3>
+            <p style="color:var(--text-body);font-size:0.92rem;margin-bottom:1.25rem;line-height:1.7;">Build smart web applications. Integrate Django rest framework, OpenAI APIs, and indexing.</p>
+            <span class="badge badge-primary">Duration: 3-6 Months</span>
+        </div>
+        
+        <div class="card">
+            <h3 style="font-family:var(--font-main);color:var(--primary);font-size:1.2rem;margin-bottom:0.75rem;"><i class="fas fa-chart-line" style="margin-right:0.5rem;color:var(--accent);"></i> Data Science Internship</h3>
+            <p style="color:var(--text-body);font-size:0.92rem;margin-bottom:1.25rem;line-height:1.7;">Manipulate enterprise data. Master pandas, Power BI metrics, SQL queries, and predictive models.</p>
+            <span class="badge badge-primary">Duration: 3 Months</span>
+        </div>
+    </div>
+</section>
+
+<!-- Placement Support Framework -->
+<div style="background:var(--bg-light);padding:5rem 2rem;margin-top:4rem;border-radius:var(--radius);">
+<div style="max-width:1200px;margin:0 auto;">
+    <div class="section-header">
+        <span class="tag">Placement Cell</span>
+        <h2 class="section-title">Comprehensive Placement <span>Support</span></h2>
+        <div class="section-divider"></div>
+    </div>
+    
+    <div class="grid-2" style="gap:3rem;">
+        <div class="card" style="border:none;background:transparent;padding:0;box-shadow:none;">
+            <ul style="display:flex;flex-direction:column;gap:1.75rem;">
+                <li style="display:flex;gap:1.25rem;align-items:flex-start;">
+                    <div style="font-size:1.6rem;color:var(--primary);background:var(--primary-light);width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-file-invoice"></i></div>
+                    <div>
+                        <h4 style="font-family:var(--font-main);font-size:1.1rem;color:var(--text-dark);margin-bottom:0.4rem;">Resume Optimization</h4>
+                        <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">One-on-one sessions to format resumes with tech keywords, projects, and clear GitHub highlights.</p>
+                    </div>
+                </li>
+                
+                <li style="display:flex;gap:1.25rem;align-items:flex-start;">
+                    <div style="font-size:1.6rem;color:var(--primary);background:var(--primary-light);width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-microphone-alt"></i></div>
+                    <div>
+                        <h4 style="font-family:var(--font-main);font-size:1.1rem;color:var(--text-dark);margin-bottom:0.4rem;">Mock Interviews & HR Drills</h4>
+                        <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Simulate real interviews with senior programmers to practice answering technical questions and soft skills.</p>
+                    </div>
+                </li>
+
+                <li style="display:flex;gap:1.25rem;align-items:flex-start;">
+                    <div style="font-size:1.6rem;color:var(--primary);background:var(--primary-light);width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-tasks"></i></div>
+                    <div>
+                        <h4 style="font-family:var(--font-main);font-size:1.1rem;color:var(--text-dark);margin-bottom:0.4rem;">Aptitude & Reasoning Tests</h4>
+                        <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Solve quantitative aptitude, logical reasoning, and basic coding puzzles to clear initial screening rounds.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card" style="border:none;background:transparent;padding:0;box-shadow:none;">
+            <ul style="display:flex;flex-direction:column;gap:1.75rem;">
+                <li style="display:flex;gap:1.25rem;align-items:flex-start;">
+                    <div style="font-size:1.6rem;color:var(--primary);background:var(--primary-light);width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-handshake"></i></div>
+                    <div>
+                        <h4 style="font-family:var(--font-main);font-size:1.1rem;color:var(--text-dark);margin-bottom:0.4rem;">Direct Job Referrals</h4>
+                        <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Access exclusive job drives, walk-in events, and direct resume sharing with our referral HR partners.</p>
+                    </div>
+                </li>
+                
+                <li style="display:flex;gap:1.25rem;align-items:flex-start;">
+                    <div style="font-size:1.6rem;color:var(--primary);background:var(--primary-light);width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fab fa-linkedin"></i></div>
+                    <div>
+                        <h4 style="font-family:var(--font-main);font-size:1.1rem;color:var(--text-dark);margin-bottom:0.4rem;">LinkedIn Auditing</h4>
+                        <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Clean up professional banners, descriptions, and feature skill assessments to attract corporate recruiters.</p>
+                    </div>
+                </li>
+
+                <li style="display:flex;gap:1.25rem;align-items:flex-start;">
+                    <div style="font-size:1.6rem;color:var(--primary);background:var(--primary-light);width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-award"></i></div>
+                    <div>
+                        <h4 style="font-family:var(--font-main);font-size:1.1rem;color:var(--text-dark);margin-bottom:0.4rem;">Skill Reports</h4>
+                        <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Generate structured grading sheets and coding profiles to verify skill competencies directly with hiring managers.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Certificate Verification Section -->
+<div style="background:var(--primary);padding:4rem 2rem;margin-top:4rem;border-radius:var(--radius);">
+<div style="max-width:600px;margin:0 auto;text-align:center;">
+    <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:2.5rem;">
+        <h3 style="color:#fff;font-family:var(--font-main);font-size:1.4rem;margin-bottom:0.5rem;"><i class="fas fa-award" style="color:var(--accent);margin-right:.5rem;"></i>Verify Certificate</h3>
+        <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;margin-bottom:1.5rem;">Enter your certificate ID to verify its authenticity online instantly.</p>
+        <form action="{% url 'verify_certificate' %}" method="GET" style="display:flex;gap:0.75rem;max-width:450px;margin:0 auto;">
+            <input type="text" name="code" class="form-input" placeholder="e.g. CTA-2026-0001" required style="flex:1;background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#fff;">
+            <button type="submit" class="btn btn-accent">Verify</button>
+        </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}

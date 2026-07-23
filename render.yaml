@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: ctrla-hub
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn ctrla_hub.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: DJANGO_SETTINGS_MODULE
+        value: ctrla_hub.settings
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ctrla-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+
+databases:
+  - name: ctrla-db
+    plan: free

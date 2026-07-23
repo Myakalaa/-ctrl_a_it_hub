@@ -1,0 +1,480 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CTRL A IT HUB - Professional IT Training Institute. Java, Python, Testing, Web & Data Analytics courses with placement support in Hyderabad.">
+    <title>{% block title %}CTRL A IT HUB - Empowering Technology & People{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=3.0">
+    <script>
+        (function() {
+            var theme = localStorage.getItem('ctrla_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    <style>
+    /* ===== DARK MODE GLOBAL OVERRIDES ===== */
+    html[data-theme="dark"] body {
+        background: var(--bg) !important;
+        color: var(--text-body) !important;
+    }
+    html[data-theme="dark"] .navbar {
+        background: #0f172a !important;
+        border-bottom-color: rgba(255,255,255,0.08) !important;
+    }
+    html[data-theme="dark"] .navbar.scrolled {
+        background: rgba(15,23,42,0.97) !important;
+    }
+    html[data-theme="dark"] .nav-link {
+        color: #e2e8f0 !important;
+    }
+    html[data-theme="dark"] .nav-link:hover,
+    html[data-theme="dark"] .nav-link.active {
+        color: var(--primary) !important;
+        background: var(--primary-light) !important;
+    }
+    html[data-theme="dark"] .dropdown-menu {
+        background: #1e293b !important;
+        border-color: rgba(255,255,255,0.08) !important;
+    }
+    html[data-theme="dark"] .dropdown-menu li a {
+        color: #cbd5e1 !important;
+    }
+    html[data-theme="dark"] .dropdown-menu li a:hover {
+        background: var(--primary-light) !important;
+        color: #60a5fa !important;
+    }
+    html[data-theme="dark"] .card,
+    html[data-theme="dark"] .glass-card,
+    html[data-theme="dark"] .course-card,
+    html[data-theme="dark"] .icon-box,
+    html[data-theme="dark"] .company-logo {
+        background: #111827 !important;
+        border-color: rgba(255,255,255,0.08) !important;
+    }
+    html[data-theme="dark"] .course-footer,
+    html[data-theme="dark"] .course-image-wrapper,
+    html[data-theme="dark"] .syllabus-content.open {
+        background: #1e293b !important;
+        border-color: rgba(255,255,255,0.08) !important;
+    }
+    html[data-theme="dark"] .section-title {
+        color: var(--text-dark) !important;
+    }
+    html[data-theme="dark"] .section-title span {
+        color: #60a5fa !important;
+    }
+    html[data-theme="dark"] .course-title,
+    html[data-theme="dark"] h1, html[data-theme="dark"] h2,
+    html[data-theme="dark"] h3, html[data-theme="dark"] h4 {
+        color: var(--text-dark) !important;
+    }
+    html[data-theme="dark"] .section-bg,
+    html[data-theme="dark"] .corporate-trust-highlights-bar {
+        background: #0f172a !important;
+        border-color: rgba(255,255,255,0.08) !important;
+    }
+    html[data-theme="dark"] .logo-slider-container {
+        background: #111827 !important;
+        border-color: rgba(255,255,255,0.08) !important;
+    }
+    html[data-theme="dark"] input[type=text],
+    html[data-theme="dark"] input[type=email],
+    html[data-theme="dark"] input[type=tel],
+    html[data-theme="dark"] input[type=password],
+    html[data-theme="dark"] select,
+    html[data-theme="dark"] textarea,
+    html[data-theme="dark"] .form-input {
+        background: #1e293b !important;
+        border-color: rgba(255,255,255,0.12) !important;
+        color: #f8fafc !important;
+    }
+    html[data-theme="dark"] .vision-section-wrapper {
+        background: #0f172a !important;
+        border-color: rgba(255,255,255,0.06) !important;
+    }
+    html[data-theme="dark"] .circle-node,
+    html[data-theme="dark"] .circle-center-hub {
+        background: #1e293b !important;
+        border-color: var(--primary) !important;
+    }
+    html[data-theme="dark"] .circle-node span {
+        color: #cbd5e1 !important;
+    }
+    html[data-theme="dark"] .btn-secondary {
+        background: #1e293b !important;
+        color: #60a5fa !important;
+        border-color: #60a5fa !important;
+    }
+    html[data-theme="dark"] .btn-secondary:hover {
+        background: var(--primary) !important;
+        color: #fff !important;
+    }
+    html[data-theme="dark"] .theme-toggle-btn {
+        color: #fbbf24 !important;
+    }
+    html[data-theme="dark"] .footer {
+        background: #020617 !important;
+    }
+    html[data-theme="dark"] ::-webkit-scrollbar-track { background: #1e293b; }
+    html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: var(--primary); }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ===== TOP INFO BAR (Datapro-style) ===== -->
+<div class="top-info-bar">
+    <div class="top-info-inner">
+        <div class="top-info-left">
+            <a href="https://maps.app.goo.gl/rA3znj7oRecN9CbR9" target="_blank" rel="noopener" style="color:inherit; font-size:0.8rem; display:inline-flex; align-items:center; gap:0.35rem;"><i class="fas fa-map-marker-alt"></i> ECIL X Road, Hyderabad, Telangana – 500062</a>
+            <span><i class="fas fa-clock"></i> Mon – Sat: 9:00 AM – 7:00 PM</span>
+        </div>
+        <div class="top-info-right">
+            <a href="tel:9133391401"><i class="fas fa-phone-alt"></i> 9133391401</a>
+            <a href="mailto:info@ctrlaithub.com"><i class="fas fa-envelope"></i> info@ctrlaithub.com</a>
+            <div class="top-socials">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===== MAIN NAVBAR ===== -->
+<nav class="navbar">
+    <div class="nav-container">
+
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="logo-link">
+            <img src="{% static 'images/logo.png' %}?v=6" alt="Ctrl A IT Hub" class="nav-logo-img" style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; max-height: 65px; width: auto; display: block; filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.35));">
+        </a>
+
+        <!-- Nav Links -->
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
+            <li><a href="{% url 'about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">About Us</a></li>
+
+            <!-- Services Dropdown — each item opens in its own unique respected target tab -->
+            <li class="dropdown">
+                <a href="{% url 'services' %}" class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}">
+                    Services <i class="fas fa-chevron-down nav-arrow"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'service_it' %}" target="service_it">
+                        <span class="dm-icon"><i class="fas fa-laptop-code"></i></span>
+                        <span class="dm-text"><strong>IT Consulting</strong><small>Academic &amp; Digital Projects</small></span>
+                    </a></li>
+                    <li><a href="{% url 'service_bpo' %}" target="service_bpo">
+                        <span class="dm-icon"><i class="fas fa-headset"></i></span>
+                        <span class="dm-text"><strong>BPO Projects</strong><small>Support &amp; Back Office</small></span>
+                    </a></li>
+                    <li><a href="{% url 'service_csr' %}" target="service_csr">
+                        <span class="dm-icon"><i class="fas fa-users-cog"></i></span>
+                        <span class="dm-text"><strong>CSR Skill Development</strong><small>Youth &amp; Community Training</small></span>
+                    </a></li>
+                    <li><a href="{% url 'service_gov' %}" target="service_gov">
+                        <span class="dm-icon"><i class="fas fa-landmark"></i></span>
+                        <span class="dm-text"><strong>Government Training</strong><small>Digital Literacy &amp; Vocational</small></span>
+                    </a></li>
+                </ul>
+            </li>
+
+            <!-- Courses (Simple direct link - dropdown menu removed) -->
+            <li><a href="{% url 'courses' %}" class="nav-link {% if request.resolver_match.url_name == 'courses' %}active{% endif %}">Courses</a></li>
+
+            <!-- Careers & Placements Dropdown -->
+            <li class="dropdown">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'career' or request.resolver_match.url_name == 'placements' %}active{% endif %}">
+                    Careers &amp; Placements <i class="fas fa-chevron-down nav-arrow"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'career' %}">
+                        <span class="dm-icon"><i class="fas fa-briefcase"></i></span>
+                        <span class="dm-text"><strong>Careers</strong><small>Current Job Openings</small></span>
+                    </a></li>
+                    <li><a href="{% url 'placements' %}">
+                        <span class="dm-icon"><i class="fas fa-user-graduate"></i></span>
+                        <span class="dm-text"><strong>Student Placements</strong><small>Hiring Drives &amp; Metrics</small></span>
+                    </a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a></li>
+
+
+        </ul>
+
+        <!-- Dark/Light Mode Theme Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
+            <i class="fas fa-moon"></i>
+        </button>
+        <!-- NOTE: Click logic is handled in main.js (Section 9) to avoid duplicate listeners -->
+
+        <div class="nav-toggle"><i class="fas fa-bars"></i></div>
+    </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main style="min-height:75vh;">
+    {% if messages %}
+    <div style="max-width:1200px;margin:1rem auto;padding:0 2rem;">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-about">
+            <!-- Footer Vector Logo (100% Sharp - Never Blurry) -->
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:1.25rem;">
+                <svg width="40" height="40" viewBox="0 0 100 100" style="fill:#fff; flex-shrink:0;">
+                    <polygon points="50,12 15,88 32,88 42,60 58,60 68,88 85,88" />
+                    <polygon points="50,32 46,48 54,48" style="fill:#0d233a;" />
+                </svg>
+                <div style="display:flex; flex-direction:column; border-bottom:1.5px solid #fff; padding-bottom:3px; min-width:180px;">
+                    <span style="font-family:var(--font-main); font-size:1.6rem; font-weight:800; color:#fff; line-height:1.15; letter-spacing:-0.2px;">Ctrl A IT Hub</span>
+                    <span style="font-family:var(--font-main); font-size:0.68rem; color:#fff; font-weight:700; letter-spacing:0.4px; margin-top:2px;">Empowering Technology &amp; People</span>
+                </div>
+            </div>
+            <p>Empowering technologies and people through skill development, certified internships, assured placements, and corporate IT services since 2014.</p>
+            <div class="footer-socials">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div>
+            <h4 class="footer-title">Quick Links</h4>
+            <ul class="footer-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'services' %}">Our Services</a></li>
+                <li><a href="{% url 'courses' %}">All Courses</a></li>
+                <li><a href="{% url 'career' %}">Careers</a></li>
+                <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-title">Our Courses</h4>
+            <ul class="footer-links">
+                <li><a href="{% url 'courses' %}?category=programming">Java Full Stack</a></li>
+                <li><a href="{% url 'courses' %}?category=programming">Python &amp; AI</a></li>
+                <li><a href="{% url 'courses' %}?category=testing_analytics">Automation Testing</a></li>
+                <li><a href="{% url 'courses' %}?category=web_technologies">Web Technologies</a></li>
+                <li><a href="{% url 'courses' %}?category=database_sap">SQL &amp; Oracle</a></li>
+                <li><a href="{% url 'courses' %}?category=professional">Soft Skills</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-title">Contact Us</h4>
+            <ul class="footer-contact">
+                <li>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>
+                        1-7-172/1, 1st Floor, Muthoot Finance Building,<br>
+                        Opp. BSNL Office, South Kamala Nagar,<br>
+                        ECIL X Road, Hyderabad, Telangana – 500062
+                        <br><a href="https://maps.app.goo.gl/rA3znj7oRecN9CbR9" target="_blank" style="color:var(--accent);font-size:0.8rem;font-weight:600;"><i class="fas fa-directions" style="margin-right:0.3rem;"></i>Get Directions</a>
+                    </span>
+                </li>
+                <li><i class="fas fa-phone-alt"></i><span><a href="tel:9133391401" style="color:inherit;">9133391401</a></span></li>
+                <li><i class="fas fa-envelope"></i><span>info@ctrlaithub.com</span></li>
+                <li><i class="fas fa-clock"></i><span>Mon – Sat: 9:00 AM – 7:00 PM</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Ctrl A IT Hub. All Rights Reserved. | Empowering Technology &amp; People in Hyderabad.</p>
+    </div>
+</footer>
+
+<!-- Floating Enquire Now Button -->
+<button id="floatingEnquireBtn" style="position:fixed; right:0; top:65%; transform:translateY(-50%) rotate(-90deg); transform-origin:bottom right; z-index:9999; background:var(--accent); color:var(--text-dark); border:none; padding:10px 20px; font-weight:700; font-size:0.88rem; border-radius:8px 8px 0 0; cursor:pointer; box-shadow:-2px 5px 15px rgba(0,0,0,0.15); display:flex; align-items:center; gap:8px; transition:all 0.3s ease;" onmouseover="this.style.background='#ffbf00'; this.style.paddingRight='25px';" onmouseout="this.style.background='var(--accent)'; this.style.paddingRight='20px';">
+    <i class="fas fa-paper-plane" style="transform:rotate(90deg);"></i> ENQUIRE NOW
+</button>
+
+<!-- Enquire Modal Backdrop -->
+<div id="enquireModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center; padding:1.5rem; backdrop-filter:blur(3px);">
+    <div style="background:#fff; width:100%; max-width:460px; border-radius:12px; box-shadow:0 15px 40px rgba(0,0,0,0.25); overflow:hidden; position:relative; animation:modalSlideIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        
+        <!-- Modal Header -->
+        <div style="background:var(--primary); padding:1.25rem 1.5rem; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0; font-family:var(--font-main); font-size:1.15rem; font-weight:700;"><i class="fas fa-envelope-open-text" style="margin-right:0.5rem; color:var(--accent);"></i>Course Enquiry Form</h3>
+            <button id="closeEnquireModal" style="background:none; border:none; color:#fff; font-size:1.35rem; cursor:pointer; opacity:0.8; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">&times;</button>
+        </div>
+        
+        <!-- Modal Body -->
+        <form action="{% url 'contact' %}" method="POST" style="padding:1.5rem 1.75rem; display:flex; flex-direction:column; gap:1rem;">
+            {% csrf_token %}
+            <input type="hidden" name="enquiry_type" value="student">
+            <div>
+                <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">Full Name *</label>
+                <input type="text" name="name" required class="form-input" placeholder="Enter your full name" style="width:100%; border:1px solid var(--border); padding:0.55rem; border-radius:6px; font-size:0.88rem; background:#fff;">
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                <div>
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">Phone Number *</label>
+                    <input type="tel" name="phone" required class="form-input" placeholder="e.g. 9133391401" style="width:100%; border:1px solid var(--border); padding:0.55rem; border-radius:6px; font-size:0.88rem; background:#fff;">
+                </div>
+                <div>
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">Email Address *</label>
+                    <input type="email" name="email" required class="form-input" placeholder="name@email.com" style="width:100%; border:1px solid var(--border); padding:0.55rem; border-radius:6px; font-size:0.88rem; background:#fff;">
+                </div>
+            </div>
+            
+            <div>
+                <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">Course of Interest</label>
+                <select name="course_interested" class="form-input" style="width:100%; border:1px solid var(--border); padding:0.55rem; border-radius:6px; font-size:0.88rem; background:#fff;">
+                    <option value="Java Full Stack Development">Java Full Stack Development</option>
+                    <option value="Core Python & Advanced Python">Core Python &amp; Advanced Python</option>
+                    <option value="Testing Tools (Selenium / Manual)">Testing Tools (Selenium / Manual)</option>
+                    <option value="Data Analytics (Power BI & SQL)">Data Analytics (Power BI &amp; SQL)</option>
+                    <option value="Web Technologies">Web Technologies</option>
+                    <option value="Generative AI & Data Science">Generative AI &amp; Data Science</option>
+                    <option value="AWS/Azure DevOps">AWS/Azure DevOps</option>
+                    <option value="Other / General Query">Other / General Query</option>
+                </select>
+            </div>
+            
+            <div>
+                <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">Your Message / Query *</label>
+                <textarea name="message" required class="form-input" rows="3" placeholder="Tell us about your training requirements..." style="width:100%; border:1px solid var(--border); padding:0.55rem; border-radius:6px; font-size:0.88rem; resize:none; background:#fff;"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width:100%; padding:0.7rem; font-weight:700; border-radius:6px; margin-top:0.25rem;">Submit Enquiry <i class="fas fa-paper-plane" style="margin-left:0.3rem;"></i></button>
+        </form>
+    </div>
+</div>
+
+<style>
+@keyframes modalSlideIn {
+    from { transform: translateY(-40px) scale(0.95); opacity:0; }
+    to { transform: translateY(0) scale(1); opacity:1; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const floatBtn = document.getElementById('floatingEnquireBtn');
+    const modal = document.getElementById('enquireModal');
+    const closeBtn = document.getElementById('closeEnquireModal');
+    
+    if(floatBtn && modal && closeBtn) {
+        floatBtn.addEventListener('click', function() {
+            modal.style.display = 'flex';
+        });
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        modal.addEventListener('click', function(e) {
+            if(e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+
+<!-- Floating WhatsApp Selector Widget -->
+<div id="whatsappWidget" style="position:fixed; bottom:30px; left:30px; z-index:9999;">
+    <!-- Pop-up Card -->
+    <div id="whatsappCard" style="display:none; flex-direction:column; background:#fff; width:280px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.3); margin-bottom:15px; overflow:hidden; border:1px solid #eee; transition:all 0.3s ease;">
+        <!-- Header -->
+        <div style="background:#075e54; padding:15px; color:#fff; display:flex; align-items:center; gap:10px;">
+            <i class="fab fa-whatsapp" style="font-size:24px;"></i>
+            <div>
+                <h4 style="margin:0; font-size:0.95rem; font-weight:700;">CTRL A IT HUB Support</h4>
+                <p style="margin:0; font-size:0.75rem; opacity:0.85;">Typically replies within minutes</p>
+            </div>
+        </div>
+        <!-- Options List -->
+        <div style="padding:10px; display:flex; flex-direction:column; gap:8px; background:#f4f7f6;">
+            <a href="https://wa.me/919133391401?text=Hello%20CTRL%20A%20IT%20HUB%20Team%2C%0A%0AI%20am%20interested%20in%20enrolling%20for%20a%20course%20at%20your%20institute.%20Could%20you%20please%20share%20the%20course%20details%2C%20duration%2C%20fees%2C%20and%20upcoming%20batch%20schedule%3F%0A%0APlease%20call%20me%20back%20at%20your%20earliest%20convenience.%0A%0AThank%20you." target="_blank" style="display:flex; align-items:center; justify-content:space-between; background:#fff; padding:10px 12px; border-radius:8px; text-decoration:none; color:#333; font-size:0.85rem; border:1px solid #e6e6e6; transition:all 0.2s;" onmouseover="this.style.borderColor='#25d366'" onmouseout="this.style.borderColor='#e6e6e6'">
+                <div>
+                    <strong style="display:block; color:#075e54; font-size:0.88rem;">Admissions & Courses</strong>
+                    <span style="font-size:0.75rem; color:#777;">+91 91333 91401</span>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#25d366; font-size:12px;"></i>
+            </a>
+            
+            <a href="https://wa.me/919133391402?text=Hello%20CTRL%20A%20IT%20HUB%20Team%2C%0A%0AI%20am%20looking%20for%20placement%20assistance%20and%20corporate%20training%20opportunities.%20Could%20you%20please%20share%20the%20details%20about%20your%20placement%20support%2C%20hiring%20partners%2C%20and%20corporate%20training%20programs%3F%0A%0APlease%20call%20me%20back%20at%20your%20earliest%20convenience.%0A%0AThank%20you." target="_blank" style="display:flex; align-items:center; justify-content:space-between; background:#fff; padding:10px 12px; border-radius:8px; text-decoration:none; color:#333; font-size:0.85rem; border:1px solid #e6e6e6; transition:all 0.2s;" onmouseover="this.style.borderColor='#25d366'" onmouseout="this.style.borderColor='#e6e6e6'">
+                <div>
+                    <strong style="display:block; color:#075e54; font-size:0.88rem;">Corporate & Placements</strong>
+                    <span style="font-size:0.75rem; color:#777;">+91 91333 91402</span>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#25d366; font-size:12px;"></i>
+            </a>
+            
+            <a href="https://wa.me/919989985152?text=Hello%20CTRL%20A%20IT%20HUB%20Team%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20IT%20training%20programs%20and%20services.%20Could%20you%20please%20provide%20me%20with%20the%20complete%20details%3F%0A%0APlease%20call%20me%20back%20at%20your%20earliest%20convenience.%0A%0AThank%20you." target="_blank" style="display:flex; align-items:center; justify-content:space-between; background:#fff; padding:10px 12px; border-radius:8px; text-decoration:none; color:#333; font-size:0.85rem; border:1px solid #e6e6e6; transition:all 0.2s;" onmouseover="this.style.borderColor='#25d366'" onmouseout="this.style.borderColor='#e6e6e6'">
+                <div>
+                    <strong style="display:block; color:#075e54; font-size:0.88rem;">General Enquiry</strong>
+                    <span style="font-size:0.75rem; color:#777;">+91 99899 85152</span>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#25d366; font-size:12px;"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Toggle Button -->
+    <button id="whatsappFloat" title="Chat on WhatsApp" style="border:none; cursor:pointer; width:60px; height:60px; background:#25d366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:2px 5px 15px rgba(0,0,0,0.25); transition:all 0.3s ease; animation:whatsappPulse 2s infinite;">
+        <i class="fab fa-whatsapp" style="color:#fff; font-size:32px;"></i>
+    </button>
+</div>
+
+<style>
+@keyframes whatsappPulse {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+#whatsappFloat:hover {
+    transform: scale(1.1);
+    background: #20ba5a;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const floatBtn = document.getElementById('whatsappFloat');
+    const card = document.getElementById('whatsappCard');
+    
+    if (floatBtn && card) {
+        floatBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (card.style.display === 'none' || card.style.display === '') {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('whatsappWidget').contains(e.target)) {
+                card.style.display = 'none';
+            }
+        });
+});
+
+// Anti-BFcache (Back-Forward Cache) Security Listener
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted || (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'back_forward')) {
+        window.location.reload();
+    }
+});
+</script>
+
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

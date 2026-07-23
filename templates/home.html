@@ -1,0 +1,1266 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Slider -->
+<section class="hero-slider">
+    {% if banners %}
+        {% for banner in banners %}
+        <div class="hero-slide {% if forloop.first %}active{% endif %}">
+            <div class="hero-media-wrapper">
+                {% if banner.image %}<img src="{{ banner.image.url }}" alt="{{ banner.title }}">{% endif %}
+            </div>
+            <div class="hero-content" style="position:relative;z-index:3;">
+                <p style="color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:0.75rem;font-size:0.9rem;">Welcome to CTRL A IT HUB</p>
+                <h1 class="hero-title">{{ banner.title }}</h1>
+                <p class="hero-subtitle">{{ banner.subtitle }}</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'courses' %}" class="btn btn-accent"><i class="fas fa-graduation-cap"></i> Explore Courses</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="hero-slide active">
+        <div class="hero-media-wrapper">
+            <div style="background:linear-gradient(135deg,#001a3a 0%,#003d80 50%,#0056b3 100%);width:100%;height:100%;"></div>
+        </div>
+        <div class="hero-content" style="position:relative;z-index:3;">
+            <div class="hero-split-layout">
+                <!-- Left: Text Content -->
+                <div class="hero-text-col">
+                    <p style="color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:0.75rem;font-size:0.9rem;">Welcome to CTRL A IT HUB</p>
+                    <h1 class="hero-title">Empowering <span>Technologies</span><br>&amp; People</h1>
+                    <p class="hero-subtitle">Professional IT training in Java, Python, Testing, Web Technologies &amp; Data Analytics. 100% Practical training with assured placement support.</p>
+                    <div class="hero-buttons">
+                        <a href="{% url 'courses' %}" class="btn btn-accent"><i class="fas fa-graduation-cap"></i> Explore Courses</a>
+                    </div>
+                </div>
+                <!-- Right: Dynamic Illustration -->
+                <div class="hero-illustration-col">
+                    <div class="hero-illustration-container">
+                        <!-- Central Monitor -->
+                        <div class="hero-illus-monitor">
+                            <div class="hero-illus-screen">
+                                <div class="hero-illus-code-lines">
+                                    <div class="hero-code-line" style="width:70%;"></div>
+                                    <div class="hero-code-line accent" style="width:55%;"></div>
+                                    <div class="hero-code-line" style="width:85%;"></div>
+                                    <div class="hero-code-line accent" style="width:40%;"></div>
+                                    <div class="hero-code-line" style="width:65%;"></div>
+                                    <div class="hero-code-line accent" style="width:50%;"></div>
+                                </div>
+                            </div>
+                            <div class="hero-illus-stand"></div>
+                            <div class="hero-illus-base"></div>
+                        </div>
+                        <!-- Floating Orbit Icons -->
+                        <div class="hero-float-icon hero-float-1"><i class="fab fa-java"></i></div>
+                        <div class="hero-float-icon hero-float-2"><i class="fab fa-python"></i></div>
+                        <div class="hero-float-icon hero-float-3"><i class="fab fa-react"></i></div>
+                        <div class="hero-float-icon hero-float-4"><i class="fas fa-database"></i></div>
+                        <div class="hero-float-icon hero-float-5"><i class="fab fa-aws"></i></div>
+                        <div class="hero-float-icon hero-float-6"><i class="fas fa-cloud"></i></div>
+                        <!-- Glowing Particles -->
+                        <div class="hero-particle p1"></div>
+                        <div class="hero-particle p2"></div>
+                        <div class="hero-particle p3"></div>
+                        <div class="hero-particle p4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Illustration Styles -->
+    <style>
+    .hero-split-layout {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+        width: 100%;
+    }
+    .hero-text-col { flex: 1; min-width: 0; }
+    .hero-illustration-col {
+        flex: 0 0 420px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .hero-illustration-container {
+        position: relative;
+        width: 360px;
+        height: 340px;
+    }
+
+    /* Monitor */
+    .hero-illus-monitor {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -55%);
+        z-index: 3;
+    }
+    .hero-illus-screen {
+        width: 200px;
+        height: 140px;
+        background: linear-gradient(145deg, #0a1628 0%, #142240 100%);
+        border: 2.5px solid rgba(255,255,255,0.15);
+        border-radius: 10px 10px 3px 3px;
+        padding: 14px;
+        box-shadow: 0 0 40px rgba(0,113,227,0.25), inset 0 0 30px rgba(0,113,227,0.08);
+        overflow: hidden;
+    }
+    .hero-illus-code-lines { display: flex; flex-direction: column; gap: 8px; }
+    .hero-code-line {
+        height: 6px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 3px;
+        animation: heroCodeType 2.5s ease-in-out infinite alternate;
+    }
+    .hero-code-line.accent {
+        background: rgba(255,165,0,0.35);
+    }
+    .hero-code-line:nth-child(1) { animation-delay: 0s; }
+    .hero-code-line:nth-child(2) { animation-delay: 0.3s; }
+    .hero-code-line:nth-child(3) { animation-delay: 0.6s; }
+    .hero-code-line:nth-child(4) { animation-delay: 0.9s; }
+    .hero-code-line:nth-child(5) { animation-delay: 1.2s; }
+    .hero-code-line:nth-child(6) { animation-delay: 1.5s; }
+    @keyframes heroCodeType {
+        0% { opacity: 0.4; transform: scaleX(0.7); transform-origin: left; }
+        100% { opacity: 1; transform: scaleX(1); transform-origin: left; }
+    }
+    .hero-illus-stand {
+        width: 12px;
+        height: 28px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.06));
+        margin: 0 auto;
+        border-radius: 0 0 2px 2px;
+    }
+    .hero-illus-base {
+        width: 70px;
+        height: 6px;
+        background: rgba(255,255,255,0.12);
+        margin: 0 auto;
+        border-radius: 3px;
+    }
+
+    /* Floating Icons */
+    .hero-float-icon {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        color: #fff;
+        z-index: 4;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    .hero-float-1 {
+        top: 5%; left: 8%;
+        background: linear-gradient(135deg, #f89820, #e76f00);
+        animation: heroFloat 4s ease-in-out infinite;
+    }
+    .hero-float-2 {
+        top: 0%; right: 15%;
+        background: linear-gradient(135deg, #3776ab, #ffd43b);
+        animation: heroFloat 4.5s ease-in-out 0.5s infinite;
+    }
+    .hero-float-3 {
+        top: 40%; right: 0%;
+        background: linear-gradient(135deg, #61dafb, #282c34);
+        animation: heroFloat 5s ease-in-out 1s infinite;
+    }
+    .hero-float-4 {
+        bottom: 10%; right: 12%;
+        background: linear-gradient(135deg, #00758f, #f29111);
+        animation: heroFloat 4.2s ease-in-out 0.8s infinite;
+    }
+    .hero-float-5 {
+        bottom: 5%; left: 15%;
+        background: linear-gradient(135deg, #ff9900, #252f3e);
+        animation: heroFloat 4.8s ease-in-out 0.3s infinite;
+    }
+    .hero-float-6 {
+        top: 38%; left: 0%;
+        background: linear-gradient(135deg, #0071e3, #00d1b2);
+        animation: heroFloat 3.8s ease-in-out 1.2s infinite;
+    }
+    @keyframes heroFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-14px); }
+    }
+
+    /* Glowing Particles */
+    .hero-particle {
+        position: absolute;
+        border-radius: 50%;
+        z-index: 2;
+        pointer-events: none;
+    }
+    .hero-particle.p1 {
+        width: 6px; height: 6px;
+        background: var(--accent);
+        top: 20%; left: 30%;
+        animation: heroParticle 3s ease-in-out infinite;
+    }
+    .hero-particle.p2 {
+        width: 4px; height: 4px;
+        background: #61dafb;
+        top: 60%; right: 25%;
+        animation: heroParticle 3.5s ease-in-out 0.5s infinite;
+    }
+    .hero-particle.p3 {
+        width: 5px; height: 5px;
+        background: #23d160;
+        bottom: 25%; left: 40%;
+        animation: heroParticle 4s ease-in-out 1s infinite;
+    }
+    .hero-particle.p4 {
+        width: 4px; height: 4px;
+        background: #ff9f43;
+        top: 15%; right: 35%;
+        animation: heroParticle 2.8s ease-in-out 0.7s infinite;
+    }
+    @keyframes heroParticle {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.8); }
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+        .hero-illustration-col { display: none; }
+        .hero-split-layout { justify-content: center; }
+        .hero-text-col { text-align: center; }
+        .hero-text-col .hero-subtitle { margin-left: auto; margin-right: auto; }
+        .hero-text-col .hero-buttons { justify-content: center; }
+    }
+    </style>
+    {% endif %}
+    {% if banners|length > 1 %}
+    <div class="slider-arrows">
+        <div class="slider-arrow prev"><i class="fas fa-chevron-left"></i></div>
+        <div class="slider-arrow next"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    {% endif %}
+
+    <!-- Live Ticker Overlay at top of Hero -->
+    <div class="hero-live-ticker" style="position:absolute; top:0; left:0; width:100%; z-index:10; background:rgba(0, 26, 58, 0.85); backdrop-filter:blur(10px); border-bottom:1.5px solid rgba(255,255,255,0.1); padding:0.85rem 1.5rem; display:flex; align-items:center; gap:1.5rem; overflow:hidden;">
+        <div style="background:var(--accent); color:#000; font-family:var(--font-main); font-weight:800; font-size:0.75rem; text-transform:uppercase; padding:0.35rem 0.75rem; border-radius:4px; display:flex; align-items:center; gap:6px; flex-shrink:0; box-shadow:0 0 15px rgba(255,221,87,0.3); animation: pulseAlert 2s infinite;">
+            <span style="display:inline-block; width:6px; height:6px; background:#000; border-radius:50%; animation: blinkAlert 1s infinite;"></span>
+            Live Openings
+        </div>
+        <div style="flex:1; overflow:hidden; position:relative;">
+            <div class="hero-ticker-scroll" style="display:flex; gap:4rem; width:max-content; animation: heroTickerScroll 30s linear infinite;">
+                {% for opening in openings %}
+                <div style="color:#fff; font-family:var(--font-main); font-size:0.92rem; display:flex; align-items:center; gap:8px;">
+                    {% if opening.department == 'technical' %}
+                        <i class="fas fa-landmark" style="color:var(--accent);"></i>
+                    {% else %}
+                        <i class="fas fa-briefcase" style="color:var(--accent);"></i>
+                    {% endif %}
+                    <strong>{{ opening.title }}</strong> (Exp: {{ opening.experience }}) at {{ opening.location }}
+                    <a href="{% url 'career' %}" style="color:var(--accent); text-decoration:underline; font-weight:700; margin-left:8px;">[Apply Now]</a>
+                </div>
+                {% empty %}
+                <div style="color:#fff; font-family:var(--font-main); font-size:0.92rem; display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-info-circle" style="color:var(--accent);"></i> No current openings at the moment. Check back soon!
+                </div>
+                {% endfor %}
+
+                <!-- Duplicate loop for seamless infinite scroll marquee effect -->
+                {% if openings %}
+                    {% for opening in openings %}
+                    <div style="color:#fff; font-family:var(--font-main); font-size:0.92rem; display:flex; align-items:center; gap:8px;">
+                        {% if opening.department == 'technical' %}
+                            <i class="fas fa-landmark" style="color:var(--accent);"></i>
+                        {% else %}
+                            <i class="fas fa-briefcase" style="color:var(--accent);"></i>
+                        {% endif %}
+                        <strong>{{ opening.title }}</strong> (Exp: {{ opening.experience }}) at {{ opening.location }}
+                        <a href="{% url 'career' %}" style="color:var(--accent); text-decoration:underline; font-weight:700; margin-left:8px;">[Apply Now]</a>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+    @keyframes heroTickerScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    @keyframes pulseAlert {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+    }
+    @keyframes blinkAlert {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+    .hero-ticker-scroll:hover {
+        animation-play-state: paused;
+    }
+    </style>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stats-container">
+        <div class="stat-item">
+            <span class="stat-number">5000+</span>
+            <div class="stat-label"><i class="fas fa-user-graduate" style="margin-right:.4rem;"></i>Students Trained</div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">92%</span>
+            <div class="stat-label"><i class="fas fa-briefcase" style="margin-right:.4rem;"></i>Placement Rate</div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">120+</span>
+            <div class="stat-label"><i class="fas fa-building" style="margin-right:.4rem;"></i>Partner Companies</div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">10+</span>
+            <div class="stat-label"><i class="fas fa-calendar-alt" style="margin-right:.4rem;"></i>Years of Excellence</div>
+        </div>
+    </div>
+</div>
+
+<!-- Partner Logos -->
+<div class="logo-slider-container">
+    <div class="logo-slider">
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#0078D4;font-size:1.1rem;">MICROSOFT</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#f00;font-size:1.1rem;">ORACLE</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#009bde;font-size:1.1rem;">SAP</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#4285F4;font-size:1.1rem;">GOOGLE</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#049fd9;font-size:1.1rem;">CISCO</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#ee0000;font-size:1.1rem;">REDHAT</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#FF9900;font-size:1.1rem;">AWS</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#007396;font-size:1.1rem;">JAVA</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#0078D4;font-size:1.1rem;">MICROSOFT</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#f00;font-size:1.1rem;">ORACLE</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#009bde;font-size:1.1rem;">SAP</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#4285F4;font-size:1.1rem;">GOOGLE</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#049fd9;font-size:1.1rem;">CISCO</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#ee0000;font-size:1.1rem;">REDHAT</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#FF9900;font-size:1.1rem;">AWS</span></div>
+        <div class="logo-slide"><span style="font-family:var(--font-main);font-weight:800;color:#007396;font-size:1.1rem;">JAVA</span></div>
+    </div>
+</div>
+
+<!-- ===== CORPORATE TRUST HIGHLIGHTS BAR (Datapro-style) ===== -->
+<div class="corporate-trust-highlights-bar" style="background:#fafafa; border-bottom:1px solid #eaeaea; padding:2rem 1rem;">
+    <div style="max-width:1200px; margin:0 auto; display:flex; justify-content:space-around; align-items:center; flex-wrap:wrap; gap:2rem;">
+        <div style="display:flex; align-items:center; gap:12px; min-width:240px;">
+            <div style="width:50px; height:50px; border-radius:50%; background:#e3efff; display:flex; align-items:center; justify-content:center; color:#0056b3; font-size:1.4rem; box-shadow:0 4px 10px rgba(0,86,179,0.1);"><i class="fas fa-landmark"></i></div>
+            <div>
+                <h4 style="margin:0; font-size:0.95rem; font-weight:700; color:#121c27; font-family:var(--font-main);">Govt. Registered</h4>
+                <p style="margin:0; font-size:0.8rem; color:#777;">MSME (Govt. of India) Approved</p>
+            </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; min-width:240px;">
+            <div style="width:50px; height:50px; border-radius:50%; background:#fff3e0; display:flex; align-items:center; justify-content:center; color:#ff9800; font-size:1.4rem; box-shadow:0 4px 10px rgba(255,152,0,0.1);"><i class="fas fa-certificate"></i></div>
+            <div>
+                <h4 style="margin:0; font-size:0.95rem; font-weight:700; color:#121c27; font-family:var(--font-main);">Skill India Associate</h4>
+                <p style="margin:0; font-size:0.8rem; color:#777;">Vocational &amp; Digital Training</p>
+            </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; min-width:240px;">
+            <div style="width:50px; height:50px; border-radius:50%; background:#e8f5e9; display:flex; align-items:center; justify-content:center; color:#2e7d32; font-size:1.4rem; box-shadow:0 4px 10px rgba(46,125,50,0.1);"><i class="fas fa-award"></i></div>
+            <div>
+                <h4 style="margin:0; font-size:0.95rem; font-weight:700; color:#121c27; font-family:var(--font-main);">ISO Certified 9001:2015</h4>
+                <p style="margin:0; font-size:0.8rem; color:#777;">Quality Training Standards</p>
+            </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; min-width:240px;">
+            <div style="width:50px; height:50px; border-radius:50%; background:#f3e5f5; display:flex; align-items:center; justify-content:center; color:#7b1fa2; font-size:1.4rem; box-shadow:0 4px 10px rgba(123,31,162,0.1);"><i class="fas fa-briefcase"></i></div>
+            <div>
+                <h4 style="margin:0; font-size:0.95rem; font-weight:700; color:#121c27; font-family:var(--font-main);">100% Job Referrals</h4>
+                <p style="margin:0; font-size:0.8rem; color:#777;">120+ Placement Partners</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════ Promotional Banner Section ═══════════════════ -->
+<section class="promo-banner-section">
+    <div class="promo-banner-inner">
+        <!-- Urgency Strip -->
+        <div class="promo-urgency-strip">
+            <span><i class="fas fa-clock"></i> Limited Time Offer</span>
+            <span class="promo-urgency-divider">|</span>
+            <span><i class="fas fa-fire"></i> New Batches Starting Soon — Enroll Now!</span>
+        </div>
+
+        <!-- Banner Cards -->
+        <div class="promo-cards-row">
+            <!-- Card 1: Free Demo -->
+            <div class="promo-card promo-card-demo">
+                <div class="promo-card-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3>Free Demo Class</h3>
+                <p>Experience our teaching methodology with a complimentary live demo session before enrolling.</p>
+                <a href="{% url 'contact' %}" class="promo-card-btn">Book Free Demo <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Card 2: Placement Guarantee -->
+            <div class="promo-card promo-card-placement">
+                <div class="promo-badge">Most Popular</div>
+                <div class="promo-card-icon"><i class="fas fa-briefcase"></i></div>
+                <h3>100% Placement Support</h3>
+                <p>Get dedicated placement assistance with mock interviews, resume building & direct company referrals.</p>
+                <a href="{% url 'career' %}" class="promo-card-btn">View Placements <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="promo-bottom-cta">
+            <p><i class="fas fa-phone-alt"></i> Call us now: <a href="tel:+919133391401"><strong>+91 91333 91401</strong></a></p>
+        </div>
+    </div>
+</section>
+
+<style>
+/* ═══ Promo Banner Section ═══ */
+.promo-banner-section {
+    background: linear-gradient(135deg, #001a3a 0%, #003d80 40%, #0056b3 70%, #0071e3 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+.promo-banner-section::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.promo-banner-section::after {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -15%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0,209,178,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.promo-banner-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    padding: 2.5rem 2rem 3rem;
+}
+
+/* Urgency Strip */
+.promo-urgency-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(90deg, #ff6b35, #ff4444, #ff6b35);
+    background-size: 200% 100%;
+    animation: promoShimmer 3s ease-in-out infinite;
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: var(--font-main);
+    letter-spacing: 0.5px;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(255, 68, 68, 0.3);
+}
+.promo-urgency-strip i {
+    margin-right: 5px;
+}
+.promo-urgency-divider {
+    opacity: 0.5;
+    font-weight: 300;
+}
+@keyframes promoShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Cards Row */
+.promo-cards-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 0 auto 2rem;
+    max-width: 800px;
+}
+
+/* Individual Card */
+.promo-card {
+    position: relative;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+.promo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 16px 16px 0 0;
+}
+.promo-card-demo::before { background: linear-gradient(90deg, #00d1b2, #23d160); }
+.promo-card-placement::before { background: linear-gradient(90deg, #ffdd57, #ff9f43); }
+.promo-card-intern::before { background: linear-gradient(90deg, #3273dc, #667eea); }
+
+.promo-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.25);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+/* Badge */
+.promo-badge {
+    position: absolute;
+    top: 12px;
+    right: -28px;
+    background: linear-gradient(135deg, #ff9f43, #ff6b35);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 4px 35px;
+    transform: rotate(45deg);
+    letter-spacing: 1px;
+    box-shadow: 0 2px 10px rgba(255, 107, 53, 0.4);
+}
+
+/* Icon */
+.promo-card-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    transition: transform 0.3s ease;
+}
+.promo-card-demo .promo-card-icon { background: linear-gradient(135deg, #00d1b2, #23d160); box-shadow: 0 8px 25px rgba(0, 209, 178, 0.3); }
+.promo-card-placement .promo-card-icon { background: linear-gradient(135deg, #ffdd57, #ff9f43); box-shadow: 0 8px 25px rgba(255, 159, 67, 0.3); }
+.promo-card-intern .promo-card-icon { background: linear-gradient(135deg, #3273dc, #667eea); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); }
+.promo-card:hover .promo-card-icon { transform: scale(1.1) rotate(5deg); }
+
+/* Text */
+.promo-card h3 {
+    font-family: var(--font-main);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.6rem;
+}
+.promo-card p {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+/* CTA Button */
+.promo-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.55rem 1.3rem;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+.promo-card-demo .promo-card-btn { background: linear-gradient(135deg, #00d1b2, #23d160); color: #fff; }
+.promo-card-placement .promo-card-btn { background: linear-gradient(135deg, #ffdd57, #ff9f43); color: #333; }
+.promo-card-intern .promo-card-btn { background: linear-gradient(135deg, #3273dc, #667eea); color: #fff; }
+.promo-card-btn:hover { transform: translateX(3px); box-shadow: 0 5px 20px rgba(0,0,0,0.25); }
+.promo-card-btn i { font-size: 0.72rem; transition: transform 0.3s ease; }
+.promo-card-btn:hover i { transform: translateX(3px); }
+
+/* Bottom CTA */
+.promo-bottom-cta {
+    text-align: center;
+    padding-top: 0.5rem;
+}
+.promo-bottom-cta p {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.9rem;
+    font-family: var(--font-main);
+}
+.promo-bottom-cta a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.promo-bottom-cta a:hover { color: var(--accent); }
+
+/* ═══ Responsive ═══ */
+@media (max-width: 900px) {
+    .promo-cards-row { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
+    .promo-urgency-strip { flex-direction: column; gap: 0.2rem; font-size: 0.8rem; padding: 0.6rem 1rem; }
+    .promo-urgency-divider { display: none; }
+}
+@media (max-width: 480px) {
+    .promo-banner-inner { padding: 2rem 1rem 2.5rem; }
+    .promo-card { padding: 1.5rem 1.2rem; }
+    .promo-card h3 { font-size: 1.05rem; }
+}
+</style>
+
+<!-- About / Intro -->
+<section class="section">
+    <div class="grid-2">
+        <div>
+            <div class="section-header" style="text-align:left;">
+                <span class="tag">About CTRL A IT HUB</span>
+                <h2 class="section-title" style="text-align:left;">Why Choose <span>CTRL A IT HUB?</span></h2>
+                <div class="section-divider" style="margin-left:0;"></div>
+            </div>
+            <p style="color:var(--text-body);margin-bottom:1.25rem;">CTRL A IT HUB is a premier professional training and IT services organization. We bridge the gap between educational learning and industry requirements through structured, mentor-driven courses focused completely on practical skill development.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i> <span><strong>Expert Trainers</strong> — Certified professionals from top MNC companies</span></li>
+                <li><i class="fas fa-check-circle"></i> <span><strong>Live Projects</strong> — Real industry project experience during training</span></li>
+                <li><i class="fas fa-check-circle"></i> <span><strong>Placement Cell</strong> — Dedicated team for interview prep & job referrals</span></li>
+                <li><i class="fas fa-check-circle"></i> <span><strong>Flexible Batches</strong> — Weekday, weekend & online options available</span></li>
+                <li><i class="fas fa-check-circle"></i> <span><strong>Certified Internships</strong> — Industry-recognized internship certificates</span></li>
+            </ul>
+            <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
+                <a href="{% url 'about' %}" class="btn btn-primary">Know More</a>
+                <a href="{% url 'contact' %}" class="btn btn-secondary">Enquire Now</a>
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="icon-box">
+                <div class="icon-box-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <h3>100% Practical</h3>
+                <p>Hands-on coding every single session</p>
+            </div>
+            <div class="icon-box">
+                <div class="icon-box-icon"><i class="fas fa-certificate"></i></div>
+                <h3>Certification</h3>
+                <p>Industry-recognised course certificates</p>
+            </div>
+            <div class="icon-box">
+                <div class="icon-box-icon"><i class="fas fa-briefcase"></i></div>
+                <h3>Placements</h3>
+                <p>Direct referrals to 120+ companies</p>
+            </div>
+            <div class="icon-box">
+                <div class="icon-box-icon"><i class="fas fa-headset"></i></div>
+                <h3>Support</h3>
+                <p>24/7 online doubt-clearing support</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Training Gallery Section -->
+<section style="background:var(--bg-light); padding:5rem 2rem;">
+    <div style="max-width:1000px; margin:0 auto;">
+        <div class="section-header">
+            <span class="tag">Our Campus Life</span>
+            <h2 class="section-title">Training <span>Gallery</span></h2>
+            <div class="section-divider"></div>
+            <p class="section-subtitle" style="margin-bottom:2rem;">Glimpses of our 'Hands on Future' program. Practical learning sessions, interactive training, and professional guidance in action.</p>
+        </div>
+
+        <!-- Slider Wrapper -->
+        <div class="osmania-slider-container" style="position:relative; background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 20px 40px rgba(0,0,0,0.08); border:1px solid rgba(0,0,0,0.05); margin-top:2rem;">
+            <!-- Slides Container -->
+            <div class="osmania-slides" style="position:relative; height:480px; overflow:hidden; background:#ffffff;">
+                {% for item in gallery %}
+                <div class="osmania-slide {% if forloop.first %}active{% endif %}" style="display: {% if forloop.first %}block{% else %}none{% endif %}; position:absolute; width:100%; height:100%; transition:opacity 0.6s ease; opacity: {% if forloop.first %}1{% else %}0{% endif %}; background:#ffffff;">
+                    <img src="{{ item.file.url }}?v=5" alt="{{ item.title }}" 
+                         style="width:100%; height:100%; object-fit:cover; object-position:top center; display:block;">
+                </div>
+                {% empty %}
+                <div style="height:100%; display:flex; align-items:center; justify-content:center; background:#f5f5f5;">
+                    <p style="color:#777; font-family:var(--font-main);">No gallery images available. Please upload from Admin panel.</p>
+                </div>
+                {% endfor %}
+                
+                <!-- Overlay Gradients & Arrows -->
+                {% if gallery %}
+                <button class="slider-btn prev-btn" onclick="moveSlide(-1)" style="position:absolute; top:50%; left:1.5rem; transform:translateY(-50%); background:rgba(255,255,255,0.9); border:none; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:all 0.3s ease; z-index:10; color:var(--text-dark); font-size:1.25rem;">&#10094;</button>
+                <button class="slider-btn next-btn" onclick="moveSlide(1)" style="position:absolute; top:50%; right:1.5rem; transform:translateY(-50%); background:rgba(255,255,255,0.9); border:none; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:all 0.3s ease; z-index:10; color:var(--text-dark); font-size:1.25rem;">&#10095;</button>
+                {% endif %}
+                
+                <!-- Indicators (Dots) inside slide image container at bottom -->
+                {% if gallery %}
+                <div class="osmania-dots" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:10; background:rgba(0,0,0,0.3); padding:8px 16px; border-radius:30px; backdrop-filter:blur(4px);">
+                    {% for item in gallery %}
+                    <span class="dot {% if forloop.first %}active{% endif %}" onclick="currentSlide({{ forloop.counter0 }})" style="width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.5); cursor:pointer; transition:all 0.3s ease;"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Caption/Info Box (Below Image) -->
+            <div class="osmania-caption-container" style="padding:2rem; background:#fff; border-top:1px solid rgba(0,0,0,0.05); text-align:left; min-height:140px;">
+                {% for item in gallery %}
+                <div class="osmania-info {% if forloop.first %}active{% endif %}" id="slide-info-{{ forloop.counter0 }}" style="display: {% if forloop.first %}block{% else %}none{% endif %}; opacity: {% if forloop.first %}1{% else %}0{% endif %}; transition:opacity 0.4s ease;">
+                    <div style="display:flex; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:10px;">
+                        <span class="slide-category" style="background:linear-gradient(135deg, #0071e3, #00d1b2); color:#fff; font-family:var(--font-main); font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:1.2px; padding:6px 16px; border-radius:50px; box-shadow:0 4px 10px rgba(0,113,227,0.15);">{{ item.category }}</span>
+                    </div>
+                    <h3 class="slide-title" style="margin:0 0 0.5rem 0; color:var(--text-dark); font-family:var(--font-main); font-size:1.5rem; font-weight:700; line-height:1.2;">{{ item.title }}</h3>
+                    <p class="slide-description" style="margin:0; color:#555; font-family:var(--font-main); font-size:0.95rem; line-height:1.6; font-weight:400;">{{ item.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .osmania-slider-container .slider-btn:hover {
+        background: var(--primary) !important;
+        color: #fff !important;
+        transform: translateY(-50%) scale(1.1) !important;
+    }
+    .osmania-slider-container .dot.active {
+        background: #fff !important;
+        transform: scale(1.3);
+        box-shadow: 0 0 8px rgba(255,255,255,0.8);
+    }
+    /* Zoom effect on active slide image */
+    .osmania-slide.active img {
+        transform: scale(1.05);
+    }
+</style>
+
+<script>
+    let slideIndex = 0;
+    const slides = document.querySelectorAll('.osmania-slide');
+    const infos = document.querySelectorAll('.osmania-info');
+    const dots = document.querySelectorAll('.osmania-slider-container .dot');
+    let slideInterval;
+
+    function showSlides(index) {
+        if (slides.length === 0) return;
+        
+        // Reset indexes
+        if (index >= slides.length) { slideIndex = 0; }
+        if (index < 0) { slideIndex = slides.length - 1; }
+
+        // Hide all slides and info blocks
+        slides.forEach((slide) => {
+            slide.style.display = 'none';
+            slide.style.opacity = '0';
+            slide.classList.remove('active');
+        });
+        infos.forEach((info) => {
+            info.style.display = 'none';
+            info.style.opacity = '0';
+            info.classList.remove('active');
+        });
+        dots.forEach((dot) => {
+            dot.classList.remove('active');
+        });
+
+        // Show active elements
+        slides[slideIndex].style.display = 'block';
+        setTimeout(() => {
+            slides[slideIndex].style.opacity = '1';
+            slides[slideIndex].classList.add('active');
+        }, 50);
+
+        infos[slideIndex].style.display = 'block';
+        setTimeout(() => {
+            infos[slideIndex].style.opacity = '1';
+            infos[slideIndex].classList.add('active');
+        }, 50);
+
+        dots[slideIndex].classList.add('active');
+    }
+
+    function moveSlide(n) {
+        clearInterval(slideInterval);
+        slideIndex += n;
+        showSlides(slideIndex);
+        startAutoSlide();
+    }
+
+    function currentSlide(n) {
+        clearInterval(slideInterval);
+        slideIndex = n;
+        showSlides(slideIndex);
+        startAutoSlide();
+    }
+
+    function startAutoSlide() {
+        slideInterval = setInterval(() => {
+            slideIndex++;
+            showSlides(slideIndex);
+        }, 5000); // Transitions every 5 seconds
+    }
+
+    // Initialize
+    document.addEventListener("DOMContentLoaded", () => {
+        showSlides(slideIndex);
+        startAutoSlide();
+        
+        // Pause auto-slide on hover
+        const container = document.querySelector('.osmania-slider-container');
+        if (container) {
+            container.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            container.addEventListener('mouseleave', startAutoSlide);
+        }
+    });
+</script>
+
+<!-- Services Strip -->
+<section class="section">
+    <div class="section-header">
+        <span class="tag">Our Services</span>
+        <h2 class="section-title">IT Services & <span>Project Solutions</span></h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="grid-4">
+        <div class="icon-box">
+            <div class="icon-box-icon"><i class="fas fa-laptop-code"></i></div>
+            <h3>Academic Projects</h3>
+            <p>End-to-end guidance for final year engineering students.</p>
+        </div>
+        <div class="icon-box">
+            <div class="icon-box-icon"><i class="fas fa-headset"></i></div>
+            <h3>BPO Projects</h3>
+            <p>Customer support, data processing & back-office solutions.</p>
+        </div>
+        <div class="icon-box">
+            <div class="icon-box-icon"><i class="fas fa-users-cog"></i></div>
+            <h3>CSR Training</h3>
+            <p>Youth empowerment and skill development initiatives.</p>
+        </div>
+        <div class="icon-box">
+            <div class="icon-box-icon"><i class="fas fa-landmark"></i></div>
+            <h3>Govt. Projects</h3>
+            <p>Digital literacy & vocational training for public sector.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Placement Success Process Section -->
+<div style="background:var(--bg-light); padding:5rem 2rem; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+<div style="max-width:1200px; margin:0 auto;">
+    <div class="section-header">
+        <span class="tag">How We Work</span>
+        <h2 class="section-title">Our Placement <span>Success Roadmap</span></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">Your step-by-step path from training to getting placed at top MNCs.</p>
+    </div>
+    
+    <!-- Roadmap Process Grid -->
+    <div class="grid-4" style="margin-top:3.5rem;">
+        
+        <!-- Step 1 -->
+        <div class="card" style="padding:2.25rem 1.5rem; text-align:center; border:1px solid var(--border); border-radius:12px; background:var(--card-bg); position:relative; box-shadow:none; transition:transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-6px)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 10px 25px rgba(0, 86, 179, 0.08)'" onmouseout="this.style.transform='none'; this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
+            <div style="position:absolute; top:-20px; left:50%; transform:translateX(-50%); width:40px; height:40px; border-radius:50%; background:var(--primary); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:1.1rem; border:4px solid var(--bg-light);">1</div>
+            <div style="width:65px; height:65px; border-radius:50%; background:rgba(0, 86, 179, 0.08); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:1.75rem; margin:0.5rem auto 1.25rem;">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3 style="font-family:var(--font-main); font-size:1.2rem; color:var(--text-dark); margin-bottom:0.75rem;">1. Industry Training</h3>
+            <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.6; margin:0;">Learn from MNC experts using certified course syllabi and daily hands-on coding assignments.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="card" style="padding:2.25rem 1.5rem; text-align:center; border:1px solid var(--border); border-radius:12px; background:var(--card-bg); position:relative; box-shadow:none; transition:transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-6px)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 10px 25px rgba(0, 86, 179, 0.08)'" onmouseout="this.style.transform='none'; this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
+            <div style="position:absolute; top:-20px; left:50%; transform:translateX(-50%); width:40px; height:40px; border-radius:50%; background:var(--primary); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:1.1rem; border:4px solid var(--bg-light);">2</div>
+            <div style="width:65px; height:65px; border-radius:50%; background:rgba(0, 86, 179, 0.08); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:1.75rem; margin:0.5rem auto 1.25rem;">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <h3 style="font-family:var(--font-main); font-size:1.2rem; color:var(--text-dark); margin-bottom:0.75rem;">2. Live Lab Projects</h3>
+            <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.6; margin:0;">Build real-time databases, design REST APIs, and manage source codes with Git versions.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="card" style="padding:2.25rem 1.5rem; text-align:center; border:1px solid var(--border); border-radius:12px; background:var(--card-bg); position:relative; box-shadow:none; transition:transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-6px)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 10px 25px rgba(0, 86, 179, 0.08)'" onmouseout="this.style.transform='none'; this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
+            <div style="position:absolute; top:-20px; left:50%; transform:translateX(-50%); width:40px; height:40px; border-radius:50%; background:var(--primary); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:1.1rem; border:4px solid var(--bg-light);">3</div>
+            <div style="width:65px; height:65px; border-radius:50%; background:rgba(0, 86, 179, 0.08); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:1.75rem; margin:0.5rem auto 1.25rem;">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <h3 style="font-family:var(--font-main); font-size:1.2rem; color:var(--text-dark); margin-bottom:0.75rem;">3. Placement Prep</h3>
+            <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.6; margin:0;">Mock technical interviews, logic checks, group discussion drills, and HR interview screening prep.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="card" style="padding:2.25rem 1.5rem; text-align:center; border:1px solid var(--border); border-radius:12px; background:var(--card-bg); position:relative; box-shadow:none; transition:transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-6px)'; this.style.borderColor='var(--accent)'; this.style.boxShadow='0 10px 25px rgba(255, 191, 0, 0.15)'" onmouseout="this.style.transform='none'; this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
+            <div style="position:absolute; top:-20px; left:50%; transform:translateX(-50%); width:40px; height:40px; border-radius:50%; background:var(--accent); color:var(--text-dark); font-weight:800; display:flex; align-items:center; justify-content:center; font-size:1.1rem; border:4px solid var(--bg-light);">4</div>
+            <div style="width:65px; height:65px; border-radius:50%; background:rgba(255, 191, 0, 0.15); color:var(--text-dark); display:flex; align-items:center; justify-content:center; font-size:1.75rem; margin:0.5rem auto 1.25rem;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 style="font-family:var(--font-main); font-size:1.2rem; color:var(--text-dark); margin-bottom:0.75rem;">4. Campus Drives</h3>
+            <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.6; margin:0;">Appear in dedicated placement drives with our 20+ corporate hiring partners to land your job.</p>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<!-- ===== OUR VISION & CLIENTS (Flyer Page 2 Unified Layout) ===== -->
+<section class="section" style="background:var(--bg); border-bottom:1px solid var(--border);">
+    <div class="section-header">
+        <span class="tag">Vision &amp; Success</span>
+        <h2 class="section-title">Our Vision &amp; <span>Clients</span></h2>
+        <div class="section-divider"></div>
+      <!-- Vision Circular Diagram Section (Template Image Background with Floating Nodes) -->
+    <div class="vision-section-wrapper" style="padding: 5rem 1.5rem; text-align: center; background: radial-gradient(circle at center, var(--card-bg) 0%, var(--bg-light) 100%); overflow: hidden;">
+        
+        <!-- Interactive Wheel Container -->
+        <div class="interactive-wheel-container" style="position:relative; width:100%; max-width:550px; height:450px; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+            
+            <!-- Central Background Logo (large & clean) -->
+            <div class="wheel-bg-logo" style="position:absolute; width:44%; opacity:1.0; pointer-events:none; z-index: 1; display:flex; align-items:center; justify-content:center;">
+                <img src="{% static 'images/logo.png' %}" alt="Ctrl A IT Hub" style="width:100%; height:auto; object-fit:contain;">
+            </div>
+            
+            <!-- 8 Orbiting Interactive Bubbles (fly out on scroll) -->
+            <div class="wheel-nodes-wrapper" style="position:absolute; width:100%; height:100%; top:0; left:0; z-index: 2;">
+                <!-- 1. Placement (Top-Left) -->
+                <div class="wheel-bubble node-placement" data-node="node-1" style="--angle: 225deg; --color: #0056b3;">
+                    <div class="bubble-inner">
+                        <i class="fas fa-briefcase"></i>
+                        <span>PLACEMENT</span>
+                    </div>
+                </div>
+                <!-- 2. Teaching (Top) -->
+                <div class="wheel-bubble node-teaching" data-node="node-3" style="--angle: -90deg; --color: #e83e8c;">
+                    <div class="bubble-inner">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>TEACHING</span>
+                    </div>
+                </div>
+                <!-- 3. Skills (Top-Right) -->
+                <div class="wheel-bubble node-skills" data-node="node-4" style="--angle: -45deg; --color: #28a745;">
+                    <div class="bubble-inner">
+                        <i class="fas fa-tools"></i>
+                        <span>SKILLS</span>
+                    </div>
+                </div>
+                <!-- 4. Develop (Right) -->
+                <div class="wheel-bubble node-develop" data-node="node-5" style="--angle: 0deg; --color: #0070ad;">
+                    <div class="bubble-inner">
+                        <i class="fas fa-laptop-code"></i>
+                        <span>DEVELOP</span>
+                    </div>
+                </div>
+                <!-- 5. Support (Bottom-Right) -->
+                <div class="wheel-bubble node-support" data-node="node-7" style="--angle: 45deg; --color: #17a2b8;">
+                    <div class="bubble-inner">
+                        <i class="fas fa-headset"></i>
+                        <span>SUPPORT</span>
+                    </div>
+                </div>
+                <!-- 6. Sharing (Bottom) -->
+                <div class="wheel-bubble node-sharing" data-node="node-6" style="--angle: 90deg; --color: #6f42c1;">
+                    <div class="bubble-inner">
+                        <i class="fas fa-share-alt"></i>
+                        <span>SHARING</span>
+                    </div>
+                </div>
+                <!-- 7. Mentoring (Bottom-Left) -->
+                <div class="wheel-bubble node-mentoring" data-node="node-8" style="--angle: 135deg; --color: #fd7e14;">
+                    <div class="bubble-inner">
+                        <i class="fas fa-user-friends"></i>
+                        <span>MENTORING</span>
+                    </div>
+                </div>
+                <!-- 8. Guidance (Left) -->
+                <div class="wheel-bubble node-guidance" data-node="node-9" style="--angle: 180deg; --color: #e07b00;">
+                    <div class="bubble-inner">
+                        <i class="fas fa-compass"></i>
+                        <span>GUIDANCE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Info Box below the Wheel -->
+        <div class="wheel-info-box" style="margin-top: 3rem; min-height: 85px; max-width: 580px; margin-left: auto; margin-right: auto; padding: 1.25rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 86, 179, 0.05); border: 1px solid var(--border); display: flex; align-items: center; gap: 1.25rem; transition: all 0.3s ease;">
+            <div class="info-icon-wrapper" style="width: 50px; height: 50px; background: rgba(0, 86, 179, 0.08); color: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s ease;">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div style="text-align: left; flex: 1;">
+                <h4 class="info-title" style="font-family: var(--font-main); color: var(--text-dark); margin: 0 0 4px; font-weight: 700; font-size: 1rem;">Interactive Vision Wheel</h4>
+                <p class="info-desc" style="color: var(--text-muted); margin: 0; font-size: 0.88rem; line-height: 1.5;">Hover over any segment on the circle to explore our corporate milestones and training support details.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Divider Line -->
+    <div style="border-top: 1px solid var(--border); margin: 3.5rem 0;"></div>
+
+    <!-- Corporate Clients Sub-Section -->
+    <div style="margin-bottom: 4rem;">
+        <div style="text-align:center; margin-bottom: 2rem;">
+            <h3 style="font-family:var(--font-main); font-size:1.6rem; color:var(--text-dark); margin-bottom:0.5rem;">Corporate Clients</h3>
+            <div style="width:45px; height:3px; background:var(--primary); margin:0.5rem auto; border-radius:2px;"></div>
+        </div>
+        <!-- Corporate Enterprise Clients Row (JLL, CCK, LIC HFL, Capgemini, KPMG, Mahindra) -->
+        <div style="display:flex; justify-content:center; align-items:center; gap:2.5rem; flex-wrap:wrap;">
+            <div class="client-logo-card">
+                <img src="{% static 'images/clients/jll.jpg' %}" alt="JLL">
+            </div>
+            <div class="client-logo-card">
+                <img src="{% static 'images/clients/cck.jpg' %}" alt="Community Chest of Korea">
+            </div>
+            <div class="client-logo-card">
+                <img src="{% static 'images/clients/lichfl.jpg' %}" alt="LIC Housing Finance Ltd">
+            </div>
+            <div class="client-logo-card">
+                <img src="{% static 'images/clients/capgemini.jpg' %}" alt="Capgemini">
+            </div>
+            <div class="client-logo-card">
+                <img src="{% static 'images/clients/kpmg.jpg' %}?v=2" alt="KPMG">
+            </div>
+            <div class="client-logo-card">
+                <img src="{% static 'images/clients/mindra.png' %}?v=2" alt="MINDRA">
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Student Placement Companies Sub-Section -->
+    <div>
+        <div style="text-align:center; max-width:850px; margin: 0 auto 2.5rem;">
+            <h3 style="font-family:var(--font-main); font-size:1.6rem; color:var(--text-dark); margin-bottom:0.5rem;">Student Placement Companies</h3>
+            <div style="width:45px; height:3px; background:var(--primary); margin:0.5rem auto; border-radius:2px;"></div>
+            <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.6; margin-top:0.75rem;">
+                Our students are placed in and work with professionals from leading organizations across IT, ITES, Manufacturing, Banking, and Healthcare sectors.
+            </p>
+        </div>
+
+        <!-- Unified Associated Placement Companies Grid (20 Companies) -->
+        <div class="companies-grid">
+            {% for co in companies %}
+            <div class="company-logo" style="padding: 0.75rem; background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; height: 90px; transition: var(--transition);">
+                <img src="{% static co.logo %}" alt="{{ co.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(10%) contrast(105%); transition: filter 0.3s ease;" onmouseover="this.style.filter='none'" onmouseout="this.style.filter='grayscale(10%) contrast(105%)'">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section">
+    <div class="section-header">
+        <span class="tag">Student Reviews</span>
+        <h2 class="section-title">What Our <span>Students Say</span></h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="testimonials-slider">
+        {% if testimonials %}
+            {% for t in testimonials %}
+            <div class="testimonial-card">
+                <div class="testimonial-stars">{% for i in "12345" %}{% if forloop.counter <= t.rating %}<i class="fas fa-star"></i>{% else %}<i class="far fa-star"></i>{% endif %}{% endfor %}</div>
+                <p class="testimonial-text">"{{ t.review }}"</p>
+                <div class="testimonial-user">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div>
+                        <div class="testimonial-name">{{ t.student_name }}</div>
+                        <div class="testimonial-course">{{ t.course_name }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="testimonial-card">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="testimonial-text">"The practical approach at CTRL A IT HUB is outstanding. The mentors explain each concept with real project examples. I got placed at a top MNC after completing the Java Full Stack course!"</p>
+                <div class="testimonial-user">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div><div class="testimonial-name">Priya Sharma</div><div class="testimonial-course">Java Full Stack Development</div></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="testimonial-text">"Best institute for Python and Data Analytics training in the region. The trainers have hands-on industry experience. The mock interview sessions were very helpful!"</p>
+                <div class="testimonial-user">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div><div class="testimonial-name">Rahul Nair</div><div class="testimonial-course">Python Full Stack & AI</div></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                <p class="testimonial-text">"The placement support is exceptional. CTRL A IT HUB directly referred me to companies. I cleared Infosys within 2 months of completing the Selenium Testing course."</p>
+                <div class="testimonial-user">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div><div class="testimonial-name">Deepika Reddy</div><div class="testimonial-course">QA & Automation Testing</div></div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+
+
+<!-- Glassmorphism Popup Modal for Job Applications -->
+<div id="jobApplyModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.65); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:1.5rem;">
+    <div class="glass-card" style="background:rgba(255,255,255,0.92); border:1px solid rgba(255,255,255,0.4); border-radius:16px; padding:2rem; width:100%; max-width:500px; box-shadow:0 15px 35px rgba(0,0,0,0.2); position:relative;">
+        <button onclick="closeApplyModal()" style="position:absolute; right:1.25rem; top:1.25rem; background:none; border:none; font-size:1.4rem; color:var(--text-muted); cursor:pointer; transition:color 0.2s;" onmouseover="this.style.color='var(--text-dark)'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
+        
+        <h3 style="font-family:var(--font-main); color:var(--text-dark); margin-bottom:0.25rem; font-size:1.35rem;"><i class="fas fa-briefcase" style="color:var(--primary); margin-right:6px;"></i> Apply for Opening</h3>
+        <p id="modalJobTitleDisplay" style="color:var(--primary); font-weight:700; font-size:0.95rem; margin-bottom:1.5rem;"></p>
+        
+        <!-- AJAX Feedback Alert -->
+        <div id="modalAlertBox" style="display:none; padding:0.75rem 1rem; border-radius:8px; margin-bottom:1.25rem; font-size:0.88rem; font-weight:600;"></div>
+
+        <form id="jobApplicationForm" onsubmit="submitApplication(event)" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="job_title" id="modalJobTitleInput">
+            
+            <div class="form-group" style="margin-bottom:1rem;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Full Name *</label>
+                <input type="text" name="name" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                <div class="form-group">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Mobile *</label>
+                    <input type="tel" name="phone" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+                </div>
+                <div class="form-group">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Email Address *</label>
+                    <input type="email" name="email" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem;">
+                <div class="form-group">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Qualification *</label>
+                    <input type="text" name="qualification" placeholder="e.g. MBA, B.Tech, M.Com" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+                </div>
+                <div class="form-group">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Experience *</label>
+                    <input type="text" name="experience" placeholder="e.g. 2 Years, Fresher" required class="form-input" style="width:100%; background:#fff; border:1px solid var(--border); color:var(--text-dark);">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1.5rem;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:0.35rem;">Upload Resume (PDF/Word) *</label>
+                <input type="file" name="resume" accept=".pdf,.doc,.docx" required style="width:100%; font-size:0.85rem; color:var(--text-muted);">
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-glow" style="width:100%; border-radius:50px; font-weight:700; padding:0.75rem; border:none; cursor:pointer;">Submit Application <i class="fas fa-paper-plane" style="margin-left:6px;"></i></button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Form Switcher Script -->
+<script>
+function openApplyModal(jobTitle) {
+    document.getElementById('modalJobTitleDisplay').innerText = jobTitle;
+    document.getElementById('modalJobTitleInput').value = jobTitle;
+    
+    const modal = document.getElementById('jobApplyModal');
+    modal.style.display = 'flex';
+    
+    // Reset Alert box
+    const alertBox = document.getElementById('modalAlertBox');
+    alertBox.style.display = 'none';
+}
+
+function closeApplyModal() {
+    document.getElementById('jobApplyModal').style.display = 'none';
+    document.getElementById('jobApplicationForm').reset();
+}
+
+function submitApplication(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('jobApplicationForm');
+    const alertBox = document.getElementById('modalAlertBox');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Submitting... <i class="fas fa-spinner fa-spin"></i>';
+    
+    const formData = new FormData(form);
+    
+    fetch('{% url "submit_job_application" %}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Application <i class="fas fa-paper-plane"></i>';
+        
+        alertBox.style.display = 'block';
+        if (data.success) {
+            alertBox.style.backgroundColor = '#e8f5e9';
+            alertBox.style.color = '#2e7d32';
+            alertBox.textContent = data.message;
+            
+            // Clear form on success
+            form.reset();
+            setTimeout(closeApplyModal, 2500);
+        } else {
+            alertBox.style.backgroundColor = '#ffebee';
+            alertBox.style.color = '#c62828';
+            alertBox.textContent = data.message;
+        }
+    })
+    .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Application <i class="fas fa-paper-plane"></i>';
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = '#ffebee';
+        alertBox.style.color = '#c62828';
+        alertBox.textContent = 'Something went wrong. Please try again.';
+    });
+}
+</script>
+
+<!-- Quick Enquiry -->
+<div style="background:var(--primary);padding:4rem 2rem;">
+<div style="max-width:600px;margin:0 auto;">
+    <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:2.5rem;">
+        <h3 style="color:#fff;font-family:var(--font-main);font-size:1.4rem;margin-bottom:0.5rem;"><i class="fas fa-envelope" style="color:var(--accent);margin-right:.5rem;"></i>Quick Enquiry</h3>
+        <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;margin-bottom:1.5rem;">Have questions? Drop your details and we'll call you back within 24 hours.</p>
+        <form action="{% url 'home' %}" method="POST">
+            {% csrf_token %}
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;">
+                <input type="text" name="name" class="form-input" placeholder="Your Name" required style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#fff;">
+                <input type="tel" name="phone" class="form-input" placeholder="Phone Number" required style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#fff;">
+            </div>
+            <input type="email" name="email" class="form-input" placeholder="Email Address" required style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#fff;margin-bottom:0.75rem;">
+            <button type="submit" class="btn btn-accent" style="width:100%;border-radius:var(--radius);">Submit Enquiry <i class="fas fa-paper-plane"></i></button>
+        </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}

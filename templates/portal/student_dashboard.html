@@ -1,0 +1,151 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block sidebar_menu %}
+    <button class="sidebar-menu-item active" data-tab="tab-overview"><i class="fas fa-home"></i> Overview</button>
+    <button class="sidebar-menu-item" data-tab="tab-materials"><i class="fas fa-book-reader"></i> Course Materials</button>
+    <button class="sidebar-menu-item" data-tab="tab-assignments"><i class="fas fa-tasks"></i> Assignments</button>
+{% endblock %}
+
+{% block dashboard_content %}
+    <!-- OVERVIEW TAB -->
+    <div id="tab-overview" class="tab-content active">
+        <div class="dashboard-actions-header">
+            <div class="dashboard-title-container">
+                <h2>Welcome back, {{ user.first_name }}!</h2>
+                <p>Track your learning progress, attendance records, and materials.</p>
+            </div>
+            <div>
+                <a href="{% url 'courses' %}" class="btn btn-glow">View Other Courses</a>
+            </div>
+        </div>
+
+        <div class="grid-2" style="align-items: stretch; margin-bottom: 2.5rem;">
+            <!-- Student profile info -->
+            <div class="glass-card">
+                <h3 style="color: var(--accent-cyan); margin-bottom: 1.5rem;"><i class="fas fa-user-circle" style="margin-right: 0.75rem;"></i> My Enrolled Profile</h3>
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; font-size: 1rem; color: var(--text-primary);">
+                    <span style="font-weight: 600; color: var(--text-secondary);">Enrolled Course:</span>
+                    <span><strong>{{ course.title|default:"No course enrolled yet" }}</strong></span>
+
+                    <span style="font-weight: 600; color: var(--text-secondary);">Student ID:</span>
+                    <span style="font-family: monospace;">{{ profile.roll_number }}</span>
+
+                    <span style="font-weight: 600; color: var(--text-secondary);">Phone:</span>
+                    <span>{{ profile.phone }}</span>
+
+                    <span style="font-weight: 600; color: var(--text-secondary);">Email:</span>
+                    <span>{{ user.email }}</span>
+
+                    <span style="font-weight: 600; color: var(--text-secondary);">Status:</span>
+                    <span>
+                        {% if profile.status == 'active' %}
+                            <span class="badge badge-success">Active Learning</span>
+                        {% elif profile.status == 'completed' %}
+                            <span class="badge badge-info">Completed Course</span>
+                        {% else %}
+                            <span class="badge badge-info">Placed Graduate</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Attendance radial gauge -->
+            <div class="glass-card attendance-widget" style="justify-content: center;">
+                <h3 style="color: var(--accent-cyan); margin-bottom: 1.5rem; text-align: left; width: 100%;"><i class="fas fa-calendar-check" style="margin-right: 0.75rem;"></i> Class Attendance</h3>
+                <div class="attendance-gauge">
+                    <svg width="180" height="180" class="attendance-svg">
+                        <defs>
+                            <linearGradient id="cyan-blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="var(--accent-blue)" />
+                                <stop offset="100%" stop-color="var(--accent-cyan)" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="90" cy="90" r="75" class="gauge-bg"></circle>
+                        <circle cx="90" cy="90" r="75" class="gauge-fill" data-percentage="{{ profile.attendance_percentage }}"></circle>
+                    </svg>
+                    <div class="gauge-percentage">{{ profile.attendance_percentage }}%</div>
+                </div>
+                <p style="color: var(--text-secondary);">Keep attendance above 85% to receive placement opportunities and references.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- COURSE MATERIALS TAB -->
+    <div id="tab-materials" class="tab-content">
+        <div class="dashboard-actions-header">
+            <div class="dashboard-title-container">
+                <h2>Syllabus & Materials</h2>
+                <p>Download study manuals, PDFs, and guides for your course.</p>
+            </div>
+        </div>
+
+        {% if materials %}
+            <div class="materials-list">
+                {% for mat in materials %}
+                    <div class="glass-card material-card">
+                        <div class="material-icon"><i class="fas fa-file-pdf"></i></div>
+                        <div class="material-details">
+                            <div class="material-title">{{ mat.title }}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Uploaded resource</div>
+                        </div>
+                        <a href="{{ mat.file.url }}" class="material-action-btn" download><i class="fas fa-download"></i></a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="glass-card" style="text-align: center; padding: 4rem 2rem;">
+                <div style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1.5rem;"><i class="fas fa-folder-open"></i></div>
+                <h3>No materials uploaded yet</h3>
+                <p style="color: var(--text-secondary);">Your training mentor has not uploaded study documents for this course yet.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- ASSIGNMENTS TAB -->
+    <div id="tab-assignments" class="tab-content">
+        <div class="dashboard-actions-header">
+            <div class="dashboard-title-container">
+                <h2>Pending Assignments</h2>
+                <p>Submit assignments before deadlines to qualify for course completion certificate.</p>
+            </div>
+        </div>
+
+        {% if assignments %}
+            <div class="table-responsive">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Assignment Title</th>
+                            <th>Description</th>
+                            <th>Due Date</th>
+                            <th>Download Reference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ass in assignments %}
+                            <tr>
+                                <td style="font-weight: 700; color: white;">{{ ass.title }}</td>
+                                <td>{{ ass.description }}</td>
+                                <td><span class="badge badge-warning">{{ ass.due_date }}</span></td>
+                                <td>
+                                    {% if ass.file %}
+                                        <a href="{{ ass.file.url }}" class="btn btn-secondary" download style="padding: 0.35rem 1rem; font-size: 0.8rem; border-radius: 6px;"><i class="fas fa-download" style="margin-right: 0.5rem;"></i> Download Reference</a>
+                                    {% else %}
+                                        <span style="color: var(--text-muted);">No file attached</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="glass-card" style="text-align: center; padding: 4rem 2rem;">
+                <div style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1.5rem;"><i class="fas fa-clipboard-check"></i></div>
+                <h3>All caught up!</h3>
+                <p style="color: var(--text-secondary);">No pending assignments have been assigned to your course.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

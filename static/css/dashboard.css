@@ -1,0 +1,68 @@
+/* Dashboard Layout */
+.dashboard-wrapper { display: flex; min-height: 100vh; background: var(--bg-light); }
+.dashboard-sidebar { width: 260px; background: #fff; border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 2rem 1.25rem; gap: 2rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.dashboard-content { flex: 1; padding: 2.5rem; overflow-y: auto; }
+
+.sidebar-profile { text-align: center; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.sidebar-avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-size: 1.75rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; border: 3px solid var(--primary); font-family: var(--font-main); }
+.sidebar-name { font-family: var(--font-main); font-weight: 700; font-size: 1rem; color: var(--text-dark); }
+.sidebar-role { font-size: 0.78rem; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 0.2rem; }
+
+.sidebar-menu { display: flex; flex-direction: column; gap: 0.35rem; }
+.sidebar-menu-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius); color: var(--text-body); font-weight: 500; cursor: pointer; transition: var(--transition); background: transparent; border: none; width: 100%; text-align: left; font-family: var(--font-body); font-size: 0.9rem; }
+.sidebar-menu-item:hover, .sidebar-menu-item.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+.sidebar-menu-item i { width: 18px; }
+
+/* Stats Cards */
+.dashboard-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 2rem; }
+.stat-card { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.stat-card-details h3 { font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 0.4rem; }
+.stat-card-details p { font-size: 2rem; font-weight: 800; color: var(--text-dark); font-family: var(--font-main); }
+.stat-card-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+.stat-card-icon.cyan, .stat-card-icon.blue { background: var(--primary-light); color: var(--primary); }
+.stat-card-icon.purple { background: #f3e8ff; color: #7c3aed; }
+.stat-card-icon.green { background: #d1fae5; color: #065f46; }
+
+/* Tabs */
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeUp .35s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Tables */
+.table-responsive { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin-top: 1.25rem; }
+.dashboard-table { width: 100%; border-collapse: collapse; text-align: left; background: #fff; }
+.dashboard-table th { background: var(--bg-light); color: var(--text-dark); font-weight: 700; padding: 0.875rem 1.25rem; font-size: 0.85rem; border-bottom: 2px solid var(--border); font-family: var(--font-main); }
+.dashboard-table td { padding: 0.875rem 1.25rem; border-bottom: 1px solid var(--border); color: var(--text-body); font-size: 0.88rem; }
+.dashboard-table tr:hover td { background: var(--bg-light); }
+.dashboard-table tr:last-child td { border-bottom: none; }
+
+/* Dashboard Header */
+.dashboard-actions-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+.dashboard-title-container h2 { font-family: var(--font-main); font-size: 1.6rem; color: var(--text-dark); margin-bottom: 0.25rem; }
+.dashboard-title-container p { color: var(--text-muted); font-size: 0.9rem; }
+
+/* Materials */
+.materials-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.25rem; margin-top: 1.25rem; }
+.material-card { display: flex; align-items: center; gap: 1rem; padding: 1.25rem; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); transition: var(--transition); }
+.material-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+.material-icon { width: 46px; height: 46px; background: var(--primary-light); color: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.material-title { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); }
+.material-action-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-light); display: flex; align-items: center; justify-content: center; color: var(--primary); transition: var(--transition); border: 1px solid var(--border); }
+.material-action-btn:hover { background: var(--primary); color: #fff; }
+
+/* Attendance Gauge */
+.attendance-widget { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.attendance-gauge { position: relative; width: 170px; height: 170px; margin-bottom: 1rem; }
+.attendance-svg { transform: rotate(-90deg); }
+.gauge-bg { fill: none; stroke: var(--border); stroke-width: 10; }
+.gauge-fill { fill: none; stroke: url(#gauge-grad); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease-out; }
+.gauge-percentage { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 2rem; font-weight: 800; color: var(--primary); font-family: var(--font-main); }
+
+@media (max-width:900px) {
+    .dashboard-wrapper { flex-direction: column; }
+    .dashboard-sidebar { width: 100%; height: auto; position: static; flex-direction: row; flex-wrap: wrap; gap: 0.5rem; padding: 1rem; }
+    .sidebar-profile { display: none; }
+    .dashboard-content { padding: 1.5rem; }
+    .sidebar-menu { flex-direction: row; flex-wrap: wrap; }
+    .sidebar-menu-item { padding: 0.5rem 0.75rem; font-size: 0.8rem; }
+}

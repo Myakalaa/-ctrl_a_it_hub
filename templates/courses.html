@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Training Courses - CTRL A IT HUB{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div style="background:linear-gradient(135deg,#003d80,#0056b3);padding:4rem 2rem;text-align:center;">
+    <span class="tag" style="background:rgba(255,255,255,0.15);color:#fff;">Course Catalog</span>
+    <h1 style="font-family:var(--font-main);font-size:2.5rem;font-weight:800;color:#fff;margin:1rem 0 0.75rem;">Training <span>Programs</span></h1>
+    <p style="color:rgba(255,255,255,0.8);max-width:650px;margin:0 auto;font-size:1rem;">Expert-led software and networking training courses focused on practical skill sets.</p>
+</div>
+
+<!-- Search & Filtering -->
+<div style="background:var(--bg-light);border-bottom:1px solid var(--border);padding:2rem 2rem;">
+<div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:center;">
+    
+    <!-- Search Form -->
+    <form action="{% url 'courses' %}" method="GET" style="display:flex;gap:0.75rem;flex:1;min-width:300px;">
+        <input type="text" name="q" value="{{ query|default:'' }}" class="form-input" placeholder="Search courses (e.g. Java, Python, SQL)..." style="background:#fff;border-color:var(--border);">
+        <button type="submit" class="btn btn-primary" style="padding:0 1.5rem;border-radius:var(--radius);"><i class="fas fa-search"></i></button>
+    </form>
+
+    <!-- Categories Filters -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <a href="{% url 'courses' %}" class="btn {% if not selected_category %}btn-primary{% else %}btn-secondary{% endif %}" style="padding:0.45rem 1rem;font-size:0.82rem;border-radius:var(--radius);">All</a>
+        {% for cat_code, cat_name in categories %}
+            <a href="{% url 'courses' %}?category={{ cat_code }}" class="btn {% if selected_category == cat_code %}btn-primary{% else %}btn-secondary{% endif %}" style="padding:0.45rem 1rem;font-size:0.82rem;border-radius:var(--radius);">{{ cat_name }}</a>
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+<!-- Courses Catalog Grid -->
+<section class="section">
+    {% if query %}
+        <p style="margin-bottom:1.5rem;color:var(--text-muted);font-size:0.92rem;"><i class="fas fa-search" style="margin-right:.4rem;"></i>Showing search results for "<strong>{{ query }}</strong>":</p>
+    {% endif %}
+
+    <div class="grid-3">
+        {% if courses %}
+            {% for course in courses %}
+                <div class="course-card">
+                    <div class="course-image-wrapper">
+                        {% if course.image %}
+                            <img src="{{ course.image.url }}?t={{ course.updated_at|date:'U' }}" alt="{{ course.title }}" loading="lazy">
+                        {% else %}
+                            <div style="width:100%;height:100%;background:linear-gradient(135deg,var(--primary-light),#dce9ff);display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-laptop-code" style="font-size:2.5rem;color:var(--primary);opacity:0.5;"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="course-body">
+                        <span class="course-category">{{ course.get_category_display }}</span>
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <p class="course-desc">{{ course.description }}</p>
+
+                        <!-- Syllabus Accordion -->
+                        {% if course.syllabus %}
+                            <div style="margin:1rem 0;">
+                                <button class="syllabus-btn" data-target="syllabus-{{ course.id }}">
+                                    <span>View Syllabus</span> <i class="fas fa-chevron-down" style="font-size:0.75rem;"></i>
+                                </button>
+                                <div id="syllabus-{{ course.id }}" class="syllabus-content">
+                                    <ul style="list-style:disc;padding-left:1.15rem;color:var(--text-body);font-size:0.85rem;line-height:1.6;">
+                                        {% for module in course.syllabus.splitlines %}
+                                            {% if module.strip %}
+                                                <li style="margin-bottom:0.2rem;">{{ module }}</li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="course-meta">
+                            <span><i class="far fa-clock"></i>{{ course.duration }}</span>
+                            <span><i class="fas fa-tags"></i>{{ course.price }}</span>
+                        </div>
+                    </div>
+                    <div class="course-footer">
+                        <a href="{% url 'contact' %}?course={{ course.title }}" class="btn btn-primary" style="width:100%;border-radius:var(--radius);font-size:0.85rem;padding:0.6rem;">Enroll Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div style="grid-column:1 / -1;text-align:center;padding:3rem 0;color:var(--text-muted);">
+                <i class="fas fa-exclamation-circle" style="font-size:3rem;margin-bottom:1rem;color:var(--primary);opacity:0.4;"></i>
+                <p>No courses found matching the selected parameters. Let us know what you want to learn!</p>
+                <a href="{% url 'contact' %}" class="btn btn-primary" style="margin-top:1.5rem;">Contact Coordinator</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+
+
+{% endblock %}

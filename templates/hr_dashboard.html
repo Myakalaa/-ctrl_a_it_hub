@@ -1,0 +1,181 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}HR Dashboard | CTRL A IT HUB{% endblock %}
+
+{% block sidebar_role %}HR Team{% endblock %}
+
+{% block sidebar_menu %}
+    <a href="{% url 'hr_dashboard' %}" class="sidebar-menu-item active">
+        <i class="fas fa-briefcase"></i> Job Applications
+    </a>
+    <a href="{% url 'hr_export_csv' %}" class="sidebar-menu-item">
+        <i class="fas fa-file-excel"></i> Export to Excel
+    </a>
+    <a href="{% url 'logout' %}" class="sidebar-menu-item" style="color: #ff4d4d; margin-top: 2rem; border-left: 4px solid transparent; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+{% endblock %}
+
+{% block dashboard_content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; color: #16a34a; padding: 0.85rem 1.25rem; border-radius: 10px; margin-bottom: 1.5rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-check-circle"></i> {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- HEADER -->
+    <div class="dashboard-actions-header">
+        <div class="dashboard-title-container">
+            <h2><i class="fas fa-briefcase" style="color: var(--primary); margin-right: 10px;"></i>HR Recruitment Dashboard</h2>
+            <p>Welcome back! Review applicant resumes, update statuses, and export candidate data.</p>
+        </div>
+        <div>
+            <a href="{% url 'hr_export_csv' %}" class="btn btn-glow" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 0.65rem 1.2rem; background: linear-gradient(135deg, #16a34a, #22c55e); color: white; border-radius: 8px; font-weight: 700; font-size: 0.88rem;">
+                <i class="fas fa-file-excel"></i> Export CSV
+            </a>
+        </div>
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="dashboard-stat-grid">
+        <div class="stat-card">
+            <div class="stat-card-details">
+                <h3>Total Applicants</h3>
+                <p>{{ total }}</p>
+            </div>
+            <div class="stat-card-icon blue"><i class="fas fa-users"></i></div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-details">
+                <h3>Pending Review</h3>
+                <p>{{ pending }}</p>
+            </div>
+            <div class="stat-card-icon purple"><i class="fas fa-clock"></i></div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-details">
+                <h3>Shortlisted</h3>
+                <p>{{ shortlisted }}</p>
+            </div>
+            <div class="stat-card-icon green"><i class="fas fa-star"></i></div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-details">
+                <h3>Rejected</h3>
+                <p>{{ rejected }}</p>
+            </div>
+            <div class="stat-card-icon" style="background: rgba(239, 68, 68, 0.12); color: #dc2626;"><i class="fas fa-times-circle"></i></div>
+        </div>
+    </div>
+
+    <!-- SEARCH & FILTER BAR -->
+    <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem;">
+        <form method="get" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+            <div style="position: relative; flex: 1; min-width: 220px;">
+                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem;"></i>
+                <input type="text" name="q" value="{{ q }}" placeholder="Search candidate or job title..."
+                    style="width: 100%; padding: 0.55rem 0.85rem 0.55rem 2.3rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-light); color: var(--text-dark); font-size: 0.9rem; outline: none;">
+            </div>
+            <select name="status" style="padding: 0.55rem 0.85rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-light); color: var(--text-dark); font-size: 0.9rem; cursor: pointer;">
+                <option value="">All Status</option>
+                <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="reviewing" {% if status_filter == 'reviewing' %}selected{% endif %}>Under Review</option>
+                <option value="shortlisted" {% if status_filter == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+            </select>
+            <button type="submit" style="padding: 0.55rem 1.3rem; background: var(--primary, #0056b3); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+            <a href="{% url 'hr_dashboard' %}" style="padding: 0.55rem 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Reset</a>
+        </form>
+    </div>
+
+    <!-- APPLICATIONS TABLE -->
+    <div class="table-responsive">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Candidate</th>
+                    <th>Job Position</th>
+                    <th>Experience</th>
+                    <th>Contact</th>
+                    <th>Resume</th>
+                    <th>Status</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                    <tr>
+                        <td style="white-space: nowrap; font-size: 0.85rem; color: var(--text-muted);">{{ app.applied_at|date:"d M Y" }}</td>
+                        <td>
+                            <div style="font-weight: 700; color: var(--text-dark);">{{ app.name }}</div>
+                            <div style="font-size: 0.78rem; color: var(--text-muted);">{{ app.qualification }}</div>
+                        </td>
+                        <td style="font-weight: 600;">{{ app.job_title }}</td>
+                        <td style="font-size: 0.85rem;">{{ app.experience }}</td>
+                        <td>
+                            <a href="mailto:{{ app.email }}" style="display: inline-flex; align-items: center; gap: 5px; color: #2563eb; background: rgba(59, 130, 246, 0.12); padding: 4px 10px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.82rem;">
+                                <i class="fas fa-envelope"></i> Email
+                            </a>
+                        </td>
+                        <td>
+                            {% if app.resume %}
+                                <a href="{{ app.resume.url }}" target="_blank" style="display: inline-flex; align-items: center; gap: 5px; color: #7c3aed; background: rgba(124, 58, 237, 0.12); padding: 4px 10px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.82rem;">
+                                    <i class="fas fa-file-pdf"></i> Download
+                                </a>
+                            {% else %}—{% endif %}
+                        </td>
+                        <td>
+                            {% if app.status == 'shortlisted' %}
+                                <span style="padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; background: rgba(34, 197, 94, 0.15); color: #16a34a; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-star"></i> Shortlisted
+                                </span>
+                            {% elif app.status == 'rejected' %}
+                                <span style="padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; background: rgba(239, 68, 68, 0.15); color: #dc2626; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-times"></i> Rejected
+                                </span>
+                            {% elif app.status == 'reviewing' %}
+                                <span style="padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; background: rgba(124, 58, 237, 0.15); color: #7c3aed; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-eye"></i> Under Review
+                                </span>
+                            {% else %}
+                                <span style="padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; background: rgba(245, 158, 11, 0.15); color: #d97706; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-clock"></i> Pending
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="post" action="{% url 'hr_update_status' app.pk %}" style="display: flex; gap: 6px; align-items: center;">
+                                {% csrf_token %}
+                                <select name="status" style="padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: var(--bg-light); color: var(--text-dark);">
+                                    <option value="pending" {% if app.status == 'pending' %}selected{% endif %}>Pending</option>
+                                    <option value="reviewing" {% if app.status == 'reviewing' %}selected{% endif %}>Under Review</option>
+                                    <option value="shortlisted" {% if app.status == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                                    <option value="rejected" {% if app.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                </select>
+                                <button type="submit" style="padding: 5px 10px; background: var(--primary, #0056b3); color: white; border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-weight: 700;">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            <i class="fas fa-inbox" style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block; opacity: 0.5;"></i>
+                            No job applications found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

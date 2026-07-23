@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Services - CTRL A IT HUB{% block title_suffix %}{% endblock %}{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div style="background:linear-gradient(135deg,#003d80,#0056b3);padding:4rem 2rem;text-align:center;">
+    <span class="tag" style="background:rgba(255,255,255,0.15);color:#fff;">What We Do</span>
+    <h1 style="font-family:var(--font-main);font-size:2.5rem;font-weight:800;color:#fff;margin:1rem 0 0.75rem;">Our Services & <span>IT Solutions</span></h1>
+    <p style="color:rgba(255,255,255,0.8);max-width:650px;margin:0 auto;font-size:1rem;">Complete IT solutions, academic projects, business outsourcing, and youth skill development initiatives.</p>
+</div>
+
+<!-- Services Grid Section -->
+<section class="section">
+    
+    <!-- Category 1: IT Consulting & Academic Projects -->
+    <div id="it-consulting" style="margin-bottom:4rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem;border-bottom:3px solid var(--border);padding-bottom:0.75rem;">
+            <i class="fas fa-laptop-code" style="color:var(--primary);font-size:1.75rem;"></i>
+            <h2 style="font-family:var(--font-main);font-size:1.6rem;color:var(--text-dark);font-weight:700;margin:0;">IT Consulting & Academic Projects</h2>
+        </div>
+        <div class="grid-3">
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Digital Transformation</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Updating legacy structures to modern cloud-hosted web apps and secure API infrastructure environments.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Academic Projects</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">End-to-end guidance for final year engineering/science students, covering full stack web, analytics, and ML.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">IT Infrastructure</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Network setup, technical support, server maintenance, and firewall security configurations.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category 2: BPO Projects -->
+    <div id="bpo-projects" style="margin-bottom:4rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem;border-bottom:3px solid var(--border);padding-bottom:0.75rem;">
+            <i class="fas fa-headset" style="color:var(--primary);font-size:1.75rem;"></i>
+            <h2 style="font-family:var(--font-main);font-size:1.6rem;color:var(--text-dark);font-weight:700;margin:0;">BPO Projects & Support</h2>
+        </div>
+        <div class="grid-3">
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Customer Support</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">24/7 client relations management, call desk solutions, and live support ticketing operations.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Data Processing</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Secure high-speed data entry, indexing, categorization, and back office database entry services.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">CRM Support Solutions</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">CRM software implementation, client sales pipeline management, and contact list documentation.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category 3: CSR Skill Development -->
+    <div id="csr-training" style="margin-bottom:4rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem;border-bottom:3px solid var(--border);padding-bottom:0.75rem;">
+            <i class="fas fa-users-cog" style="color:var(--primary);font-size:1.75rem;"></i>
+            <h2 style="font-family:var(--font-main);font-size:1.6rem;color:var(--text-dark);font-weight:700;margin:0;">CSR Skill Development</h2>
+        </div>
+        <div class="grid-3">
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Employability Skills</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Targeted courses for socio-economically marginalized youth focusing on coding, QA, and tech assistance.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Youth Empowerment</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Soft skills, English communication, work ethics, and interview preparation mentorship initiatives.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Community Training</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Empowering local organizations and leaders with data management tools and digital resources.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category 4: Government Training Projects -->
+    <div id="gov-projects">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem;border-bottom:3px solid var(--border);padding-bottom:0.75rem;">
+            <i class="fas fa-landmark" style="color:var(--primary);font-size:1.75rem;"></i>
+            <h2 style="font-family:var(--font-main);font-size:1.6rem;color:var(--text-dark);font-weight:700;margin:0;">Government Training Projects</h2>
+        </div>
+        <div class="grid-3">
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Digital Literacy</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Basic computer training, MS Office skills, internet applications, and safety in public utility systems.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Employment Schemes</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Supporting central/state vocational training missions to build local technical capacity in small cities.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);font-size:1.15rem;color:var(--text-dark);margin-bottom:0.75rem;">Public Sector Support</h3>
+                <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.7;">Special technical courses, database management tutorials, and online safety webinars for government officials.</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

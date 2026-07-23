@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About Us - CTRL A IT HUB{% endblock %}
+{% block content %}
+
+<!-- Header -->
+<div style="background:linear-gradient(135deg,#003d80,#0056b3);padding:4rem 2rem;text-align:center;">
+    <span class="tag" style="background:rgba(255,255,255,0.15);color:#fff;">Who We Are</span>
+    <h1 style="font-family:var(--font-main);font-size:2.5rem;font-weight:800;color:#fff;margin:1rem 0 0.75rem;">About <span style="color:var(--accent);">CTRL A IT HUB</span></h1>
+    <p style="color:rgba(255,255,255,0.8);max-width:650px;margin:0 auto;font-size:1rem;">Bridging the gap between educational aspirations and corporate requirements since 2014.</p>
+</div>
+
+<!-- Story & Vision/Mission -->
+<section class="section">
+    <div class="grid-2">
+        <div>
+            <div class="section-header" style="text-align:left;">
+                <span class="tag">Our Story</span>
+                <h2 class="section-title" style="text-align:left;">Purpose & <span>Background</span></h2>
+                <div class="section-divider" style="margin-left:0;"></div>
+            </div>
+            <p style="color:var(--text-body);margin-bottom:1rem;">CTRL A IT HUB is a premier training and development institution dedicated to cultivating dynamic tech professionals. We specialize in high-quality software solutions and comprehensive career training programs designed to prepare students for the modern tech landscape.</p>
+            <p style="color:var(--text-body);margin-bottom:1.5rem;">Our curriculum is crafted by seasoned industry experts and focused completely on hands-on practical implementation, real-world case studies, and corporate workflow exposure.</p>
+            <blockquote style="border-left:4px solid var(--primary);padding-left:1.25rem;margin:1.5rem 0;">
+                <p style="font-style:italic;color:var(--text-dark);font-size:1rem;margin-bottom:0.5rem;">"We empower students with skills that make them immediately employable, and we empower companies with talent that makes them instantly productive."</p>
+                <strong style="color:var(--primary);font-size:0.88rem;">— Founder, CTRL A IT HUB</strong>
+            </blockquote>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+            <div class="card">
+                <h3 style="font-family:var(--font-main);color:var(--primary);font-size:1.1rem;margin-bottom:0.75rem;display:flex;align-items:center;gap:.6rem;"><i class="fas fa-eye" style="color:var(--accent);"></i> Our Vision</h3>
+                <p style="color:var(--text-body);font-size:0.92rem;line-height:1.7;">To be a global benchmark in skill-based tech training and custom software development, enabling individuals to conquer the digital frontier and build transformative technology.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);color:var(--primary);font-size:1.1rem;margin-bottom:0.75rem;display:flex;align-items:center;gap:.6rem;"><i class="fas fa-bullseye" style="color:var(--accent);"></i> Our Mission</h3>
+                <p style="color:var(--text-body);font-size:0.92rem;line-height:1.7;">To deliver top-tier, industry-aligned training programs, project internships, and reliable software services while maintaining an affordable and highly support-driven ecosystem.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-family:var(--font-main);color:var(--primary);font-size:1.1rem;margin-bottom:0.75rem;display:flex;align-items:center;gap:.6rem;"><i class="fas fa-star" style="color:var(--accent);"></i> Our Values</h3>
+                <p style="color:var(--text-body);font-size:0.92rem;line-height:1.7;">Integrity, Quality, Student-first approach, and continuous learning. We believe in transforming careers not just resumes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Grand Executive Board of Directors Section (Exact Osmania University Banner Style) -->
+<style>
+    .director-banner-card {
+        display: flex;
+        flex-wrap: wrap;
+        background: #000000;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .director-banner-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+    }
+    .director-img-col {
+        flex: 0 0 280px;
+        width: 280px;
+        min-height: 320px;
+        position: relative;
+        background: #0f172a;
+    }
+    .director-content-col {
+        flex: 1 1 480px;
+        position: relative;
+        background: linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.90)), url('{% static "images/logo.png" %}') center right 5% / 340px auto no-repeat #0f172a;
+        padding: 3rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: #ffffff;
+    }
+    .director-btn {
+        display: inline-block;
+        background: #dbeafe;
+        color: #0369a1;
+        font-weight: 700;
+        padding: 10px 26px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: all 0.25 ease;
+        border: 1px solid rgba(3, 105, 161, 0.2);
+    }
+    .director-btn:hover {
+        background: #0369a1;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(3, 105, 161, 0.35);
+    }
+    @media (max-width: 768px) {
+        .director-img-col {
+            flex: 1 1 100%;
+            width: 100%;
+            min-height: 340px;
+            max-height: 420px;
+        }
+        .director-content-col {
+            padding: 2rem 1.5rem;
+            background-size: 240px auto;
+        }
+    }
+</style>
+
+<section class="section" style="background: #0b132b; padding: 3.5rem 1.5rem; color: white;">
+    <div style="max-width: 1250px; margin: 0 auto;">
+        
+        <!-- Section Header -->
+        <div class="section-header" style="text-align: center; margin-bottom: 2.5rem;">
+            <span class="tag" style="background: rgba(255, 255, 255, 0.12); color: var(--accent, #f7941d); border: 1px solid rgba(247, 148, 29, 0.3); font-size: 0.8rem; padding: 5px 16px; border-radius: 30px; letter-spacing: 1.2px; font-weight: 700; text-transform: uppercase;">
+                <i class="fas fa-university" style="margin-right: 6px;"></i> Leadership Desk
+            </span>
+            <h2 style="font-family: var(--font-main); font-size: 2.2rem; font-weight: 800; color: #ffffff; margin: 0.75rem 0 0.4rem; letter-spacing: -0.5px;">
+                Board of <span style="color: var(--accent, #f7941d);">Directors</span>
+            </h2>
+            <div style="width: 60px; height: 3px; background: var(--accent, #f7941d); margin: 0.5rem auto 0.75rem; border-radius: 2px;"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+            
+            <!-- Director 1 Banner (Exact Osmania University Vice-Chancellor Style) -->
+            <div class="director-banner-card">
+                <!-- Left: Director Portrait Photo -->
+                <div class="director-img-col">
+                    <img src="{% static 'images/director1.jpg' %}?v=10" alt="Managing Director" 
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;">
+                </div>
+                <!-- Right: Osmania Dark Background Overlay Banner Content with CTRL A IT HUB Logo -->
+                <div class="director-content-col">
+                    <h3 style="font-family: var(--font-main); font-size: 2.2rem; font-weight: 800; color: #ffffff; margin: 0 0 0.2rem; letter-spacing: -0.5px;">
+                        Managing Director
+                    </h3>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin: 0 0 1.25rem;">
+                        Welcome Message
+                    </h4>
+                    <p style="color: rgba(255, 255, 255, 0.88); font-size: 1rem; line-height: 1.7; max-width: 780px; margin-bottom: 1.8rem;">
+                        CTRL A IT HUB is dedicated to bridging the gap between educational aspirations and corporate requirements. We empower students with cutting-edge industry skills, building a seamless bridge between academic education and corporate software engineering standards.
+                    </p>
+                    <div>
+                        <a href="{% url 'contact' %}" class="director-btn">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Director 2 Banner (Exact Osmania University Vice-Chancellor Style) -->
+            <div class="director-banner-card">
+                <!-- Left: Director Portrait Photo -->
+                <div class="director-img-col">
+                    <img src="{% static 'images/director2.jpg' %}?v=7" alt="Managing Director" 
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;">
+                </div>
+                <!-- Right: Osmania Dark Background Overlay Banner Content with CTRL A IT HUB Logo -->
+                <div class="director-content-col">
+                    <h3 style="font-family: var(--font-main); font-size: 2.2rem; font-weight: 800; color: #ffffff; margin: 0 0 0.2rem; letter-spacing: -0.5px;">
+                        Managing Director
+                    </h3>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin: 0 0 1.25rem;">
+                        Technical Desk Message
+                    </h4>
+                    <p style="color: rgba(255, 255, 255, 0.88); font-size: 1rem; line-height: 1.7; max-width: 780px; margin-bottom: 1.8rem;">
+                        We focus on 100% practical, project-driven software mastery. Our curriculum equips students with hands-on coding skills, architecture principles, and real-time project incubation to thrive in top IT firms globally.
+                    </p>
+                    <div>
+                        <a href="{% url 'courses' %}" class="director-btn">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<div style="background:var(--primary);padding:4rem 2rem;">
+<div style="max-width:1200px;margin:0 auto;">
+    <div class="section-header">
+        <h2 style="font-family:var(--font-main);font-size:2rem;font-weight:800;color:#fff;margin-bottom:0.5rem;">Why Choose <span style="color:var(--accent);">CTRL A IT HUB?</span></h2>
+        <div style="width:60px;height:4px;background:var(--accent);margin:.5rem auto 2.5rem;border-radius:2px;"></div>
+    </div>
+    <div class="grid-3">
+        {% for item in "123456"|make_list %}
+        {% if forloop.counter == 1 %}
+        <div class="icon-box" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);">
+            <div class="icon-box-icon" style="background:rgba(255,255,255,0.2);color:#fff;"><i class="fas fa-users"></i></div>
+            <h3 style="color:#fff;">Industry Mentors</h3>
+            <p style="color:rgba(255,255,255,0.75);">Certified professionals and architects from top MNC companies.</p>
+        </div>
+        {% elif forloop.counter == 2 %}
+        <div class="icon-box" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);">
+            <div class="icon-box-icon" style="background:rgba(255,255,255,0.2);color:#fff;"><i class="fas fa-laptop-code"></i></div>
+            <h3 style="color:#fff;">Live Projects</h3>
+            <p style="color:rgba(255,255,255,0.75);">Work on real projects with source code management & deployment.</p>
+        </div>
+        {% elif forloop.counter == 3 %}
+        <div class="icon-box" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);">
+            <div class="icon-box-icon" style="background:rgba(255,255,255,0.2);color:#fff;"><i class="fas fa-briefcase"></i></div>
+            <h3 style="color:#fff;">Placement Support</h3>
+            <p style="color:rgba(255,255,255,0.75);">Resume building, mock interviews, and company referrals.</p>
+        </div>
+        {% elif forloop.counter == 4 %}
+        <div class="icon-box" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);">
+            <div class="icon-box-icon" style="background:rgba(255,255,255,0.2);color:#fff;"><i class="fas fa-certificate"></i></div>
+            <h3 style="color:#fff;">Certification</h3>
+            <p style="color:rgba(255,255,255,0.75);">Industry-recognised certificates verified online.</p>
+        </div>
+        {% elif forloop.counter == 5 %}
+        <div class="icon-box" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);">
+            <div class="icon-box-icon" style="background:rgba(255,255,255,0.2);color:#fff;"><i class="fas fa-clock"></i></div>
+            <h3 style="color:#fff;">Flexible Batches</h3>
+            <p style="color:rgba(255,255,255,0.75);">Weekday, weekend, and online options available.</p>
+        </div>
+        {% elif forloop.counter == 6 %}
+        <div class="icon-box" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);">
+            <div class="icon-box-icon" style="background:rgba(255,255,255,0.2);color:#fff;"><i class="fas fa-headset"></i></div>
+            <h3 style="color:#fff;">24/7 Support</h3>
+            <p style="color:rgba(255,255,255,0.75);">Online doubt-clearing support community anytime.</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+<!-- Infrastructure -->
+<section class="section">
+    <div class="section-header">
+        <span class="tag">Our Facilities</span>
+        <h2 class="section-title">Infrastructure & <span>Learning System</span></h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="grid-2">
+        <div class="card">
+            <h3 style="font-family:var(--font-main);color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-building" style="margin-right:.5rem;color:var(--accent);"></i>State-of-the-Art Center</h3>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i>High-speed broadband networked computer laboratories.</li>
+                <li><i class="fas fa-check-circle"></i>Dedicated seminar halls for tech talks and workshops.</li>
+                <li><i class="fas fa-check-circle"></i>Collaborative open spaces for team projects.</li>
+                <li><i class="fas fa-check-circle"></i>Online student portal for accessing assignments from home.</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3 style="font-family:var(--font-main);color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-brain" style="margin-right:.5rem;color:var(--accent);"></i>Methodology & Support</h3>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i>20% Theory & 80% practical live-lab implementation.</li>
+                <li><i class="fas fa-check-circle"></i>Weekly assessment tests and direct logic guidance.</li>
+                <li><i class="fas fa-check-circle"></i>24/7 dedicated online doubt-clearing support community.</li>
+                <li><i class="fas fa-check-circle"></i>Regular industry expert meetups and career counseling.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Accreditations & Educational Associates Section -->
+<section class="section" style="background:var(--bg-light); border-top:1px solid var(--border); padding:5rem 2rem;">
+    <div style="max-width:1200px; margin:0 auto;">
+        <div class="section-header">
+            <span class="tag">Certifications</span>
+            <h2 class="section-title">Accreditations & <span>Educational Associates</span></h2>
+            <div class="section-divider"></div>
+        </div>
+        <div style="display:flex; justify-content:center; align-items:center; gap:2.5rem; flex-wrap:wrap; margin-top:2.5rem;">
+            <div class="card" style="display:flex; align-items:center; justify-content:center; width:240px; height:120px; padding:0.5rem; background:#fff; border-radius:var(--radius); border:1px solid var(--border); box-shadow:none; transition:transform 0.3s ease, border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='none';this.style.borderColor='var(--border)'">
+                <img src="{% static 'images/clients/skill_india.jpg' %}?v=2" alt="Skill India Mission" style="max-width:100%; max-height:100%; object-fit:contain; border-radius: 4px;">
+            </div>
+            <div class="card" style="display:flex; align-items:center; justify-content:center; width:240px; height:120px; padding:0.5rem; background:#fff; border-radius:var(--radius); border:1px solid var(--border); box-shadow:none; transition:transform 0.3s ease, border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='none';this.style.borderColor='var(--border)'">
+                <img src="{% static 'images/clients/msme.jpg' %}?v=2" alt="MSME - Govt of India" style="max-width:100%; max-height:100%; object-fit:contain; border-radius: 4px;">
+            </div>
+            <div class="card" style="display:flex; align-items:center; justify-content:center; width:240px; height:120px; padding:0.5rem; background:#fff; border-radius:var(--radius); border:1px solid var(--border); box-shadow:none; transition:transform 0.3s ease, border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='none';this.style.borderColor='var(--border)'">
+                <img src="{% static 'images/clients/nsdc.png' %}?v=1" alt="NSDC - National Skill Development" style="max-width:100%; max-height:100%; object-fit:contain; border-radius: 4px;">
+            </div>
+            <div class="card" style="display:flex; align-items:center; justify-content:center; width:240px; height:120px; padding:0.5rem; background:#fff; border-radius:var(--radius); border:1px solid var(--border); box-shadow:none; transition:transform 0.3s ease, border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='none';this.style.borderColor='var(--border)'">
+                <img src="{% static 'images/clients/aicte.png' %}?v=1" alt="AICTE - All India Council" style="max-width:100%; max-height:100%; object-fit:contain; border-radius: 4px;">
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
