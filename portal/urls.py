@@ -43,6 +43,7 @@ urlpatterns = [
     path('admin-dashboard/assignment/add/', views.admin_assignment_add, name='admin_assignment_add'),
     
     path('admin-dashboard/enquiry/resolve/<int:pk>/', views.admin_enquiry_resolve, name='admin_enquiry_resolve'),
+    path('admin-dashboard/enquiry/delete/<int:pk>/', views.admin_enquiry_delete, name='admin_enquiry_delete'),
     path('admin-dashboard/application/delete/<int:pk>/', views.admin_application_delete, name='admin_application_delete'),
     path('admin-dashboard/opening/add/', views.admin_opening_add, name='admin_opening_add'),
     path('admin-dashboard/opening/delete/<int:pk>/', views.admin_opening_delete, name='admin_opening_delete'),

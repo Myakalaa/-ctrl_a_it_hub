@@ -796,6 +796,14 @@ def admin_enquiry_resolve(request, pk):
 
 
 @user_passes_test(is_staff, login_url='login')
+def admin_enquiry_delete(request, pk):
+    enquiry = get_object_or_404(Enquiry, pk=pk)
+    enquiry.delete()
+    messages.success(request, "Enquiry deleted successfully.")
+    return redirect('admin_dashboard')
+
+
+@user_passes_test(is_staff, login_url='login')
 def admin_application_delete(request, pk):
     app = get_object_or_404(JobApplication, pk=pk)
     app.delete()

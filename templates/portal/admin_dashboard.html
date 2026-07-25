@@ -399,11 +399,12 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if not enq.is_resolved %}
-                                    <a href="{% url 'admin_enquiry_resolve' enq.pk %}" class="btn btn-glow" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; border-radius: 6px;">Mark Resolved</a>
-                                {% else %}
-                                    <span style="color: var(--text-muted);">No Action</span>
-                                {% endif %}
+                                <div style="display: flex; gap: 0.5rem;">
+                                    {% if not enq.is_resolved %}
+                                        <a href="{% url 'admin_enquiry_resolve' enq.pk %}" class="btn btn-glow" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; border-radius: 6px;">Mark Resolved</a>
+                                    {% endif %}
+                                    <a href="{% url 'admin_enquiry_delete' enq.pk %}" class="btn btn-danger" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; border-radius: 6px;" onclick="return confirm('Delete this enquiry record permanently?')">Delete</a>
+                                </div>
                             </td>
                         </tr>
                     {% empty %}
