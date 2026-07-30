@@ -4,28 +4,174 @@
 {% block title %}Admin Login - CTRL A IT HUB{% endblock %}
 
 {% block content %}
-<div style="background:var(--bg-light);min-height:85vh;display:flex;align-items:center;justify-content:center;padding:2rem 1.25rem;">
-    <div class="card" style="width:100%;max-width:450px;padding:2.5rem;box-shadow:var(--shadow-hover);border-radius:12px;">
-        <div style="text-align:center;margin-bottom:2rem;">
-            <div style="font-size:3rem;color:var(--primary);margin-bottom:1rem;"><i class="fas fa-user-shield"></i></div>
-            <h1 style="font-family:var(--font-main);font-size:1.8rem;color:var(--text-dark);margin-bottom:0.4rem;">Admin Login Portal</h1>
-            <p style="color:var(--text-muted);font-size:0.88rem;line-height:1.6;">Manage courses, slideshow banners, check placements, and verify enquiries.</p>
+<style>
+    /* Animated Gradient Background */
+    .login-container {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1.25rem;
+        background: linear-gradient(-45deg, #0ea5e9, #3b82f6, #4f46e5, #8b5cf6);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Floating Particles for Premium Feel */
+    .particle {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        border-radius: 50%;
+        animation: floatUp 10s infinite linear;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(100vh) scale(0); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+    }
+
+    /* Glassmorphism Card */
+    .login-glass-card {
+        width: 100%;
+        max-width: 480px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        padding: 3rem 2.5rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        border-radius: 20px;
+        position: relative;
+        z-index: 10;
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .login-glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Icon Pulse Animation */
+    .login-icon-wrapper {
+        font-size: 3.5rem;
+        color: transparent;
+        background: linear-gradient(135deg, #0ea5e9, #4f46e5);
+        -webkit-background-clip: text;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+        animation: pulseIcon 2s infinite;
+    }
+
+    @keyframes pulseIcon {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    /* Form Styling Overrides */
+    .glass-form-group {
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    .glass-form-group label {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #4b5563;
+        margin-bottom: 0.5rem;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .glass-form-group input {
+        width: 100%;
+        padding: 0.85rem 1.25rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: #1f2937;
+        background: #f9fafb;
+        transition: all 0.3s ease;
+    }
+
+    .glass-form-group input:focus {
+        border-color: #3b82f6;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        outline: none;
+    }
+
+    /* Gradient Button */
+    .btn-gradient {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(135deg, #0ea5e9, #4f46e5);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        margin-top: 1rem;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(135deg, #0284c7, #4338ca);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="login-container">
+    <!-- Floating Background Particles -->
+    <div class="particle" style="width:100px; height:100px; left:10%; animation-duration:12s; animation-delay:0s;"></div>
+    <div class="particle" style="width:150px; height:150px; left:70%; animation-duration:15s; animation-delay:2s;"></div>
+    <div class="particle" style="width:60px; height:60px; left:40%; animation-duration:9s; animation-delay:4s;"></div>
+    <div class="particle" style="width:80px; height:80px; left:80%; animation-duration:11s; animation-delay:1s;"></div>
+    <div class="particle" style="width:120px; height:120px; left:20%; animation-duration:14s; animation-delay:5s;"></div>
+
+    <!-- Login Card -->
+    <div class="login-glass-card">
+        <div style="text-align:center; margin-bottom:2rem;">
+            <div class="login-icon-wrapper"><i class="fas fa-shield-alt"></i></div>
+            <h1 style="font-family:var(--font-main); font-size:2rem; font-weight:800; color:#1f2937; margin-bottom:0.5rem; letter-spacing:-0.5px;">Secure Login Portal</h1>
+            <p style="color:#6b7280; font-size:0.95rem; line-height:1.6; padding:0 10px;">Please authenticate to access the Admin, HR, and Executive dashboards.</p>
         </div>
 
         <form method="POST">
             {% csrf_token %}
-            <div class="form-group">
-                <label class="form-label" style="font-weight:700;font-size:0.85rem;">Username</label>
+            <div class="glass-form-group">
+                <label><i class="fas fa-user" style="margin-right:5px; color:#9ca3af;"></i> Username</label>
                 {{ form.username }}
             </div>
             
-            <div class="form-group" style="margin-bottom:2rem;">
-                <label class="form-label" style="font-weight:700;font-size:0.85rem;">Password</label>
+            <div class="glass-form-group">
+                <label><i class="fas fa-lock" style="margin-right:5px; color:#9ca3af;"></i> Password</label>
                 {{ form.password }}
             </div>
             
-            <button type="submit" class="btn btn-primary" style="width:100%;border-radius:var(--radius);padding:.85rem;font-size:0.95rem;">Log In</button>
+            <button type="submit" class="btn-gradient">
+                <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Authenticate
+            </button>
         </form>
+        
+        <div style="text-align:center; margin-top:2rem; padding-top:1.5rem; border-top:1px solid #e5e7eb;">
+            <p style="font-size:0.8rem; color:#9ca3af; margin:0;"><i class="fas fa-lock" style="margin-right:4px;"></i> 256-bit Encrypted Connection</p>
+        </div>
     </div>
 </div>
 {% endblock %}

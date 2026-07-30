@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block sidebar_menu %}
-    <button class="sidebar-menu-item active" data-tab="admin-banners"><i class="fas fa-images"></i> Home Banners</button>
+    <button class="sidebar-menu-item active" data-tab="admin-overview"><i class="fas fa-chart-pie"></i> Dashboard Overview</button>
+    <button class="sidebar-menu-item" data-tab="admin-banners"><i class="fas fa-images"></i> Home Banners</button>
     <button class="sidebar-menu-item" data-tab="admin-courses"><i class="fas fa-graduation-cap"></i> Course Manager</button>
     <button class="sidebar-menu-item" data-tab="admin-certificates"><i class="fas fa-award"></i> Certificate Manager</button>
     <button class="sidebar-menu-item" data-tab="admin-enquiries"><i class="fas fa-envelope-open-text"></i> Student Enquiries</button>
@@ -14,7 +15,7 @@
 
 {% block dashboard_content %}
     <!-- OVERVIEW TAB -->
-    <div id="admin-overview" class="tab-content">
+    <div id="admin-overview" class="tab-content active">
         <div class="dashboard-actions-header">
             <div class="dashboard-title-container">
                 <h2>Admin Dashboard</h2>
@@ -56,6 +57,23 @@
             </div>
         </div>
 
+        <!-- Google Analytics Chart -->
+        <div class="glass-card" style="margin-top: 2rem; margin-bottom: 2rem; padding: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0;"><i class="fas fa-chart-line" style="color: var(--primary); margin-right: 10px;"></i> Website Traffic (Last 7 Days)</h3>
+                <span style="background: rgba(14, 165, 233, 0.1); color: var(--primary); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Live Data API</span>
+            </div>
+            
+            {% if analytics_data.dates|length > 0 %}
+                <canvas id="trafficChart" height="80"></canvas>
+            {% else %}
+                <div style="text-align: center; padding: 2rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1);">
+                    <i class="fas fa-chart-bar" style="font-size: 2rem; color: rgba(255,255,255,0.2); margin-bottom: 1rem;"></i>
+                    <p style="color: var(--text-muted); margin: 0;">Analytics data is currently unavailable. Ensure the GA_PROPERTY_ID is set in your .env file.</p>
+                </div>
+            {% endif %}
+        </div>
+
         <!-- Quick actions -->
         <div class="glass-card">
             <h3 style="color: var(--accent-cyan); margin-bottom: 1.5rem;"><i class="fas fa-bolt" style="margin-right: 0.75rem;"></i> Quick Management Shortcuts</h3>
@@ -70,7 +88,7 @@
     </div>
 
     <!-- BANNERS TAB -->
-    <div id="admin-banners" class="tab-content active">
+    <div id="admin-banners" class="tab-content">
         <div class="dashboard-actions-header">
             <div class="dashboard-title-container">
                 <h2>Dynamic Home Banners</h2>
@@ -675,5 +693,76 @@
     function closeApplicantModal() {
         document.getElementById('applicantDetailsModal').style.display = 'none';
     }
+    </script>
+    
+    <!-- Chart.js and Analytics Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        {% if analytics_data.dates|length > 0 %}
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('trafficChart').getContext('2d');
+            
+            // gradient fill
+            let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(14, 165, 233, 0.5)'); // Cyan start
+            gradient.addColorStop(1, 'rgba(14, 165, 233, 0)');   // Transparent end
+
+            const dates = {{ analytics_data.dates|safe }};
+            const visitors = {{ analytics_data.visitors|safe }};
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Daily Visitors',
+                        data: visitors,
+                        borderColor: '#0ea5e9',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#0ea5e9',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleColor: '#94a3b8',
+                            bodyColor: '#fff',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' Visitors';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: { color: '#94a3b8', font: { family: 'Inter', size: 12 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                            ticks: { color: '#94a3b8', font: { family: 'Inter', size: 12 }, stepSize: 10 },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+        {% endif %}
     </script>
 {% endblock %}

@@ -53,8 +53,11 @@ urlpatterns = [
     # Custom Role-Based Dashboards
     path('bpo-dashboard/', views.bpo_dashboard, name='bpo_dashboard'),
     path('bpo-dashboard/resolve/<int:pk>/', views.mis_resolve_enquiry, name='mis_resolve_enquiry'),
+    path('bpo-dashboard/claim/<int:pk>/', views.mis_claim_enquiry, name='mis_claim_enquiry'),
     path('bpo-dashboard/export/', views.mis_export_csv, name='mis_export_csv'),
     path('hr-dashboard/', views.hr_dashboard, name='hr_dashboard'),
     path('hr-dashboard/status/<int:pk>/', views.hr_update_status, name='hr_update_status'),
     path('hr-dashboard/export/', views.hr_export_csv, name='hr_export_csv'),
+    path('bpo-dashboard/certificate/add/', views.mis_certificate_add, name='mis_certificate_add'),
+    path('bpo-dashboard/certificate/delete/<int:pk>/', views.mis_certificate_delete, name='mis_certificate_delete'),
 ]

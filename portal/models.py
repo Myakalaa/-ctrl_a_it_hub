@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class HeroBanner(models.Model):
     title = models.CharField(max_length=200, help_text="Main heading on the banner")
     subtitle = models.CharField(max_length=500, blank=True, help_text="Subheading or tagline")
-    image = models.ImageField(upload_to='banners/images/', blank=True, null=True, help_text="Upload banner image")
+    image = models.ImageField(upload_to='banners/images/', blank=True, null=True, help_text="Upload banner image (Recommended 1920x1080)")
     video = models.FileField(upload_to='banners/videos/', blank=True, null=True, help_text="Upload banner video (MP4 format recommended)")
     is_active = models.BooleanField(default=True)
     display_order = models.IntegerField(default=0, help_text="Order in which banner appears (lower numbers first)")
@@ -44,7 +44,7 @@ class Course(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     syllabus = models.TextField(blank=True, help_text="Course syllabus details (line separated or rich text)")
-    image = models.ImageField(upload_to='courses/', blank=True, null=True)
+    image = models.ImageField(upload_to='courses/', blank=True, null=True, help_text="Recommended resolution: 800x600 pixels")
     duration = models.CharField(max_length=50, default='3 Months')
     price = models.CharField(max_length=50, default='Rs. 15,000', help_text="Price or Contact for details")
     is_featured = models.BooleanField(default=False, help_text="Display on Home page featured courses")
@@ -117,6 +117,7 @@ class Enquiry(models.Model):
     enquiry_type = models.CharField(max_length=20, choices=ENQUIRY_TYPE_CHOICES, default='general')
     date_submitted = models.DateTimeField(auto_now_add=True)
     is_resolved = models.BooleanField(default=False)
+    claimed_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='claimed_enquiries', help_text="Executive working on this enquiry")
 
     class Meta:
         verbose_name_plural = "Enquiries"
@@ -154,7 +155,7 @@ class GalleryItem(models.Model):
     category = models.CharField(max_length=100, default='General')
     description = models.TextField(blank=True)
     media_type = models.CharField(max_length=10, choices=MEDIA_TYPE_CHOICES, default='image')
-    file = models.FileField(upload_to='gallery/')
+    file = models.FileField(upload_to='gallery/', help_text="Upload media (Recommended 1080x1080 for images)")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

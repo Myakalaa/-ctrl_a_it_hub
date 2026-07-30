@@ -42,3 +42,4 @@ desktop.ini
 
 # WhiteNoise Compressed Files
 staticfiles/
+google_credentials.json

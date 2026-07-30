@@ -11,7 +11,8 @@ from .models import (
     Assignment, CourseMaterial, Certificate, 
     Enquiry, Testimonial, PartnerLogo, GalleryItem,
     JobApplication, JobOpening
-) 
+)
+from .analytics import get_visitor_stats
 from .forms import (
     EnquiryForm, StudentRegisterForm, StudentLoginForm,
     HeroBannerForm, CourseForm, CertificateForm, 
@@ -434,7 +435,6 @@ def student_dashboard(request):
     return render(request, 'portal/student_dashboard.html', context)
 
 
-# --- CUSTOM ADMIN PORTAL ---
 
 @user_passes_test(is_staff, login_url='login')
 def admin_dashboard(request):
@@ -444,6 +444,8 @@ def admin_dashboard(request):
         'enquiries_pending': Enquiry.objects.filter(is_resolved=False).count(),
         'certificates_count': Certificate.objects.count(),
     }
+    
+    analytics_data = get_visitor_stats()
     
     # Load all objects for management tabs
     banners = HeroBanner.objects.all().order_by('display_order')
@@ -469,207 +471,7 @@ def admin_dashboard(request):
         'applications': applications,
         'openings': openings,
         'gallery_items': gallery_items,
-    }
-    return render(request, 'portal/admin_dashboard.html', context)
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_banner_add(request):
-    if request.method == 'POST':
-        form = HeroBannerForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Banner added successfully!")
-            return redirect('admin_dashboard')
-    else:
-        form = HeroBannerForm()
-    return render(request, 'portal/admin_form.html', {'form': form, 'title': 'Add Hero Banner'})
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_banner_delete(request, pk):
-    banner = get_object_or_404(HeroBanner, pk=pk)
-    banner.delete()
-    messages.success(request, "Banner deleted successfully!")
-    return redirect('admin_dashboard')
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_course_add(request):
-    if request.method == 'POST':
-        form = CourseForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Course added successfully!")
-            return redirect('admin_dashboard')
-    else:
-        form = CourseForm()
-    return render(request, 'portal/admin_form.html', {'form': form, 'title': 'Add New Course'})
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_course_delete(request, pk):
-    course = get_object_or_404(Course, pk=pk)
-    course.delete()
-    messages.success(request, "Course deleted successfully!")
-    return redirect('admin_dashboard')
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_student_edit(request, pk):
-    profile = get_object_or_404(StudentProfile, pk=pk)
-    if request.method == 'POST':
-        form = StudentProfileUpdateForm(request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Student details updated successfully!")
-            return redirect('admin_dashboard')
-    else:
-        form = StudentProfileUpdateForm(instance=profile)
-    return render(request, 'portal/admin_form.html', {'form': form, 'title': f'Edit Student: {profile.user.get_full_name()}'})
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_student_delete(request, pk):
-    profile = get_object_or_404(StudentProfile, pk=pk)
-    user = profile.user
-    user.delete()  # Cascade deletes profile
-    messages.success(request, "Student deleted successfully!")
-    return redirect('admin_dashboard')
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_certificate_add(request):
-    if request.method == 'POST':
-        form = CertificateForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Certificate issued successfully!")
-            return redirect('admin_dashboard')
-    else:
-        form = CertificateForm()
-    return render(request, 'portal/admin_form.html', {'form': form, 'title': 'Issue Certificate'})
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_certificate_delete(request, pk):
-    cert = get_object_or_404(Certificate, pk=pk)
-    cert.delete()
-    messages.success(request, "Certificate deleted successfully!")
-    return redirect('admin_dashboard')
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_material_add(request):
-    if request.method == 'POST':
-        form = CourseMaterialForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Course material uploaded successfully!")
-            return redirect('admin_dashboard')
-    else:
-        form = CourseMaterialForm()
-    return render(request, 'portal/admin_form.html', {'form': form, 'title': 'Upload Course Material'})
-
-
-@user_passes_test(is_staff, login_url='login')
-def admin_assignment_add(request):
-    if request.method == 'POST':
-        form = AssignmentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Assignment posted successfully!")
-            return redirect('admin_dashboard')
-def student_login(request):
-    if request.user.is_authenticated:
-        if request.user.is_staff:
-            return redirect('admin_dashboard')
-        return redirect('student_dashboard')
-        
-    if request.method == 'POST':
-        form = StudentLoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, f"Welcome back, {user.first_name or user.username}!")
-            if user.is_staff:
-                return redirect('admin_dashboard')
-            return redirect('student_dashboard')
-    else:
-        form = StudentLoginForm()
-    return render(request, 'portal/login.html', {'form': form})
-
-
-def student_logout_view(request):
-    logout(request)
-    request.session.flush()
-    messages.info(request, "You have been logged out successfully.")
-    response = redirect('login')
-    response['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0, private'
-    response['Pragma'] = 'no-cache'
-    response['Expires'] = '0'
-    return response
-
-
-@login_required
-def student_dashboard(request):
-    try:
-        profile = request.user.profile
-    except StudentProfile.DoesNotExist:
-        if request.user.is_staff:
-            return redirect('admin_dashboard')
-        messages.error(request, "Student profile does not exist. Please contact administrator.")
-        logout(request)
-        return redirect('login')
-        
-    course = profile.enrolled_course
-    materials = CourseMaterial.objects.filter(course=course) if course else []
-    assignments = Assignment.objects.filter(course=course).order_by('due_date') if course else []
-    
-    context = {
-        'profile': profile,
-        'course': course,
-        'materials': materials,
-        'assignments': assignments,
-    }
-    return render(request, 'portal/student_dashboard.html', context)
-
-
-# --- CUSTOM ADMIN PORTAL ---
-
-@user_passes_test(is_staff, login_url='login')
-def admin_dashboard(request):
-    stats = {
-        'students_count': StudentProfile.objects.count(),
-        'courses_count': Course.objects.count(),
-        'enquiries_pending': Enquiry.objects.filter(is_resolved=False).count(),
-        'certificates_count': Certificate.objects.count(),
-    }
-    
-    # Load all objects for management tabs
-    banners = HeroBanner.objects.all().order_by('display_order')
-    courses = Course.objects.all()
-    students = StudentProfile.objects.all().select_related('user', 'enrolled_course')
-    certificates = Certificate.objects.all()
-    enquiries = Enquiry.objects.all().order_by('-date_submitted')
-    materials = CourseMaterial.objects.all().select_related('course')
-    assignments = Assignment.objects.all().select_related('course')
-    applications = JobApplication.objects.all().order_by('-applied_at')
-    openings = JobOpening.objects.all().order_by('-created_at')
-    gallery_items = GalleryItem.objects.all().order_by('-created_at')
-    
-    context = {
-        'stats': stats,
-        'banners': banners,
-        'courses': courses,
-        'students': students,
-        'certificates': certificates,
-        'enquiries': enquiries,
-        'materials': materials,
-        'assignments': assignments,
-        'applications': applications,
-        'openings': openings,
-        'gallery_items': gallery_items,
+        'analytics_data': analytics_data,
     }
     return render(request, 'portal/admin_dashboard.html', context)
 
@@ -919,6 +721,17 @@ def mis_resolve_enquiry(request, pk):
     return redirect('bpo_dashboard')
 
 @user_passes_test(is_mis, login_url='/login/')
+def mis_claim_enquiry(request, pk):
+    enquiry = get_object_or_404(Enquiry, pk=pk)
+    if not enquiry.claimed_by:
+        enquiry.claimed_by = request.user
+        enquiry.save()
+        messages.success(request, f"You have successfully claimed the enquiry for {enquiry.name}.")
+    else:
+        messages.error(request, f"This enquiry is already claimed by {enquiry.claimed_by.username}.")
+    return redirect('bpo_dashboard')
+
+@user_passes_test(is_mis, login_url='/login/')
 def mis_export_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="enquiries.csv"'
@@ -985,3 +798,22 @@ def hr_export_csv(request):
             a.get_status_display()
         ])
     return response
+
+@user_passes_test(is_mis, login_url='login')
+def mis_certificate_add(request):
+    if request.method == 'POST':
+        form = CertificateForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Certificate issued successfully!')
+            return redirect('bpo_dashboard')
+    else:
+        form = CertificateForm()
+    return render(request, 'portal/admin_form.html', {'form': form, 'title': 'Issue Certificate'})
+
+@user_passes_test(is_mis, login_url='login')
+def mis_certificate_delete(request, pk):
+    cert = get_object_or_404(Certificate, pk=pk)
+    cert.delete()
+    messages.success(request, 'Certificate deleted successfully!')
+    return redirect('bpo_dashboard')

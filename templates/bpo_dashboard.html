@@ -137,13 +137,23 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{% url 'mis_resolve_enquiry' enquiry.pk %}" style="display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; text-decoration: none; {% if enquiry.is_resolved %}background: rgba(239, 68, 68, 0.12); color: #dc2626;{% else %}background: rgba(34, 197, 94, 0.15); color: #16a34a;{% endif %}">
-                                {% if enquiry.is_resolved %}
-                                    <i class="fas fa-undo"></i> Re-open
-                                {% else %}
-                                    <i class="fas fa-check"></i> Resolve
-                                {% endif %}
-                            </a>
+                            {% if not enquiry.claimed_by %}
+                                <a href="{% url 'mis_claim_enquiry' enquiry.pk %}" style="display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; text-decoration: none; background: rgba(59, 130, 246, 0.15); color: #2563eb;">
+                                    <i class="fas fa-hand-paper"></i> Claim
+                                </a>
+                            {% elif enquiry.claimed_by == request.user %}
+                                <a href="{% url 'mis_resolve_enquiry' enquiry.pk %}" style="display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; text-decoration: none; {% if enquiry.is_resolved %}background: rgba(239, 68, 68, 0.12); color: #dc2626;{% else %}background: rgba(34, 197, 94, 0.15); color: #16a34a;{% endif %}">
+                                    {% if enquiry.is_resolved %}
+                                        <i class="fas fa-undo"></i> Re-open
+                                    {% else %}
+                                        <i class="fas fa-check"></i> Resolve
+                                    {% endif %}
+                                </a>
+                            {% else %}
+                                <span style="display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; background: rgba(107, 114, 128, 0.1); color: #6b7280; cursor: not-allowed;" title="You cannot edit this because it is locked by another executive.">
+                                    <i class="fas fa-lock"></i> Claimed by {{ enquiry.claimed_by.username }}
+                                </span>
+                            {% endif %}
                         </td>
                     </tr>
                 {% empty %}
@@ -151,6 +161,61 @@
                         <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">
                             <i class="fas fa-inbox" style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block; opacity: 0.5;"></i>
                             No enquiries found matching your criteria.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- CERTIFICATE MANAGER SECTION (MIS) -->
+    <div class="dashboard-actions-header" style="margin-top: 3rem;">
+        <div class="dashboard-title-container">
+            <h2><i class="fas fa-award" style="color: var(--primary); margin-right: 10px;"></i>Certificate Manager</h2>
+            <p>Generate, issue, and manage student certificates.</p>
+        </div>
+        <div>
+            <a href="{% url 'mis_certificate_add' %}" class="btn btn-glow" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 0.65rem 1.2rem; background: linear-gradient(135deg, #0ea5e9, #2563eb); color: white; border-radius: 8px; font-weight: 700; font-size: 0.88rem;">
+                <i class="fas fa-plus"></i> Issue Certificate
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Course Name</th>
+                    <th>Certificate Code</th>
+                    <th>Issue Date</th>
+                    <th>File</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cert in certificates %}
+                    <tr>
+                        <td style="font-weight: 700; color: var(--text-dark);">{{ cert.student_name }}</td>
+                        <td>{{ cert.course_name }}</td>
+                        <td style="font-family: monospace; font-weight: bold; color: var(--primary);">{{ cert.certificate_code }}</td>
+                        <td>{{ cert.issue_date|date:"M d, Y" }}</td>
+                        <td>
+                            {% if cert.certificate_file %}
+                                <a href="{{ cert.certificate_file.url }}" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight:600;"><i class="fas fa-external-link-alt"></i> View</a>
+                            {% else %}
+                                <span style="color: var(--text-muted); font-size: 0.85rem;">No File</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'mis_certificate_delete' cert.pk %}" class="btn btn-danger" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 6px; text-decoration:none; background: rgba(239, 68, 68, 0.12); color: #dc2626; font-weight:bold; display: inline-flex; align-items: center; gap: 5px;" onclick="return confirm('Delete this certificate record?')"><i class="fas fa-trash-alt"></i> Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                            <i class="fas fa-award" style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block; opacity: 0.5;"></i>
+                            No certificate records found.
                         </td>
                     </tr>
                 {% endfor %}
