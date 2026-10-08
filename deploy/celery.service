@@ -4,12 +4,14 @@ After=network.target
 
 [Service]
 Type=simple
-User=root
-Group=root
-WorkingDirectory=/var/www/-ctrl_a_it_hub
-ExecStart=/var/www/-ctrl_a_it_hub/venv/bin/celery -A ctrla_hub worker -l info
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/ctrl_a_it_hub
+EnvironmentFile=/var/www/ctrl_a_it_hub/.env
+ExecStart=/var/www/ctrl_a_it_hub/venv/bin/celery -A ctrla_hub worker -l info
 Restart=always
 RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
+

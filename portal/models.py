@@ -209,3 +209,21 @@ class JobOpening(models.Model):
         return self.title
 
 
+class Director(models.Model):
+    name = models.CharField(max_length=150, help_text="Full name of the director")
+    designation = models.CharField(max_length=200, default='Managing Director', help_text="Title shown as the card heading (e.g. Managing Director)")
+    desk_label = models.CharField(max_length=200, default='Welcome Message', help_text="Sub-label shown below the designation (e.g. Welcome Message)")
+    message = models.TextField(help_text="Short message / quote displayed on the director card")
+    photo = models.ImageField(upload_to='directors/', blank=True, null=True, help_text="Portrait photo (Recommended: 360×580 px)")
+    display_order = models.PositiveIntegerField(default=0, help_text="Cards are sorted by this value (lower = first)")
+    is_active = models.BooleanField(default=True, help_text="Uncheck to hide this director from the About page")
+
+    class Meta:
+        ordering = ['display_order', 'id']
+        verbose_name = 'Director'
+        verbose_name_plural = 'Directors'
+
+    def __str__(self):
+        return f"{self.name} — {self.designation}"
+
+

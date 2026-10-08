@@ -58,7 +58,7 @@ def send_hr_notification_task(name, phone, job_title):
     """
     access_token = os.environ.get('META_WHATSAPP_TOKEN')
     phone_number_id = os.environ.get('META_PHONE_NUMBER_ID')
-    admin_phone = os.environ.get('ADMIN_WHATSAPP_NUMBER', '919989985152')
+    admin_phone = os.environ.get('ADMIN_WHATSAPP_NUMBER', '919133391401')
 
     if not access_token or not phone_number_id:
         logger.warning(
@@ -103,27 +103,28 @@ def send_hr_notification_task(name, phone, job_title):
     default_retry_delay=60,
     autoretry_for=(Exception,)
 )
-def send_bpo_enquiry_email_task(name, email, phone, enquiry_type, message):
+def send_bpo_enquiry_email_task(name, email, phone, enquiry_type, message, course_interested=None):
     """
-    Asynchronous Celery task: emails student enquiry details to the BPO team.
+    Asynchronous Celery task: emails student enquiry details to the team inbox.
     Automatically retries up to 3 times with a 60-second delay if Gmail fails.
     """
     from django.core.mail import send_mail
 
-    subject = f"🔔 New Student Enquiry Alert ({enquiry_type.upper()})"
+    subject = f"🔔 New Student Enquiry Alert ({enquiry_type.upper()}) - {name}"
     body = (
-        f"Hello BPO Team,\n\n"
+        f"Hello Team,\n\n"
         f"A student has submitted a new enquiry through the CTRL A IT HUB portal.\n\n"
         f"{'='*50}\n"
-        f"ENQUIRY DETAILS\n"
+        f"STUDENT ENQUIRY DETAILS\n"
         f"{'='*50}\n"
-        f"Name          : {name}\n"
-        f"Email         : {email}\n"
-        f"Phone         : {phone}\n"
-        f"Enquiry Type  : {enquiry_type.title()}\n\n"
-        f"Message:\n{message}\n\n"
+        f"Name              : {name}\n"
+        f"Email             : {email}\n"
+        f"Phone Number      : {phone}\n"
+        f"Course Interested : {course_interested or 'N/A'}\n"
+        f"Enquiry Type      : {enquiry_type.title()}\n\n"
+        f"Message / Query:\n{message}\n\n"
         f"{'='*50}\n"
-        f"Please log in to the Admin Dashboard to mark this enquiry as Resolved.\n"
+        f"Please log in to the Admin Dashboard to follow up:\n"
         f"Admin URL: https://ctrlaithub.com/admin/portal/enquiry/\n\n"
         f"— CTRL A IT HUB Automated Notification System"
     )
@@ -133,7 +134,7 @@ def send_bpo_enquiry_email_task(name, email, phone, enquiry_type, message):
             subject=subject,
             message=body,
             from_email=None,  # Uses DEFAULT_FROM_EMAIL from settings.py
-            recipient_list=['ctrlaithubempoweringtechnology@gmail.com'],
+            recipient_list=['info@ctrlaithub.com', 'ctrlaithubempoweringtechnology@gmail.com'],
             fail_silently=False,
         )
         logger.info(f"[Task] ✓ BPO enquiry email sent for '{name}'.")

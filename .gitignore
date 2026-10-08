@@ -16,12 +16,15 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 staticfiles/
-media/
+# Dynamic user uploads (keep base course & banner assets tracked)
+media/resumes/*
+media/certificates/*
 
 # Environment Variables (NEVER upload to GitHub)
 .env
 .env.*
 *.env
+!.env.example
 
 # Virtual Environment
 venv/

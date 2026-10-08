@@ -7,7 +7,7 @@ from .models import (
     HeroBanner, Service, Course, StudentProfile, 
     Assignment, CourseMaterial, Certificate, 
     Enquiry, Testimonial, PartnerLogo, GalleryItem,
-    JobApplication, JobOpening
+    JobApplication, JobOpening, Director
 )
 
 # ===== ADMIN SITE BRANDING =====
@@ -208,3 +208,29 @@ class JobOpeningAdmin(admin.ModelAdmin):
             return format_html('<span style="background:#28a745;color:#fff;padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:700;">🟢 Active</span>')
         return format_html('<span style="background:#6c757d;color:#fff;padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:700;">⭕ Closed</span>')
     active_badge.short_description = 'Status'
+
+
+@admin.register(Director)
+class DirectorAdmin(admin.ModelAdmin):
+    list_display = ('display_order', 'photo_preview', 'name', 'designation', 'desk_label', 'active_badge', 'is_active')
+    list_display_links = ('name',)
+    list_filter = ('is_active',)
+    list_editable = ('is_active', 'display_order')
+    search_fields = ('name', 'designation', 'message')
+    list_per_page = 20
+    ordering = ('display_order', 'id')
+
+    def photo_preview(self, obj):
+        if obj.photo:
+            return format_html(
+                '<img src="{}" style="width:50px;height:65px;object-fit:cover;border-radius:4px;border:1px solid #ddd;" />',
+                obj.photo.url
+            )
+        return format_html('<span style="color:#aaa;font-size:0.8rem;">No photo</span>')
+    photo_preview.short_description = 'Photo'
+
+    def active_badge(self, obj):
+        if obj.is_active:
+            return format_html('<span style="background:#28a745;color:#fff;padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:700;">✓ Visible</span>')
+        return format_html('<span style="background:#dc3545;color:#fff;padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:700;">Hidden</span>')
+    active_badge.short_description = 'Visibility'

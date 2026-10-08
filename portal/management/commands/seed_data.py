@@ -1,3 +1,4 @@
+import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from portal.models import Course, Service, Testimonial, HeroBanner, StudentProfile
@@ -10,11 +11,12 @@ class Command(BaseCommand):
 
         # 1. Create Default Admin User
         if not User.objects.filter(username='admin').exists():
-            admin_user = User.objects.create_superuser('admin', 'admin@ctrlaithub.com', 'admin123')
+            admin_pwd = os.environ.get('INITIAL_ADMIN_PASSWORD', 'admin123')
+            admin_user = User.objects.create_superuser('admin', 'admin@ctrlaithub.com', admin_pwd)
             admin_user.first_name = 'CTRL A'
             admin_user.last_name = 'Admin'
             admin_user.save()
-            self.stdout.write(self.style.SUCCESS('Superuser created: username=admin, password=admin123'))
+            self.stdout.write(self.style.SUCCESS(f'Superuser created: username=admin, password={admin_pwd}'))
 
         # 2. Seed Hero Banners
         if HeroBanner.objects.count() == 0:

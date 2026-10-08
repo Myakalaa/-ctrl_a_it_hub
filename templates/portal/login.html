@@ -1,177 +1,481 @@
-{% extends 'base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login — CTRL A IT HUB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-{% block title %}Admin Login - CTRL A IT HUB{% endblock %}
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
 
-{% block content %}
-<style>
-    /* Animated Gradient Background */
-    .login-container {
-        min-height: 85vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 1.25rem;
-        background: linear-gradient(-45deg, #0ea5e9, #3b82f6, #4f46e5, #8b5cf6);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+        /* ===== SPLIT LAYOUT ===== */
+        .login-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
 
-    /* Floating Particles for Premium Feel */
-    .particle {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(5px);
-        border-radius: 50%;
-        animation: floatUp 10s infinite linear;
-    }
+        /* ===== LEFT PANEL — BRAND SIDE ===== */
+        .login-left {
+            flex: 1.1;
+            background: linear-gradient(135deg, #020617 0%, #0f172a 40%, #1e1b4b 75%, #312e81 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 4rem 3.5rem;
+            overflow: hidden;
+        }
 
-    @keyframes floatUp {
-        0% { transform: translateY(100vh) scale(0); opacity: 0; }
-        50% { opacity: 1; }
-        100% { transform: translateY(-20vh) scale(1); opacity: 0; }
-    }
+        /* Glowing orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            animation: orbFloat 8s ease-in-out infinite;
+        }
+        .orb-1 { width: 350px; height: 350px; background: #6366f1; top: -80px; left: -80px; animation-delay: 0s; }
+        .orb-2 { width: 250px; height: 250px; background: #0ea5e9; bottom: 80px; right: -60px; animation-delay: 3s; }
+        .orb-3 { width: 180px; height: 180px; background: #8b5cf6; top: 50%; left: 50%; animation-delay: 5s; }
 
-    /* Glassmorphism Card */
-    .login-glass-card {
-        width: 100%;
-        max-width: 480px;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        padding: 3rem 2.5rem;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        border-radius: 20px;
-        position: relative;
-        z-index: 10;
-        transform: translateY(0);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .login-glass-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.3);
-    }
+        @keyframes orbFloat {
+            0%, 100% { transform: scale(1) translateY(0px); }
+            50% { transform: scale(1.08) translateY(-15px); }
+        }
 
-    /* Icon Pulse Animation */
-    .login-icon-wrapper {
-        font-size: 3.5rem;
-        color: transparent;
-        background: linear-gradient(135deg, #0ea5e9, #4f46e5);
-        -webkit-background-clip: text;
-        margin-bottom: 1.5rem;
-        display: inline-block;
-        animation: pulseIcon 2s infinite;
-    }
+        /* Grid overlay texture */
+        .login-left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 1;
+        }
 
-    @keyframes pulseIcon {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
+        .login-left-content { position: relative; z-index: 2; }
 
-    /* Form Styling Overrides */
-    .glass-form-group {
-        margin-bottom: 1.5rem;
-        text-align: left;
-    }
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50px;
+            padding: 0.45rem 1.1rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(10px);
+        }
+        .brand-badge span {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.75);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .brand-badge .dot {
+            width: 7px; height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    .glass-form-group label {
-        font-weight: 700;
-        font-size: 0.85rem;
-        color: #4b5563;
-        margin-bottom: 0.5rem;
-        display: block;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
+        .brand-logo-row {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .brand-logo-img {
+            width: 64px; height: 64px;
+            border-radius: 16px;
+            border: 2px solid rgba(255,255,255,0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .brand-name {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+        .brand-name span { color: #f97316; }
+        .brand-tagline {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.5);
+            font-weight: 500;
+            margin-top: 2px;
+        }
 
-    .glass-form-group input {
-        width: 100%;
-        padding: 0.85rem 1.25rem;
-        border: 2px solid #e5e7eb;
-        border-radius: 10px;
-        font-size: 1rem;
-        color: #1f2937;
-        background: #f9fafb;
-        transition: all 0.3s ease;
-    }
+        .login-left h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.25;
+            margin: 0 0 1rem;
+            letter-spacing: -1px;
+        }
+        .login-left h2 span {
+            background: linear-gradient(90deg, #818cf8, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .login-left > .login-left-content > p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.7;
+            max-width: 380px;
+            margin: 0 0 3rem;
+        }
 
-    .glass-form-group input:focus {
-        border-color: #3b82f6;
-        background: #ffffff;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        outline: none;
-    }
+        /* Role cards */
+        .role-cards { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 380px; }
+        .role-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 0.9rem 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .role-card:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.16); transform: translateX(6px); }
+        .role-card-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; flex-shrink: 0;
+        }
+        .role-card-info h4 { font-size: 0.88rem; font-weight: 700; color: #ffffff; margin: 0 0 2px; }
+        .role-card-info p { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin: 0; line-height: 1.4; }
 
-    /* Gradient Button */
-    .btn-gradient {
-        width: 100%;
-        padding: 1rem;
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: white;
-        background: linear-gradient(135deg, #0ea5e9, #4f46e5);
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-        margin-top: 1rem;
-    }
+        /* ===== RIGHT PANEL — FORM SIDE ===== */
+        .login-right {
+            flex: 0.9;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            position: relative;
+            overflow-y: auto;
+        }
+        .login-right::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 1px; height: 100%;
+            background: linear-gradient(to bottom, transparent, #e2e8f0 20%, #e2e8f0 80%, transparent);
+        }
 
-    .btn-gradient:hover {
-        background: linear-gradient(135deg, #0284c7, #4338ca);
-        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-        transform: translateY(-2px);
-    }
-</style>
+        .login-form-box { width: 100%; max-width: 420px; }
 
-<div class="login-container">
-    <!-- Floating Background Particles -->
-    <div class="particle" style="width:100px; height:100px; left:10%; animation-duration:12s; animation-delay:0s;"></div>
-    <div class="particle" style="width:150px; height:150px; left:70%; animation-duration:15s; animation-delay:2s;"></div>
-    <div class="particle" style="width:60px; height:60px; left:40%; animation-duration:9s; animation-delay:4s;"></div>
-    <div class="particle" style="width:80px; height:80px; left:80%; animation-duration:11s; animation-delay:1s;"></div>
-    <div class="particle" style="width:120px; height:120px; left:20%; animation-duration:14s; animation-delay:5s;"></div>
+        .form-header { margin-bottom: 2.5rem; }
+        .welcome-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #6366f1;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .welcome-label::before { content: ''; width: 20px; height: 2px; background: #6366f1; border-radius: 2px; }
+        .form-header h2 { font-size: 2rem; font-weight: 800; color: #0f172a; margin: 0 0 0.5rem; letter-spacing: -0.5px; }
+        .form-header p { font-size: 0.9rem; color: #64748b; margin: 0; }
 
-    <!-- Login Card -->
-    <div class="login-glass-card">
-        <div style="text-align:center; margin-bottom:2rem;">
-            <div class="login-icon-wrapper"><i class="fas fa-shield-alt"></i></div>
-            <h1 style="font-family:var(--font-main); font-size:2rem; font-weight:800; color:#1f2937; margin-bottom:0.5rem; letter-spacing:-0.5px;">Secure Login Portal</h1>
-            <p style="color:#6b7280; font-size:0.95rem; line-height:1.6; padding:0 10px;">Please authenticate to access the Admin, HR, and Executive dashboards.</p>
-        </div>
+        /* Input groups */
+        .input-group-styled { margin-bottom: 1.4rem; }
+        .input-group-styled label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .input-wrapper { position: relative; }
+        .input-icon {
+            position: absolute;
+            left: 1rem; top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .input-group-styled input {
+            width: 100%;
+            padding: 0.9rem 3rem 0.9rem 2.8rem;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: #1e293b;
+            transition: all 0.25s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .input-group-styled input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.1);
+            outline: none;
+        }
+        .input-group-styled input::placeholder { color: #cbd5e1; }
 
-        <form method="POST">
-            {% csrf_token %}
-            <div class="glass-form-group">
-                <label><i class="fas fa-user" style="margin-right:5px; color:#9ca3af;"></i> Username</label>
-                {{ form.username }}
+        /* Show/Hide Password Toggle */
+        .toggle-password {
+            position: absolute;
+            right: 1rem; top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            padding: 0;
+            z-index: 2;
+            transition: color 0.2s ease;
+        }
+        .toggle-password:hover { color: #6366f1; }
+
+        /* Error alert */
+        .error-alert {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            color: #dc2626;
+        }
+
+        /* Submit button */
+        .btn-login {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(79,70,229,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+        .btn-login:hover { background: linear-gradient(135deg, #4338ca, #6d28d9); box-shadow: 0 6px 28px rgba(79,70,229,0.5); transform: translateY(-2px); }
+        .btn-login:active { transform: translateY(0); }
+
+        /* Security footer */
+        .security-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+        .security-footer i { color: #22c55e; }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            body { overflow: auto; }
+            .login-left { display: none; }
+            .login-right {
+                flex: 1;
+                padding: 2rem 1.5rem;
+                background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+                min-height: 100vh;
+            }
+            .login-right::before { display: none; }
+            .welcome-label { color: #818cf8; }
+            .welcome-label::before { background: #818cf8; }
+            .form-header h2 { color: #ffffff; }
+            .form-header p { color: rgba(255,255,255,0.6); }
+            .input-group-styled label { color: rgba(255,255,255,0.8); }
+            .input-group-styled input { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); color: #ffffff; }
+            .input-group-styled input::placeholder { color: rgba(255,255,255,0.3); }
+            .input-group-styled input:focus { border-color: #818cf8; box-shadow: 0 0 0 4px rgba(129,140,248,0.15); }
+            .security-footer { border-top-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+
+    <!-- ===== LEFT BRAND PANEL ===== -->
+    <div class="login-left">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+
+        <div class="login-left-content">
+            <div class="brand-badge">
+                <div class="dot"></div>
+                <span>Secure Staff Portal</span>
             </div>
-            
-            <div class="glass-form-group">
-                <label><i class="fas fa-lock" style="margin-right:5px; color:#9ca3af;"></i> Password</label>
-                {{ form.password }}
+
+            <div class="brand-logo-row">
+                <img src="{% static 'images/logo.png' %}" alt="CTRL A IT HUB" class="brand-logo-img" onerror="this.style.display='none'">
+                <div>
+                    <div class="brand-name">CTRL A <span>IT HUB</span></div>
+                    <div class="brand-tagline">Empowering Technology &amp; People</div>
+                </div>
             </div>
-            
-            <button type="submit" class="btn-gradient">
-                <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Authenticate
-            </button>
-        </form>
-        
-        <div style="text-align:center; margin-top:2rem; padding-top:1.5rem; border-top:1px solid #e5e7eb;">
-            <p style="font-size:0.8rem; color:#9ca3af; margin:0;"><i class="fas fa-lock" style="margin-right:4px;"></i> 256-bit Encrypted Connection</p>
+
+            <h2>Your Command<br>Centre <span>Awaits.</span></h2>
+            <p>Securely access your personalized dashboard to manage leads, review applications, and oversee institute operations in real time.</p>
+
+            <div class="role-cards">
+                <div class="role-card">
+                    <div class="role-card-icon" style="background:rgba(99,102,241,0.15);">
+                        <i class="fas fa-shield-alt" style="color:#818cf8;"></i>
+                    </div>
+                    <div class="role-card-info">
+                        <h4>Master Admin</h4>
+                        <p>Full control — Analytics, Courses, Banners</p>
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-card-icon" style="background:rgba(34,197,94,0.15);">
+                        <i class="fas fa-users" style="color:#4ade80;"></i>
+                    </div>
+                    <div class="role-card-info">
+                        <h4>HR Team</h4>
+                        <p>Manage applications &amp; hiring pipeline</p>
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-card-icon" style="background:rgba(251,146,60,0.15);">
+                        <i class="fas fa-headset" style="color:#fb923c;"></i>
+                    </div>
+                    <div class="role-card-info">
+                        <h4>MIS Executive</h4>
+                        <p>Claim leads, track &amp; resolve enquiries</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- ===== RIGHT FORM PANEL ===== -->
+    <div class="login-right">
+        <div class="login-form-box">
+            <div class="form-header">
+                <div class="welcome-label">Staff Access</div>
+                <h2>Welcome Back 👋</h2>
+                <p>Sign in with your staff credentials to continue.</p>
+            </div>
+
+            {% if form.errors %}
+            <div class="error-alert">
+                <i class="fas fa-exclamation-circle"></i>
+                Invalid username or password. Please try again.
+            </div>
+            {% endif %}
+
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+
+                <div class="input-group-styled">
+                    <label><i class="fas fa-user" style="margin-right:5px;"></i> Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        {{ form.username }}
+                    </div>
+                </div>
+
+                <div class="input-group-styled">
+                    <label><i class="fas fa-lock" style="margin-right:5px;"></i> Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        {{ form.password }}
+                        <button type="button" class="toggle-password" id="togglePwd" title="Show/Hide Password">
+                            <i class="fas fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login to Dashboard
+                </button>
+            </form>
+
+            <div class="security-footer">
+                <i class="fas fa-lock"></i>
+                Secured with 256-bit SSL Encryption &nbsp;|&nbsp; CTRL A IT HUB &copy; 2026
+            </div>
+        </div>
+    </div>
+
 </div>
-{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Show / Hide Password Toggle
+        const toggleBtn = document.getElementById('togglePwd');
+        const eyeIcon = document.getElementById('eyeIcon');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function () {
+                const pwdInput = document.querySelector('input[name="password"]');
+                if (pwdInput) {
+                    if (pwdInput.type === 'password') {
+                        pwdInput.type = 'text';
+                        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+                        toggleBtn.style.color = '#6366f1';
+                    } else {
+                        pwdInput.type = 'password';
+                        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+                        toggleBtn.style.color = '#94a3b8';
+                    }
+                }
+            });
+        }
+
+        // Button loading state
+        const form = document.querySelector('form');
+        const btn = document.getElementById('login-btn');
+        if (form && btn) {
+            form.addEventListener('submit', function () {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+                btn.disabled = true;
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

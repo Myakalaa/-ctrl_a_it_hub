@@ -45,36 +45,105 @@
 
 <!-- Grand Executive Board of Directors Section (Exact Osmania University Banner Style) -->
 <style>
+    .directors-grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.75rem;
+        align-items: stretch;
+        margin-bottom: 0;
+    }
     .director-banner-card {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         background: #000000;
-        border-radius: 12px;
+        border-radius: 12px 12px 0 0;
         overflow: hidden;
         box-shadow: 0 15px 40px rgba(0,0,0,0.4);
         border: 1px solid rgba(255,255,255,0.1);
+        border-bottom: none;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+    }
+    .director-banner-card:nth-child(even),
+    .director-banner-card.reverse {
+        flex-direction: row-reverse;
+    }
+    .director-banner-card:nth-child(even) .director-content-col,
+    .director-banner-card.reverse .director-content-col {
+        background: linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.90)), url('{% static "images/logo.png" %}') center left 5% / 240px auto no-repeat #0f172a;
     }
     .director-banner-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 20px 45px rgba(0,0,0,0.5);
     }
     .director-img-col {
-        flex: 0 0 220px;
-        width: 220px;
-        min-height: 320px;
+        flex: 0 0 180px;
+        width: 180px;
+        min-height: 290px;
         position: relative;
         background: #0f172a;
+        cursor: pointer;
+        overflow: hidden;
+    }
+    .director-img-col img {
+        transition: transform 0.35s ease;
+    }
+    .director-img-col:hover img {
+        transform: scale(1.05);
+    }
+    .director-img-badge {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(15, 23, 42, 0.85);
+        color: #ffffff;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        pointer-events: none;
+        transition: all 0.25s ease;
+    }
+    .director-img-col:hover .director-img-badge {
+        background: var(--accent, #f7941d);
+        color: #0b132b;
+        border-color: var(--accent, #f7941d);
+        transform: translateY(-2px);
     }
     .director-content-col {
-        flex: 1 1 480px;
+        flex: 1 1 auto;
         position: relative;
-        background: linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.90)), url('{% static "images/logo.png" %}') center right 5% / 340px auto no-repeat #0f172a;
-        padding: 3rem 2.5rem;
+        background: linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.90)), url('{% static "images/logo.png" %}') center right 5% / 240px auto no-repeat #0f172a;
+        padding: 2.2rem 1.6rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
         color: #ffffff;
+    }
+    .director-content-col h3 {
+        font-family: var(--font-main);
+        font-size: 1.55rem !important;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0 0 0.2rem;
+        letter-spacing: -0.4px;
+    }
+    .director-content-col h4 {
+        font-size: 0.95rem !important;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0 0 0.85rem !important;
+    }
+    .director-content-col p {
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 0.88rem !important;
+        line-height: 1.65 !important;
+        margin-bottom: 0;
     }
     .director-btn {
         display: inline-block;
@@ -93,25 +162,222 @@
         color: #ffffff;
         box-shadow: 0 4px 12px rgba(3, 105, 161, 0.35);
     }
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
+        .directors-grid-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .director-img-col {
+            flex: 0 0 220px;
+            width: 220px;
+        }
+    }
+    @media (max-width: 640px) {
+        .director-banner-card,
+        .director-banner-card:nth-child(even),
+        .director-banner-card.reverse {
+            flex-direction: column;
+        }
         .director-img-col {
             flex: 1 1 100%;
             width: 100%;
-            min-height: 340px;
-            max-height: 420px;
+            min-height: 320px;
+            max-height: 380px;
         }
         .director-content-col {
             padding: 2rem 1.5rem;
-            background-size: 240px auto;
+            background-size: 220px auto;
+        }
+    }
+
+    /* ===== DIRECTOR LIGHTBOX MODAL & SLIDER ===== */
+    .director-lightbox-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        background: rgba(6, 11, 25, 0.94);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .director-lightbox-modal.active {
+        display: flex;
+        opacity: 1;
+    }
+    .director-lightbox-container {
+        position: relative;
+        max-width: 850px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: lightboxZoom 0.3s ease;
+    }
+    @keyframes lightboxZoom {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+    .director-lightbox-close {
+        position: absolute;
+        top: -48px;
+        right: 0;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        font-size: 1.15rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s ease;
+        z-index: 20;
+    }
+    .director-lightbox-close:hover {
+        background: #ef4444;
+        border-color: #ef4444;
+        color: #ffffff;
+        transform: rotate(90deg);
+    }
+    .director-lightbox-stage {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    .director-lightbox-img-card {
+        position: relative;
+        max-width: 480px;
+        width: 100%;
+        height: 520px;
+        max-height: 65vh;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        background: #0f172a;
+    }
+    .director-lightbox-img-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    /* Left and Right Nav Buttons */
+    .director-lightbox-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #ffffff;
+        font-size: 1.35rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s ease;
+        z-index: 10;
+        backdrop-filter: blur(6px);
+    }
+    .director-lightbox-nav.prev {
+        left: 15px;
+    }
+    .director-lightbox-nav.next {
+        right: 15px;
+    }
+    .director-lightbox-nav:hover {
+        background: var(--accent, #f7941d);
+        border-color: var(--accent, #f7941d);
+        color: #0b132b;
+        transform: translateY(-50%) scale(1.12);
+        box-shadow: 0 8px 24px rgba(247, 148, 29, 0.45);
+    }
+    /* Caption Bar */
+    .director-lightbox-info {
+        margin-top: 1.25rem;
+        text-align: center;
+        color: #ffffff;
+        width: 100%;
+        max-width: 500px;
+    }
+    .director-lightbox-info h3 {
+        font-family: var(--font-main);
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0 0 0.2rem;
+        letter-spacing: -0.3px;
+    }
+    .director-lightbox-info p {
+        font-size: 0.95rem;
+        color: var(--accent, #f7941d);
+        font-weight: 600;
+        margin: 0 0 0.85rem;
+    }
+    .director-lightbox-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .director-lightbox-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+    .director-lightbox-dot.active {
+        width: 28px;
+        border-radius: 14px;
+        background: var(--accent, #f7941d);
+        box-shadow: 0 0 10px rgba(247, 148, 29, 0.5);
+    }
+    @media (max-width: 768px) {
+        .director-lightbox-img-card {
+            height: 400px;
+            max-height: 55vh;
+        }
+        .director-lightbox-nav {
+            width: 44px;
+            height: 44px;
+            font-size: 1.1rem;
+        }
+        .director-lightbox-nav.prev {
+            left: 5px;
+        }
+        .director-lightbox-nav.next {
+            right: 5px;
+        }
+        .director-lightbox-close {
+            top: -42px;
+            right: 5px;
+            width: 38px;
+            height: 38px;
         }
     }
 </style>
 
-<section class="section" style="background: #0b132b; padding: 3.5rem 1.5rem; color: white;">
+<section class="section" style="background: #0b132b; padding: 2.5rem 1.5rem 0; color: white;">
     <div style="max-width: 1250px; margin: 0 auto;">
         
         <!-- Section Header -->
-        <div class="section-header" style="text-align: center; margin-bottom: 2.5rem;">
+        <div class="section-header" style="text-align: center; margin-bottom: 1rem;">
             <span class="tag" style="background: rgba(255, 255, 255, 0.12); color: var(--accent, #f7941d); border: 1px solid rgba(247, 148, 29, 0.3); font-size: 0.8rem; padding: 5px 16px; border-radius: 30px; letter-spacing: 1.2px; font-weight: 700; text-transform: uppercase;">
                 <i class="fas fa-university" style="margin-right: 6px;"></i> Leadership Desk
             </span>
@@ -121,59 +387,91 @@
             <div style="width: 60px; height: 3px; background: var(--accent, #f7941d); margin: 0.5rem auto 0.75rem; border-radius: 2px;"></div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+        <div class="directors-grid-container">
             
-            <!-- Director 1 Banner (Exact Osmania University Vice-Chancellor Style) -->
+            {% for director in directors %}
+
+            {% if forloop.counter0|divisibleby:2 %}
+            <!-- Director Card (photo left, content right) -->
             <div class="director-banner-card">
-                <!-- Left: Director Portrait Photo -->
-                <div class="director-img-col">
-                    <img src="{% static 'images/director1.jpg' %}?v=10" alt="Managing Director" 
+            {% else %}
+            <!-- Director Card (photo right, content left) -->
+            <div class="director-banner-card reverse">
+            {% endif %}
+                <!-- Director Portrait Photo -->
+                <div class="director-img-col" onclick="openDirectorLightbox({{ forloop.counter0 }})" title="Click to view photo">
+                    {% if director.photo %}
+                    <!-- Uploaded photo from admin -->
+                    <img src="{{ director.photo.url }}" alt="{{ director.designation }}"
                          style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;">
+                    {% elif forloop.counter == 1 %}
+                    <!-- Fallback: swapped to director2.jpg -->
+                    <img src="{% static 'images/director2.jpg' %}?v=7" alt="{{ director.designation }}"
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;">
+                    {% elif forloop.counter == 2 %}
+                    <!-- Fallback: swapped to director1.jpg -->
+                    <img src="{% static 'images/director1.jpg' %}?v=10" alt="{{ director.designation }}"
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;">
+                    {% else %}
+                    <!-- Fallback placeholder for extra directors -->
+                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1e293b;">
+                        <i class="fas fa-user-tie" style="font-size:5rem;color:rgba(255,255,255,0.2);"></i>
+                    </div>
+                    {% endif %}
+                    <div class="director-img-badge"><i class="fas fa-search-plus"></i> View</div>
                 </div>
-                <!-- Right: Osmania Dark Background Overlay Banner Content with CTRL A IT HUB Logo -->
+                <!-- Dark Background Overlay Banner Content -->
                 <div class="director-content-col">
-                    <h3 style="font-family: var(--font-main); font-size: 2.2rem; font-weight: 800; color: #ffffff; margin: 0 0 0.2rem; letter-spacing: -0.5px;">
+                    <h3 style="font-family: var(--font-main); font-size: 1.55rem; font-weight: 800; color: #ffffff; margin: 0 0 0.2rem; letter-spacing: -0.4px;">
+                        {{ director.designation }}
+                    </h3>
+                    <h4 style="font-size: 0.95rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin: 0 0 0.85rem;">
+                        {{ director.desk_label }}
+                    </h4>
+                    <p style="color: rgba(255, 255, 255, 0.88); font-size: 0.9rem; line-height: 1.65; max-width: 100%; margin-bottom: 0;">
+                        {{ director.message }}
+                    </p>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Fallback: show original hardcoded cards if no directors in DB -->
+            <div class="director-banner-card">
+                <div class="director-img-col" onclick="openDirectorLightbox(0)" title="Click to view photo">
+                    <img src="{% static 'images/director2.jpg' %}?v=7" alt="Managing Director"
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;">
+                    <div class="director-img-badge"><i class="fas fa-search-plus"></i> View</div>
+                </div>
+                <div class="director-content-col">
+                    <h3 style="font-family: var(--font-main); font-size: 1.55rem; font-weight: 800; color: #ffffff; margin: 0 0 0.2rem; letter-spacing: -0.4px;">
                         Managing Director
                     </h3>
-                    <h4 style="font-size: 1.1rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin: 0 0 1.25rem;">
+                    <h4 style="font-size: 0.95rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin: 0 0 0.85rem;">
                         Welcome Message
                     </h4>
-                    <p style="color: rgba(255, 255, 255, 0.88); font-size: 1rem; line-height: 1.7; max-width: 780px; margin-bottom: 1.8rem;">
+                    <p style="color: rgba(255, 255, 255, 0.88); font-size: 0.9rem; line-height: 1.65; max-width: 100%; margin-bottom: 0;">
                         CTRL A IT HUB is dedicated to bridging the gap between educational aspirations and corporate requirements. We empower students with cutting-edge industry skills, building a seamless bridge between academic education and corporate software engineering standards.
                     </p>
-                    <div>
-                        <a href="{% url 'contact' %}" class="director-btn">
-                            Read More
-                        </a>
-                    </div>
                 </div>
             </div>
-
-            <!-- Director 2 Banner (Exact Osmania University Vice-Chancellor Style) -->
-            <div class="director-banner-card">
-                <!-- Left: Director Portrait Photo -->
-                <div class="director-img-col">
-                    <img src="{% static 'images/director2.jpg' %}?v=7" alt="Managing Director" 
+            <div class="director-banner-card reverse">
+                <div class="director-img-col" onclick="openDirectorLightbox(1)" title="Click to view photo">
+                    <img src="{% static 'images/director1.jpg' %}?v=10" alt="Managing Director"
                          style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;">
+                    <div class="director-img-badge"><i class="fas fa-search-plus"></i> View</div>
                 </div>
-                <!-- Right: Osmania Dark Background Overlay Banner Content with CTRL A IT HUB Logo -->
                 <div class="director-content-col">
-                    <h3 style="font-family: var(--font-main); font-size: 2.2rem; font-weight: 800; color: #ffffff; margin: 0 0 0.2rem; letter-spacing: -0.5px;">
+                    <h3 style="font-family: var(--font-main); font-size: 1.55rem; font-weight: 800; color: #ffffff; margin: 0 0 0.2rem; letter-spacing: -0.4px;">
                         Managing Director
                     </h3>
-                    <h4 style="font-size: 1.1rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin: 0 0 1.25rem;">
+                    <h4 style="font-size: 0.95rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin: 0 0 0.85rem;">
                         Managing Director Desk
                     </h4>
-                    <p style="color: rgba(255, 255, 255, 0.88); font-size: 1rem; line-height: 1.7; max-width: 780px; margin-bottom: 1.8rem;">
+                    <p style="color: rgba(255, 255, 255, 0.88); font-size: 0.9rem; line-height: 1.65; max-width: 100%; margin-bottom: 0;">
                         We focus on 100% practical, project-driven software mastery. Our curriculum equips students with hands-on coding skills, architecture principles, and real-time project incubation to thrive in top IT firms globally.
                     </p>
-                    <div>
-                        <a href="{% url 'courses' %}" class="director-btn">
-                            Read More
-                        </a>
-                    </div>
                 </div>
             </div>
+            {% endfor %}
 
         </div>
     </div>
@@ -283,5 +581,158 @@
         </div>
     </div>
 </section>
+
+<!-- Director Lightbox Modal with Left & Right Navigation -->
+<div id="directorLightboxModal" class="director-lightbox-modal" onclick="if(event.target === this) closeDirectorLightbox()" role="dialog" aria-modal="true" aria-label="Director Photo Lightbox">
+    <div class="director-lightbox-container">
+        <!-- Close Button -->
+        <button type="button" class="director-lightbox-close" onclick="closeDirectorLightbox()" title="Close (Esc)" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Stage Area (Left Nav, Image Card, Right Nav) -->
+        <div class="director-lightbox-stage">
+            <!-- Left / Prev Arrow -->
+            <button type="button" class="director-lightbox-nav prev" onclick="navigateDirectorSlide(-1)" title="Previous (Left Arrow)" aria-label="Previous image">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <!-- Image Card -->
+            <div class="director-lightbox-img-card">
+                <img id="directorLightboxImg" src="" alt="Director Photo">
+            </div>
+
+            <!-- Right / Next Arrow -->
+            <button type="button" class="director-lightbox-nav next" onclick="navigateDirectorSlide(1)" title="Next (Right Arrow)" aria-label="Next image">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Info / Caption Bar -->
+        <div class="director-lightbox-info">
+            <h3 id="directorLightboxTitle">Managing Director</h3>
+            <p id="directorLightboxSubtitle">Welcome Message</p>
+            <div class="director-lightbox-dots">
+                    {% for director in directors %}
+                    <span class="director-lightbox-dot {% if forloop.first %}active{% endif %}"
+                          onclick="goToDirectorSlide({{ forloop.counter0 }})"
+                          title="{{ director.designation }}"></span>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        // Build director data dynamically from rendered cards in the DOM
+        const directorsData = [];
+        document.querySelectorAll('.director-banner-card').forEach(function (card) {
+            const img = card.querySelector('.director-img-col img');
+            const h3  = card.querySelector('.director-content-col h3');
+            const h4  = card.querySelector('.director-content-col h4');
+            directorsData.push({
+                src:      img ? img.src : '',
+                alt:      img ? img.alt : '',
+                title:    h3  ? h3.textContent.trim()  : '',
+                subtitle: h4  ? h4.textContent.trim()  : ''
+            });
+        });
+
+        let currentDirectorIndex = 0;
+        const modal = document.getElementById('directorLightboxModal');
+        const modalImg = document.getElementById('directorLightboxImg');
+        const modalTitle = document.getElementById('directorLightboxTitle');
+        const modalSubtitle = document.getElementById('directorLightboxSubtitle');
+        const dots = document.querySelectorAll('.director-lightbox-dot');
+
+        window.openDirectorLightbox = function (index) {
+            currentDirectorIndex = (index >= 0 && index < directorsData.length) ? index : 0;
+            updateDirectorLightbox();
+            modal.style.display = 'flex';
+            void modal.offsetWidth; // Force reflow
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeDirectorLightbox = function () {
+            modal.classList.remove('active');
+            setTimeout(function () {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 280);
+        };
+
+        window.navigateDirectorSlide = function (step) {
+            currentDirectorIndex = (currentDirectorIndex + step + directorsData.length) % directorsData.length;
+            animateSlideTransition(step);
+        };
+
+        window.goToDirectorSlide = function (index) {
+            if (index === currentDirectorIndex) return;
+            const step = index > currentDirectorIndex ? 1 : -1;
+            currentDirectorIndex = index;
+            animateSlideTransition(step);
+        };
+
+        function animateSlideTransition(step) {
+            modalImg.style.opacity = '0';
+            modalImg.style.transform = step > 0 ? 'translateX(25px) scale(0.96)' : 'translateX(-25px) scale(0.96)';
+
+            setTimeout(function () {
+                updateDirectorLightbox();
+                modalImg.style.opacity = '1';
+                modalImg.style.transform = 'translateX(0) scale(1)';
+            }, 180);
+        }
+
+        function updateDirectorLightbox() {
+            const data = directorsData[currentDirectorIndex];
+            modalImg.src = data.src;
+            modalImg.alt = data.alt;
+            modalTitle.textContent = data.title;
+            modalSubtitle.textContent = data.subtitle;
+
+            dots.forEach(function (dot, idx) {
+                if (idx === currentDirectorIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Keyboard Controls
+        document.addEventListener('keydown', function (e) {
+            if (!modal.classList.contains('active')) return;
+            if (e.key === 'ArrowLeft') {
+                navigateDirectorSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                navigateDirectorSlide(1);
+            } else if (e.key === 'Escape') {
+                closeDirectorLightbox();
+            }
+        });
+
+        // Touch Swipe Gestures
+        let touchStartX = 0;
+        let touchEndX = 0;
+        modal.addEventListener('touchstart', function (e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        modal.addEventListener('touchend', function (e) {
+            touchEndX = e.changedTouches[0].screenX;
+            const swipeDistance = touchEndX - touchStartX;
+            if (Math.abs(swipeDistance) > 45) {
+                if (swipeDistance > 0) {
+                    navigateDirectorSlide(-1); // Swipe Right -> Previous (Left)
+                } else {
+                    navigateDirectorSlide(1);  // Swipe Left -> Next (Right)
+                }
+            }
+        }, { passive: true });
+    })();
+</script>
 
 {% endblock %}

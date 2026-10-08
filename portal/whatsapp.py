@@ -145,7 +145,7 @@ def send_whatsapp_alert(to_phone: str, student_name: str, course_name: str, enqu
         META_PHONE_NUMBER_ID    -> WhatsApp Business Phone Number ID from Meta Developer Portal
         ADMIN_NUMBER_401        -> Admissions & Courses   (defaults to 919133391401)
         ADMIN_NUMBER_402        -> Corporate & Placements (defaults to 919133391402)
-        ADMIN_NUMBER_152        -> General Enquiry        (defaults to 919989985152)
+        ADMIN_NUMBER_152        -> General Enquiry        (defaults to 919133391401)
     """
     access_token = os.environ.get('META_WHATSAPP_TOKEN')
     phone_number_id = os.environ.get('META_PHONE_NUMBER_ID')
@@ -154,7 +154,7 @@ def send_whatsapp_alert(to_phone: str, student_name: str, course_name: str, enqu
     admin_numbers = [
         os.environ.get('ADMIN_NUMBER_401', '919133391401'),   # Admissions & Courses
         os.environ.get('ADMIN_NUMBER_402', '919133391402'),   # Corporate & Placements
-        os.environ.get('ADMIN_NUMBER_152', '919989985152'),   # General Enquiry
+        os.environ.get('ADMIN_NUMBER_152', '919133391401'),   # General Enquiry
     ]
 
     # Safety check: skip silently if credentials are not configured

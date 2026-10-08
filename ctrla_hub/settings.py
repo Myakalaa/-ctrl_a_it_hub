@@ -18,6 +18,12 @@ import environ
 env = environ.Env(
     DEBUG=(bool, True),
     ALLOWED_HOSTS=(list, ['*']),
+    CSRF_TRUSTED_ORIGINS=(list, [
+        'https://ctrlaithub.com',
+        'https://www.ctrlaithub.com',
+        'http://127.0.0.1',
+        'http://localhost',
+    ]),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,7 +41,13 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-gm&3it(oom#gq^u_q7-1*h&7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[
+    'https://ctrlaithub.com',
+    'https://www.ctrlaithub.com',
+    'http://127.0.0.1',
+    'http://localhost',
+])
 
 
 # Application definition
@@ -59,8 +71,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'portal.middleware.NoCacheMiddleware',  # Security anti-caching for post-logout back button navigation
+    'portal.middleware.NoCacheMiddleware',        # Security: anti-caching for post-logout back button navigation
+    'portal.middleware.MaintenanceModeMiddleware',  # Maintenance mode: shows 503 page to public visitors
 ]
+
+# Maintenance Mode Toggle — set to True to enable maintenance page for all public visitors
+# Staff/superusers can still log in and browse normally.
+MAINTENANCE_MODE = env.bool('MAINTENANCE_MODE', default=False)
 
 ROOT_URLCONF = 'ctrla_hub.urls'
 
@@ -162,27 +179,38 @@ STORAGES = {
 
 # Production Environment Security Configurations (dynamic based on DEBUG status)
 if not DEBUG:
-    ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
+    ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['ctrlaithub.com', 'www.ctrlaithub.com', '*'])
+    CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[
+        'https://ctrlaithub.com',
+        'https://www.ctrlaithub.com',
+    ])
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=True)
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 31536000
+    SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', default=True)
+    CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', default=True)
+    SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS', default=31536000)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
 else:
     ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
+    CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[
+        'http://127.0.0.1:8000',
+        'http://localhost:8000',
+        'http://127.0.0.1',
+        'http://localhost',
+    ])
 
-# Celery & Redis Configuration Settings (Production Ready)
-CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://127.0.0.1:6379/0')
-CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='redis://127.0.0.1:6379/0')
+# Celery Configuration Settings (Redis-Free by default for seamless deployment without Redis)
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='memory://')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='cache+memory://')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
-CELERY_TASK_ALWAYS_EAGER = DEBUG
+CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_TASK_ALWAYS_EAGER', default=True)
+CELERY_TASK_EAGER_PROPAGATES = False
 
 
 # Email Configuration Settings

@@ -10,7 +10,7 @@ from .models import (
     HeroBanner, Service, Course, StudentProfile, 
     Assignment, CourseMaterial, Certificate, 
     Enquiry, Testimonial, PartnerLogo, GalleryItem,
-    JobApplication, JobOpening
+    JobApplication, JobOpening, Director
 )
 from .analytics import get_visitor_stats
 from .forms import (
@@ -134,7 +134,8 @@ def home(request):
                 email=enquiry.email,
                 phone=enquiry.phone,
                 enquiry_type=enquiry.enquiry_type,
-                message=enquiry.message
+                message=enquiry.message,
+                course_interested=enquiry.course_interested
             )
             messages.success(request, "Thank you! Your enquiry has been submitted. We will contact you shortly.")
         return redirect('home')
@@ -195,7 +196,8 @@ def home(request):
 
 def about(request):
     testimonials = Testimonial.objects.all()[:3]
-    return render(request, 'about.html', {'testimonials': testimonials})
+    directors = Director.objects.filter(is_active=True).order_by('display_order', 'id')
+    return render(request, 'about.html', {'testimonials': testimonials, 'directors': directors})
 
 
 def services(request):
@@ -282,7 +284,8 @@ def contact_view(request):
                 email=enquiry.email,
                 phone=enquiry.phone,
                 enquiry_type=enquiry.enquiry_type,
-                message=enquiry.message
+                message=enquiry.message,
+                course_interested=enquiry.course_interested
             )
             
             messages.success(request, "Your enquiry has been received successfully. We will reach out to you within 24 hours.")
