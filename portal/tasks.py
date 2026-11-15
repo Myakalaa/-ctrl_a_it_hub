@@ -36,6 +36,30 @@ def send_whatsapp_notification_task(to_phone, student_name, course_name, enquiry
         logger.info(f"[Task] ✓ WhatsApp notification completed for '{student_name}'.")
     else:
         logger.error(f"[Task] ✗ WhatsApp notification failed for '{student_name}'.")
+
+    # 1. Optional: Dispatch event to external n8n automation engine if N8N_WEBHOOK_URL is set
+    try:
+        from .gemini_service import trigger_n8n_webhook
+        trigger_n8n_webhook('new_student_enquiry', {
+            'student_name': student_name,
+            'phone': to_phone,
+            'course': course_name,
+            'enquiry_type': enquiry_type
+        })
+    except Exception as e:
+        logger.warning(f"[Task] n8n webhook dispatch skipped: {e}")
+
+    # 2. Forever Free: Direct Google Sheet Append (works independently of n8n!)
+    try:
+        from .sheets_service import append_lead_to_google_sheet
+        append_lead_to_google_sheet(
+            student_name=student_name,
+            phone=to_phone,
+            course=course_name
+        )
+    except Exception as e:
+        logger.warning(f"[Task] Direct Google Sheet append skipped: {e}")
+
     return success
 
 
@@ -58,7 +82,7 @@ def send_hr_notification_task(name, phone, job_title):
     """
     access_token = os.environ.get('META_WHATSAPP_TOKEN')
     phone_number_id = os.environ.get('META_PHONE_NUMBER_ID')
-    admin_phone = os.environ.get('ADMIN_WHATSAPP_NUMBER', '919133391401')
+    admin_phone = os.environ.get('ADMIN_WHATSAPP_NUMBER') or os.environ.get('ADMIN_NUMBER_401', '919133391401')
 
     if not access_token or not phone_number_id:
         logger.warning(
@@ -89,6 +113,18 @@ def send_hr_notification_task(name, phone, job_title):
         logger.info(f"[Task] ✓ HR WhatsApp alert sent for applicant '{name}'.")
     else:
         logger.error(f"[Task] ✗ HR WhatsApp alert failed for applicant '{name}'.")
+
+    # Optional: Dispatch event to external n8n automation engine if N8N_WEBHOOK_URL is set
+    try:
+        from .gemini_service import trigger_n8n_webhook
+        trigger_n8n_webhook('new_job_application', {
+            'candidate_name': name,
+            'phone': phone,
+            'job_title': job_title
+        })
+    except Exception as e:
+        logger.warning(f"[Task] n8n job application webhook dispatch skipped: {e}")
+
     return success
 
 

@@ -1,0 +1,148 @@
+{
+  "name": "CTRL A IT HUB - Lead, WhatsApp & Google Sheets CRM Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ctrl-a-lead",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Webhook (New Lead)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 360]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "student_name",
+              "value": "={{ $json.body.data.student_name }}",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "phone",
+              "value": "={{ $json.body.data.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "course",
+              "value": "={{ $json.body.data.course }}",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "enquiry_type",
+              "value": "={{ $json.body.data.enquiry_type }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-1",
+      "name": "Extract Lead Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 360]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v19.0/YOUR_PHONE_NUMBER_ID/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_META_WHATSAPP_TOKEN"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"recipient_type\": \"individual\",\n  \"to\": \"919989985152\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"🔔 *New Lead Alert — CTRL A IT HUB*\\n\\n👤 *Name:* {{ $json.student_name }}\\n📞 *Phone:* {{ $json.phone }}\\n📚 *Course:* {{ $json.course }}\\n\\n🌐 Admin Portal: https://ctrlaithub.com/admin/\"\n  }\n}",
+        "options": {}
+      },
+      "id": "http-whatsapp",
+      "name": "Send WhatsApp Alert to 9989985152",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 260]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "CTRL_A_IT_HUB_STUDENT_LEADS_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Leads",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $now.format('yyyy-MM-dd HH:mm') }}",
+            "Student Name": "={{ $json.student_name }}",
+            "Phone": "={{ $json.phone }}",
+            "Course": "={{ $json.course }}",
+            "Lead Status": "New Lead"
+          }
+        },
+        "options": {}
+      },
+      "id": "google-sheets-1",
+      "name": "Google Sheets CRM (Append Lead)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [720, 460]
+    }
+  ],
+  "connections": {
+    "Webhook (New Lead)": {
+      "main": [
+        [
+          {
+            "node": "Extract Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp Alert to 9989985152",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets CRM (Append Lead)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

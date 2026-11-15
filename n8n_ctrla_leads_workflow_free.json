@@ -1,0 +1,152 @@
+{
+  "name": "CTRL A IT HUB - Free CRM Automation (Sheets + Telegram + Email)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ctrl-a-lead",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Webhook (New Lead)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 360]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "student_name",
+              "value": "={{ $json.body.data.student_name }}",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "phone",
+              "value": "={{ $json.body.data.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "course",
+              "value": "={{ $json.body.data.course }}",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "enquiry_type",
+              "value": "={{ $json.body.data.enquiry_type }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-1",
+      "name": "Extract Lead Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 360]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "CTRL_A_IT_HUB_STUDENT_LEADS_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Form Responses 1",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}",
+            "Name": "={{ $json.student_name }}",
+            "Phone": "={{ $json.phone }}",
+            "Course": "={{ $json.course }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "google-sheets-1",
+      "name": "Google Sheets CRM (Append Lead)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [760, 200]
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "=🔔 *New Student Lead — CTRL A IT HUB*\n\n👤 *Name:* {{ $json.student_name }}\n📞 *Phone:* `{{ $json.phone }}`\n📚 *Course:* {{ $json.course }}\n🏷️ *Type:* {{ $json.enquiry_type }}\n\n🌐 [Open Admin Portal](https://ctrlaithub.com/admin/)",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "telegram-1",
+      "name": "Send Telegram Alert (100% Free)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [760, 360]
+    },
+    {
+      "parameters": {
+        "fromEmail": "ctrlaithubempoweringtechnology@gmail.com",
+        "toEmail": "ctrlaithubempoweringtechnology@gmail.com",
+        "subject": "=🔔 New Student Lead: {{ $json.student_name }} ({{ $json.course }})",
+        "html": "=<h2>🎓 New Lead Received — CTRL A IT HUB</h2><p><strong>Student Name:</strong> {{ $json.student_name }}</p><p><strong>Phone:</strong> {{ $json.phone }}</p><p><strong>Course:</strong> {{ $json.course }}</p><p><strong>Enquiry Type:</strong> {{ $json.enquiry_type }}</p><br><a href=\"https://ctrlaithub.com/admin/\" style=\"background:#2563eb;color:white;padding:10px 18px;text-decoration:none;border-radius:6px;\">Open Admin Dashboard</a>",
+        "options": {}
+      },
+      "id": "email-1",
+      "name": "Send Email Notification (100% Free)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [760, 520]
+    }
+  ],
+  "connections": {
+    "Webhook (New Lead)": {
+      "main": [
+        [
+          {
+            "node": "Extract Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets CRM (Append Lead)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Telegram Alert (100% Free)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Email Notification (100% Free)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

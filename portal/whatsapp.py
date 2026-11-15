@@ -145,16 +145,15 @@ def send_whatsapp_alert(to_phone: str, student_name: str, course_name: str, enqu
         META_PHONE_NUMBER_ID    -> WhatsApp Business Phone Number ID from Meta Developer Portal
         ADMIN_NUMBER_401        -> Admissions & Courses   (defaults to 919133391401)
         ADMIN_NUMBER_402        -> Corporate & Placements (defaults to 919133391402)
-        ADMIN_NUMBER_152        -> General Enquiry        (defaults to 919133391401)
+        ADMIN_NUMBER_152        -> General Enquiry        (defaults to 919989985152)
     """
     access_token = os.environ.get('META_WHATSAPP_TOKEN')
     phone_number_id = os.environ.get('META_PHONE_NUMBER_ID')
 
-    # All three admin numbers always receive every lead alert
+    # Lead alerts go directly to official admin coordinators
     admin_numbers = [
-        os.environ.get('ADMIN_NUMBER_401', '919133391401'),   # Admissions & Courses
-        os.environ.get('ADMIN_NUMBER_402', '919133391402'),   # Corporate & Placements
-        os.environ.get('ADMIN_NUMBER_152', '919133391401'),   # General Enquiry
+        os.environ.get('ADMIN_NUMBER_401', '919133391401'),
+        os.environ.get('ADMIN_NUMBER_402', '919133391402'),
     ]
 
     # Safety check: skip silently if credentials are not configured
@@ -166,27 +165,40 @@ def send_whatsapp_alert(to_phone: str, student_name: str, course_name: str, enqu
         )
         return False
 
+    # Personalized AI Course Guidance (Gemini Integration)
+    ai_advice = ""
+    try:
+        from .gemini_service import generate_course_advice
+        ai_advice = generate_course_advice(student_name, course_name)
+    except Exception:
+        ai_advice = ""
+
+    # Clean course label (remove awkward 'General IT Training / Enquiry' placeholder)
+    display_course = course_name
+    if not display_course or 'general' in display_course.lower():
+        display_course = "Professional IT Training"
+
     # ─── MESSAGE 1: Student Confirmation ───────────────────────────────────────
+    advice_section = f"\n\n💡 *AI Course Guidance:*\n_{ai_advice}_\n" if ai_advice else ""
     student_message = (
         f"Hello {student_name},\n\n"
-        f"Thank you for contacting *CTRL A IT HUB*! \u2705\n\n"
-        f"We have received your enquiry regarding our *'{course_name}'* program. "
+        f"Thank you for contacting *CTRL A IT HUB*! ✅{advice_section}\n"
+        f"We have received your enquiry regarding our *'{display_course}'* program. "
         f"Our counseling expert will reach out to you within 24 hours.\n\n"
         f"Best regards,\n"
         f"*CTRL A IT HUB Team*\n"
-        f"\ud83d\udcde +91 91333 91401\n"
-        f"\ud83c\udf10 https://ctrlaithub.com"
+        f"📞 +91 99899 85152\n"
+        f"🌐 https://ctrlaithub.com"
     )
 
-    # ─── MESSAGE 2: Admin New Lead Alert (sent to ALL 3 numbers) ───────────────
+    # ─── MESSAGE 2: Admin New Lead Alert (sent strictly to 9989985152) ──────────
     admin_message = (
-        f"\ud83d\udd14 *New Lead Alert ({enquiry_type.upper()}) \u2014 CTRL A IT HUB*\n\n"
-        f"\ud83d\udc64 Name      : {student_name}\n"
-        f"\ud83d\udcde Phone     : {to_phone}\n"
-        f"\ud83d\udcda Course    : {course_name}\n"
-        f"\ud83d\udccc Type      : {enquiry_type.title()} Enquiry\n\n"
+        f"🔔 *New Lead Alert — CTRL A IT HUB*\n\n"
+        f"👤 Name   : {student_name}\n"
+        f"📞 Phone  : {to_phone}\n"
+        f"📚 Course : {display_course}\n\n"
         f"Please follow up with this lead as soon as possible.\n"
-        f"\ud83c\udf10 https://ctrlaithub.com/admin/"
+        f"🌐 https://ctrlaithub.com/admin/"
     )
 
     # Send greeting to the student

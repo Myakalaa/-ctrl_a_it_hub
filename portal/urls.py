@@ -16,6 +16,7 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),
     path('verify-certificate/', views.verify_certificate, name='verify_certificate'),
     path('submit-job-application/', views.submit_job_application, name='submit_job_application'),
+    path('api/ai-advisor/', views.ai_advisor_api, name='ai_advisor_api'),
 
     # Student Authentication
     path('register/', views.student_register, name='register'),

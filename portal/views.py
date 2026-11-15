@@ -125,7 +125,7 @@ def home(request):
             send_whatsapp_notification_task.delay(
                 to_phone=enquiry.phone,
                 student_name=enquiry.name,
-                course_name="General IT Training / Enquiry",
+                course_name=enquiry.course_interested or "IT Training Programs",
                 enquiry_type=enquiry.enquiry_type
             )
             # Dispatch BPO enquiry email alert asynchronously
@@ -820,3 +820,29 @@ def mis_certificate_delete(request, pk):
     cert.delete()
     messages.success(request, 'Certificate deleted successfully!')
     return redirect('bpo_dashboard')
+
+
+# --- AI COURSE ADVISOR API (GEMINI INTEGRATION) ---
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .gemini_service import generate_course_advice
+
+@csrf_exempt
+def ai_advisor_api(request):
+    """
+    Lightweight REST endpoint for real-time AI Course Recommendations using Google Gemini.
+    Accepts GET or POST with 'name', 'course', and 'query'.
+    """
+    if request.method in ['POST', 'GET']:
+        name = request.POST.get('name') or request.GET.get('name', 'Student')
+        course = request.POST.get('course') or request.GET.get('course', '')
+        query = request.POST.get('query') or request.GET.get('query', '')
+
+        recommendation = generate_course_advice(name, course, query)
+        return JsonResponse({
+            'status': 'success',
+            'student_name': name,
+            'course': course,
+            'recommendation': recommendation
+        })
+    return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
