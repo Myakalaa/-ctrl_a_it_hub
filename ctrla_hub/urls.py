@@ -19,10 +19,19 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
+from django.views.generic import TemplateView
+from django.contrib.sitemaps.views import sitemap
 
 from portal.views import custom_login_redirect
+from portal.sitemaps import StaticViewSitemap
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
 
 urlpatterns = [
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'), name='robots_file'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', admin.site.urls),         # Master Admin Dashboard
     path('login/', custom_login_redirect, name='login'),  # Custom Role-Based Router
     path('', include('portal.urls')),        # Portal views

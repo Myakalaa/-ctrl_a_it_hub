@@ -4,8 +4,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CTRL A IT HUB - Professional IT Training Institute. Java, Python, Testing, Web & Data Analytics courses with placement support in Hyderabad.">
-    <title>{% block title %}CTRL A IT HUB - Empowering Technology & People{% endblock %}</title>
+
+    <!-- Primary SEO Meta Tags -->
+    <title>{% block title %}CTRL A IT HUB | Leading IT Training & Placement Institute in Hyderabad{% endblock %}</title>
+    <meta name="title" content="{% block meta_title %}CTRL A IT HUB | Leading IT Training & Placement Institute in Hyderabad{% endblock %}">
+    <meta name="description" content="{% block meta_description %}CTRL A IT HUB is Hyderabad's premier IT training institute at ECIL X Road. Industry-certified courses in Python, Java Full Stack, Software Testing, Data Analytics, Tally Prime with 100% placement support.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}IT Training Institute Hyderabad, Python Course ECIL, Full Stack Java Training, Software Testing Institute, Data Analytics Training Hyderabad, Placements IT Training, Tally Prime Course, CTRL A IT HUB{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1{% endblock %}">
+    <meta name="author" content="CTRL A IT HUB">
+    <link rel="canonical" href="{% block canonical_url %}https://ctrlaithub.com{{ request.path }}{% endblock %}">
+
+    <!-- Geo Tags for Local SEO (Hyderabad, Telangana) -->
+    <meta name="geo.region" content="IN-TG">
+    <meta name="geo.placename" content="Hyderabad">
+    <meta name="geo.position" content="17.4850;78.5583">
+    <meta name="ICBM" content="17.4850, 78.5583">
+
+    <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="CTRL A IT HUB">
+    <meta property="og:url" content="{% block og_url %}https://ctrlaithub.com{{ request.path }}{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}CTRL A IT HUB | Leading IT Training & Placement Institute in Hyderabad{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Industry-certified courses in Python, Full Stack Java, Testing, Data Analytics, and Corporate Training with assured placement support in Hyderabad.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://ctrlaithub.com{% static 'images/logo.png' %}{% endblock %}">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}CTRL A IT HUB | IT Training & Placement Institute Hyderabad{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Premier software training programs in Python, Java, Testing & Data Analytics with guaranteed placement assistance at ECIL, Hyderabad.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}https://ctrlaithub.com{% static 'images/logo.png' %}{% endblock %}">
+
+    <!-- Organization & Local Business Schema (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["EducationalOrganization", "LocalBusiness"],
+          "@id": "https://ctrlaithub.com/#organization",
+          "name": "CTRL A IT HUB",
+          "url": "https://ctrlaithub.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://ctrlaithub.com{% static 'images/logo.png' %}"
+          },
+          "image": "https://ctrlaithub.com{% static 'images/logo.png' %}",
+          "telephone": "+919133391401",
+          "email": "info@ctrlaithub.com",
+          "priceRange": "₹₹",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "1-7-172/1, 1st Floor, ECIL X Road",
+            "addressLocality": "Hyderabad",
+            "addressRegion": "Telangana",
+            "postalCode": "500062",
+            "addressCountry": "IN"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "17.4850",
+            "longitude": "78.5583"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+              "opens": "09:00",
+              "closes": "19:00"
+            }
+          ],
+          "sameAs": [
+            "https://www.facebook.com/",
+            "https://www.linkedin.com/",
+            "https://www.instagram.com/",
+            "https://www.youtube.com/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://ctrlaithub.com/#website",
+          "url": "https://ctrlaithub.com",
+          "name": "CTRL A IT HUB",
+          "publisher": {
+            "@id": "https://ctrlaithub.com/#organization"
+          }
+        }
+      ]
+    }
+    </script>
+    {% block schema_extra %}{% endblock %}
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/main.css' %}?v=3.0">
     <script>

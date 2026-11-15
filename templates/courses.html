@@ -1,7 +1,38 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Our Training Courses - CTRL A IT HUB{% endblock %}
+{% block title %}Software Training Courses & Certifications in Hyderabad | CTRL A IT HUB{% endblock %}
+{% block meta_description %}Explore top software courses at CTRL A IT HUB: Python, Java Full Stack, Web Technologies, Software Testing, Data Analytics, and SAP. Live projects & 100% placement assistance in Hyderabad.{% endblock %}
+{% block meta_keywords %}Software Courses Hyderabad, Python Training Hyderabad, Java Full Stack Course ECIL, Software Testing Course, Data Analytics Training, CTRL A IT HUB Courses{% endblock %}
+{% block og_title %}Software Training Courses & Certifications in Hyderabad | CTRL A IT HUB{% endblock %}
+{% block og_description %}Master in-demand skills in Python, Java, Data Analytics, Web Development, and Testing with certified mentors and assured placement assistance.{% endblock %}
+
+{% block schema_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {% for course in courses|slice:":10" %}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.counter }},
+      "item": {
+        "@type": "Course",
+        "name": "{{ course.title|escapejs }}",
+        "description": "{{ course.description|striptags|truncatewords:25|escapejs }}",
+        "provider": {
+          "@type": "Organization",
+          "name": "CTRL A IT HUB",
+          "sameAs": "https://ctrlaithub.com"
+        }
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
 

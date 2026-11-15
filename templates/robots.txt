@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin-dashboard/
+Disallow: /bpo-dashboard/
+Disallow: /hr-dashboard/
+Disallow: /dashboard/
+Disallow: /login/
+Disallow: /logout/
+Disallow: /register/
+Disallow: /submit-job-application/
+Disallow: /api/
+
+Sitemap: https://ctrlaithub.com/sitemap.xml
