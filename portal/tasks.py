@@ -170,7 +170,7 @@ def send_bpo_enquiry_email_task(name, email, phone, enquiry_type, message, cours
             subject=subject,
             message=body,
             from_email=None,  # Uses DEFAULT_FROM_EMAIL from settings.py
-            recipient_list=['info@ctrlaithub.com', 'ctrlaithubempoweringtechnology@gmail.com'],
+            recipient_list=['info@ctrlaithub.com', 'ctrlaithubempoweringtechnology@gmail.com', 'amyakala01@gmail.com'],
             fail_silently=False,
         )
         logger.info(f"[Task] ✓ BPO enquiry email sent for '{name}'.")
